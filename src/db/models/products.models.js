@@ -34,5 +34,5 @@ const productsSchema = new Schema({
         require: true,
     },
 });
-export default productsSchema
+export const productsModels= model('Products', productsSchema) 
 //crear el modelo

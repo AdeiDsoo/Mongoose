@@ -1,5 +1,8 @@
 import express from "express";
 import { __dirname } from "./utils";
+import handlebars from "express-handlebars"
+import "./db/config.js"
+
 
 const app=express()
 app.use(express.json());
