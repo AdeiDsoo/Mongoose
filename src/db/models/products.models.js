@@ -1,4 +1,4 @@
-import { Schema } from "mongoose";
+import { Schema, model } from "mongoose";
 
 //crear el esquema
 const productsSchema = new Schema({
@@ -34,5 +34,5 @@ const productsSchema = new Schema({
         require: true,
     },
 });
-export const productsModels= model('Products', productsSchema) 
+export const productsModel= model('Products', productsSchema) 
 //crear el modelo

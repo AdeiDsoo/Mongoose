@@ -1,0 +1,10 @@
+#form, #formUsers{
+    display: flex;
+    flex-direction: column;
+    font-family: Helvetica;
+    padding:  1vw 3vw;
+}
+
+#form input, #formUsers input, #form select{
+    max-width: 50vw;
+}
