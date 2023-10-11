@@ -4,11 +4,11 @@ import { Schema, model } from "mongoose";
 const productsSchema = new Schema({
     title: {
         type: String,
-        require: true,
+        required: true,
     },
     description: {
         type: String,
-        require: true,
+        required: true,
     },
     price: {
         type: Number,
@@ -19,19 +19,20 @@ const productsSchema = new Schema({
     },
     code: {
         type: String,
-        require: true,
+        required: true,
         unique: true,
     },
     stock: {
         type: Number,
-        require: true,
+        required: true,
     },
     status: {
         type: Boolean,
+        default: true
     },
     category: {
         type: String,
-        require: true,
+        required: true,
     },
 });
 export const productsModel= model('Products', productsSchema) 

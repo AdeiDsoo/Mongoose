@@ -10,11 +10,32 @@ router.post("/", async (req, res) => {
   }
 
   try {
-    const createUser = await usersManager.createOne(req.body);
-    res.status(200).json({ message: "user Created", user: createUser });
+    const createdUser = await usersManager.createOne(req.body);
+    // res.status(200).json({ message: "user Created", user: createUser });
+    res.redirect(`/home/${createdUser._id}`);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
+
+router.get('/', async(req, res)=>{
+  try {
+    const users= await usersManager.findAll()
+    res.status(200).json({ message: "Users", users });
+
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+})
+router.get('/:idUser', async(req, res)=>{
+  const {idUser}= req.params
+  try {
+    const user= await usersManager.findById(idUser)
+    res.status(200).json({ message: "User", user });
+
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+})
 export default router;
