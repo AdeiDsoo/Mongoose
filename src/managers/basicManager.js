@@ -16,10 +16,13 @@ export default class BasicManager {
       return this.model.create(obj);
     }
   
+    // async updateOne(id, obj) {
+    //   return this.model.updateOne({ _id: id }, obj);
+    // }
     async updateOne(id, obj) {
-      return this.model.updateOne({ _id: id }, obj);
+      const updatedDocument = await this.model.findOneAndUpdate({ _id: id }, obj, { new: true });
+      return updatedDocument;
     }
-  
     async deleteOne(id) {
       return this.model.deleteOne({ _id: id });
     }

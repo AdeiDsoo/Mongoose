@@ -12,6 +12,7 @@ router.post("/", async (req, res) => {
     try {
       const createProduct = await productsManager.createOne(req.body);
       res.status(200).json({ message: "Product Created", product: createProduct });
+      
     } catch (err) {
       res.status(500).json({ error: err.message });
     }
@@ -20,11 +21,15 @@ router.post("/", async (req, res) => {
     
     try {
       const products = await productsManager.findAll();
+      console.log(products);
       res.status(200).json({ message: "products",  products });
+  
     } catch (err) {
       res.status(500).json({ error: err.message });
     }
   });
+
+  // 6526094df4ff8805c8bd0750
   router.get('/:idProduct', async(req, res)=>{
     const {idProduct}= req.params
     try {
@@ -47,9 +52,11 @@ router.post("/", async (req, res) => {
   })
   router.put('/:idProduct', async(req, res)=>{
     const {idProduct}= req.params
+    const {body}=req.body
+    console.log(body, 'body');
     try {
-      const product= await productsManager.deleteOne(idProduct)
-      res.status(200).json({ message: "deleted Product", product });
+      const product= await productsManager.updateOne(idProduct, body)
+      res.status(200).json({ message: "update Product", product });
   
     } catch (err) {
       res.status(500).json({ error: err.message });
