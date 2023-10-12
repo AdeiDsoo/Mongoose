@@ -28,11 +28,34 @@ router.get('/', async(req, res)=>{
     res.status(500).json({ error: err.message });
   }
 })
+router.delete('/:idUser', async(req, res)=>{
+  const {idUser}= req.params
+  try {
+    const user= await usersManager.deleteOne(idUser)
+    res.status(200).json({ message: "Delete User", user });
+
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+})
+
 router.get('/:idUser', async(req, res)=>{
   const {idUser}= req.params
   try {
     const user= await usersManager.findById(idUser)
     res.status(200).json({ message: "User", user });
+
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+})
+
+router.put('/:idUser', async(req, res)=>{
+  const {idUser}= req.params
+  const {obj}=req.body
+  try {
+    const user= await usersManager.updateOne(idUser, obj)
+    res.status(200).json({ message: "Update User", user });
 
   } catch (err) {
     res.status(500).json({ error: err.message });

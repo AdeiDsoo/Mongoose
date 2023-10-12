@@ -16,5 +16,43 @@ router.post("/", async (req, res) => {
       res.status(500).json({ error: err.message });
     }
   });
-
+  router.get("/", async (req, res) => {
+    
+    try {
+      const products = await productsManager.findAll();
+      res.status(200).json({ message: "products",  products });
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  });
+  router.get('/:idProduct', async(req, res)=>{
+    const {idProduct}= req.params
+    try {
+      const product= await productsManager.findById(idProduct)
+      res.status(200).json({ message: "Product", product });
+  
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  })
+  router.delete('/:idProduct', async(req, res)=>{
+    const {idProduct}= req.params
+    try {
+      const product= await productsManager.deleteOne(idProduct)
+      res.status(200).json({ message: "deleted Product", product });
+  
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  })
+  router.put('/:idProduct', async(req, res)=>{
+    const {idProduct}= req.params
+    try {
+      const product= await productsManager.deleteOne(idProduct)
+      res.status(200).json({ message: "deleted Product", product });
+  
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  })
 export default router;
