@@ -53,7 +53,6 @@ router.post("/", async (req, res) => {
   router.put('/:idProduct', async(req, res)=>{
     const {idProduct}= req.params
     const {body}=req.body
-    console.log(body, 'body');
     try {
       const product= await productsManager.updateOne(idProduct, body)
       res.status(200).json({ message: "update Product", product });

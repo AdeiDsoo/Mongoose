@@ -1,9 +1,19 @@
 <h2>CHAT</h2>
+<form id="formMessage" action="/api/messages" method="post">
+  Nombre <input type="text" name="fromUser" id="fromUser">
+   Mensaje <input type="text" name="contentMessage" id="contentMessage"  />
+   Para: <input type="text" name="toUser" id="toUser">
+  <input type="submit" value="SEND">
+</form>
 
+{{!-- <section id="chat-container">
+  <div id="chat-window">
+    <div id="output"></div>
+    <div id="actions"></div>
+  </div>
+  <input type="text" id="message" placeholder="message" />
+  <button id="send">Send</button>
+</section> --}}
 
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="/socket.io/socket.io.js"></script>
-<script src="/js/index.js"></script>
-
-
+{{!-- <script src="/socket.io/socket.io.js"></script>
+<script src="/js/index.js" charset="utf-8"></script> --}}
