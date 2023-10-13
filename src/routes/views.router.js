@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { usersManager } from "../managers/usersManager.js";
 import { productsManager } from "../managers/productsManager.js";
+import { messageManager } from "../managers/messagesManager.js";
 
 const router = Router();
 
@@ -27,4 +28,18 @@ router.get('/home/:idUser', async (req, res) => {
     res.render("home", { first_name, last_name, products })
 })
 
+router.get('/messagesChat', async (req, res)=>{
+    const messages = await messageManager.findAll()
+    console.log(messages);
+    res.render("messagesChat", {  messages })
+})
+router.get('/chat', async (req, res)=>{
+    const messages = await messageManager.findAll()
+    console.log(messages);
+    res.render("messagesChat", {  messages })
+})
+// router.get("/realtimeproducts", async(req, res) => {
+//     const products = await productsManager.getProducts();
+//     res.render("realTimeProducts", { products });
+//   });
 export default router;

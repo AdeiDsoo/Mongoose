@@ -5,14 +5,14 @@ const router = Router();
 
 router.post("/", async (req, res) => {
     const { fromUser, contentMessage, toUser } = req.body;
-    console.log(req.body);
     if (!fromUser || !contentMessage || !toUser ) {
       return res.status(400).json({ message: "All data is required" });
     }
   
     try {
       const createMessage = await messageManager.createOne(req.body)
-      res.status(200).json({ message: "Message Created", message: createMessage });
+    //   res.status(200).json({ message: "Message Created", message: createMessage });
+      res.redirect(`/messagesChat`);
       
     } catch (err) {
       res.status(500).json({ error: err.message });
@@ -20,7 +20,7 @@ router.post("/", async (req, res) => {
   });
 
   router.get("/", async (req, res) => {
-    
+   
     try {
       const messages = await messageManager.findAll();
       res.status(200).json({ message: "messages",  messages });

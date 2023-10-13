@@ -8,6 +8,7 @@ import usersRouter from "./routes/users.router.js";
 import cartsRouter from "./routes/carts.router.js";
 import chatRouter from "./routes/chat.router.js";
 import { Server } from "socket.io";
+import { messageManager } from "./managers/messagesManager.js";
 
 const app = express();
 
@@ -35,19 +36,20 @@ const httpServer = app.listen(PORT, () => {
 
 //socket
 
-// const socketServer = new Server(httpServer);
+const socketServer = new Server(httpServer);
 
-// socketServer.on("connection", (socket) => {
-//     console.log(`Cliente Conectado ${socket.id}`);
-//     socket.on("disconnect", () => {
-//         console.log(`Cliente desconectado ${socket.id}`);
-//     });
-
-
+socketServer.on("connection", (socket) => {
+    console.log(`Cliente Conectado ${socket.id}`);
+    socket.on("disconnect", () => {
+        console.log(`Cliente desconectado ${socket.id}`);
+    });
 
 
 
-//     socket.on('userName',(userName)=>{
-//         console.log(`the user name is ${userName}`);
-//     } )
-// });
+    socket.on("bodyMessage", async (message) => {
+        const newMessage = await messageManager.createOne(message);
+        socket.emit("messageCreated", newMessage);
+    });
+
+
+});

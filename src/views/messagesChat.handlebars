@@ -1,11 +1,3 @@
-<h2>CHAT</h2>
-<form id="formMessage" action="/api/messages" method="post">
-  Nombre <input type="text" name="fromUser" id="fromUser">
-   Mensaje <input type="text" name="contentMessage" id="contentMessage"  />
-   Para: <input type="text" name="toUser" id="toUser">
-  <input type="submit" value="SEND">
-</form>
-
 <section class="renderMessages">
     <table id="table">
     <thead>
@@ -27,7 +19,3 @@
     </tbody>
 </table>
 </section>
-
-<script src="/socket.io/socket.io.js"></script>
-<script src="/js/index.js"></script>
-
