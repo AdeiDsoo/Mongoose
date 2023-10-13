@@ -52,8 +52,8 @@ router.get('/:idUser', async(req, res)=>{
 
 router.put('/:idUser', async(req, res)=>{
   const {idUser}= req.params
-  const{ body }=req.body
-  console.log(req.body, 'update');
+  const body =req.body
+  console.log(body, 'update');
   try {
     const user= await usersManager.updateOne(idUser, body )
     res.status(200).json({ message: "Update User", user });
