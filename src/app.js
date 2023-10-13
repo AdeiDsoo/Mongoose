@@ -48,7 +48,8 @@ socketServer.on("connection", (socket) => {
 
     socket.on("bodyMessage", async (message) => {
         const newMessage = await messageManager.createOne(message);
-        socket.emit("messageCreated", newMessage);
+        // socket.emit("messageCreated", newMessage);
+        socketServer.emit("messageCreated", newMessage);
     });
 
 
