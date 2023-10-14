@@ -60,7 +60,6 @@ class CartsManager {
 
   async addProductsInThisCart(idCart, idProduct) {
     try {
-      //agregar condicional para que el idProduct y el idCart sean numeros unicamente -tipo de dato
       if (!idCart || !idProduct) {
         return "this cart/product no found or ID is incorrect";
       }
