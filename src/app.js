@@ -4,7 +4,6 @@ import handlebars from "express-handlebars";
 import "./db/config.js";
 import viewsRouter from "./routes/views.router.js";
 import productsRouter from "./routes/products.router.js";
-import usersRouter from "./routes/users.router.js";
 import cartsRouter from "./routes/carts.router.js";
 import chatRouter from "./routes/chat.router.js";
 import { Server } from "socket.io";
@@ -24,7 +23,6 @@ app.set("view engine", "handlebars"); //motor de plantilla con el que trabajamos
 //routes
 app.use("/", viewsRouter);
 app.use("/api/products", productsRouter);
-app.use("/api/users", usersRouter);
 app.use("/api/carts", cartsRouter);
 app.use("/api/messages", chatRouter);
 
@@ -44,11 +42,8 @@ socketServer.on("connection", (socket) => {
         console.log(`Cliente desconectado ${socket.id}`);
     });
 
-
-
     socket.on("bodyMessage", async (message) => {
         const newMessage = await messageManager.createOne(message);
-        // socket.emit("messageCreated", newMessage);
         socketServer.emit("messageCreated", newMessage);
     });
 

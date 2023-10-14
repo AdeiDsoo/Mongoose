@@ -12,8 +12,6 @@ router.post("/", async (req, res) => {
     try {
       const createMessage = await messageManager.createOne(req.body)
     //   res.status(200).json({ message: "Message Created", message: createMessage });
-      res.redirect(`/messagesChat`);
-      
     } catch (err) {
       res.status(500).json({ error: err.message });
     }
