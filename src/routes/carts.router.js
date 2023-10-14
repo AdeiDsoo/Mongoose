@@ -51,4 +51,16 @@ router.get('/:idCart', async(req, res)=>{
   }
 })
 
+router.put('/:idCart', async(req, res)=>{
+  const {idCart}= req.params
+  const body=req.body
+  try {
+    const cart= await cartsManager.updateOne(idCart, body)
+    res.status(200).json({ message: "update Cart", cart });
+
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+})
+
 export default router;

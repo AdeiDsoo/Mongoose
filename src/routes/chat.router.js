@@ -49,5 +49,15 @@ router.post("/", async (req, res) => {
       res.status(500).json({ error: err.message });
     }
   })
+  router.put('/:idMessage', async(req, res)=>{
+    const {idMessage}= req.params
+    const body=req.body
+    try {
+      const message= await messageManager.updateOne(idMessage, body)
+      res.status(200).json({ message: "update Message", message });
   
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  })
 export default router;
