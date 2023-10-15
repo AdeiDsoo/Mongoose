@@ -8,7 +8,7 @@ router.post("/", async (req, res) => {
   const { idProduct, qty } = req.body;
   
   if (!idProduct || !qty) {
-      return res.status(400).json({ message: "Both idProduct and qty are required" });
+      return res.status(400).json({ message: " idProduct or qty are required" });
   }
 
   const obj = {

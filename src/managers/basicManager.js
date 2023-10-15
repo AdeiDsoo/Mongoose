@@ -4,11 +4,27 @@ export default class BasicManager {
     }
   
     async findAll(options) {
-      const result= await this.model.paginate({}, options)
-   
+      const filter = {};
+
+      // Verifica si se proporciona un filtro por categoría en la solicitud
+      if (options.category) {
+        filter.category = options.category;
+      }
+    
+      const result= await this.model.paginate(filter, options)
+      
+      const sortedPayload = result.docs.sort((a, b) => {
+        if (options.sort === 'asc') {
+          return a.price - b.price;
+        } else if (options.sort === 'desc') {
+          return b.price - a.price;
+        } else {
+          return 0;
+        }
+      });
       const info= {
         status:'success',
-        payload:result.docs,
+        payload:sortedPayload,
         count:result.totalDocs, 
         totalPages: result.totalPages,
         prevPage: result.prevPage,
@@ -20,7 +36,6 @@ export default class BasicManager {
         nextLink: result.hasNextPage ? `http://localhost:8080/api/users?page=${result.nextPage}` :null
       };
       return info
-      // .lean();
     }
 async findAllSimple(){
   return this.model.find().lean();
