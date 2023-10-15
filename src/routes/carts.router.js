@@ -1,28 +1,44 @@
 import { Router } from "express";
 import {cartsManager} from "../managers/cartsManager.js"
 
+
 const router = Router();
 
 router.post("/", async (req, res) => {
-    const { idProduct, qty, total } = req.body;
-    if (!idProduct || !qty || !total ) {
-      return res.status(400).json({ message: "All data is required" });
-    }
+  const { idProduct, qty } = req.body;
   
-    try {
-      const createCart = await cartsManager.createOne(req.body);
-      res.status(200).json({ message: "Cart Created", product: createCart });
-      
-    } catch (err) {
-      res.status(500).json({ error: err.message });
-    }
-  });
+  if (!idProduct || !qty) {
+      return res.status(400).json({ message: "Both idProduct and qty are required" });
+  }
 
+  const obj = {
+    productsCart: [{
+     idProduct,
+       qty
+    }]
+};
+
+  try {
+      const createCart = await cartsManager.createOne(obj);
+      res.status(200).json({ message: "Cart Created", cart: createCart });
+  } catch (err) {
+      res.status(500).json({ error: err.message });
+  }
+});
 
 
 router.get('/', async(req, res)=>{
   try {
-    const carts= await cartsManager.findAll()
+    const carts= await cartsManager.findAll(req.query)
+    res.status(200).json({ message: "Carts", carts });
+
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+})
+router.get('/allCarts', async(req, res)=>{
+  try {
+    const carts= await cartsManager.findAllSimple()
     res.status(200).json({ message: "Carts", carts });
 
   } catch (err) {
@@ -39,11 +55,29 @@ router.delete('/:idCart', async(req, res)=>{
     res.status(500).json({ error: err.message });
   }
 })
+router.delete('/:idCart/products/:idProduct', async(req, res)=>{
+  const {idCart, idProduct}= req.params
 
+  try {
+      // Actualiza el documento para eliminar el producto específico del array productsCart
+      const result = await cartsManager.updateOne(
+        { _id: idCart },
+        { $pull: { productsCart: { idProduct: idProduct } } }
+      );
+  
+      if (result.nModified === 0) {
+        res.status(404).json({ message: 'No found idCart o idProduct' });
+      } else {
+        res.json({ message: 'deleted product', result });
+      }
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+})
 router.get('/:idCart', async(req, res)=>{
   const {idCart}= req.params
   try {
-    const cart= await cartsManager.findById(idCart)
+    const cart= await cartsManager.findInfoProducts(idCart)
     res.status(200).json({ message: "Cart", cart });
 
   } catch (err) {

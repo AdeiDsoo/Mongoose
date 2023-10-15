@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
+import mongoosePaginate from "mongoose-paginate-v2"
 
-//crear el esquema
 const productsSchema = new Schema({
     title: {
         type: String,
@@ -35,5 +35,7 @@ const productsSchema = new Schema({
         required: true,
     },
 });
+
+productsSchema.plugin(mongoosePaginate)
+
 export const productsModel= model('Products', productsSchema) 
-//crear el modelo

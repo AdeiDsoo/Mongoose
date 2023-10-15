@@ -20,7 +20,7 @@ router.post("/", async (req, res) => {
   router.get("/", async (req, res) => {
    
     try {
-      const messages = await messageManager.findAll();
+      const messages = await messageManager.findAll(req.query);
       res.status(200).json({ message: "messages",  messages });
   
     } catch (err) {

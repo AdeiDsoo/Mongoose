@@ -18,10 +18,9 @@ router.post("/", async (req, res) => {
     }
   });
   router.get("/", async (req, res) => {
-    
+    console.log(req.query);
     try {
-      const products = await productsManager.findAll();
-      console.log(products);
+      const products = await productsManager.findAll(req.query);
       res.status(200).json({ message: "products",  products });
   
     } catch (err) {
@@ -29,7 +28,7 @@ router.post("/", async (req, res) => {
     }
   });
 
-  // 6526094df4ff8805c8bd0750
+
   router.get('/:idProduct', async(req, res)=>{
     const {idProduct}= req.params
     try {

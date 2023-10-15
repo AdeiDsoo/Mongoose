@@ -10,3 +10,4 @@ class ProductsManager extends BasicManager {
 
 export const productsManager = new ProductsManager()
 
+// outer.post("/", body_must_contain_attributes(["products"]), createCart);
