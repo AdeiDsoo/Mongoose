@@ -5,9 +5,9 @@ const router = Router();
 
 router.post("/", async (req, res) => {
   const { idProduct, qty } = req.body;
-
+console.log(req.body);
   if (!idProduct || !qty) {
-    return res.status(400).json({ message: " idProduct or qty are required" });
+    return res.status(400).json({ message: "idProduct or qty are required" });
   }
 
   const obj = {
@@ -80,8 +80,9 @@ router.delete("/:idCart/products/:idProduct", async (req, res) => {
 router.get("/:idCart", async (req, res) => {
   const { idCart } = req.params;
   try {
-    const cart = await cartsManager.findInfoProducts(idCart);
-    res.status(200).json({ message: "Cart", cart });
+    const cartInfo = await cartsManager.findInfoProducts(idCart);
+    // res.status(200).json({ message: "Cart", cart });
+    res.render("thisCart", {cartInfo});
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

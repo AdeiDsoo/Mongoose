@@ -8,7 +8,7 @@ class CartsManager extends BasicManager {
    async findInfoProducts(idCart) {
       const cart = await cartsModel
          .findById(idCart)
-         .populate("productsCart.idProduct");
+         .populate("productsCart.idProduct").lean();
       return cart;
    }
    async findAllSimple() {

@@ -26,16 +26,14 @@ router.get("/products", async (req, res) => {
 router.get("/oneProduct/:idProduct", async (req, res) => {
   const { idProduct } = req.params;
   const productInfo = await productsManager.findById(idProduct);
-  const { price, stock, title, description, category, code, status } =
+  const { price, title, description, category, _id } =
     productInfo;
   res.render("oneProduct", {
     price,
-    stock,
     title,
     description,
     category,
-    code,
-    status,
+    _id
   });
 });
 

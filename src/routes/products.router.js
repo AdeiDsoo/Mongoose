@@ -73,7 +73,7 @@ router.put("/:idProduct", async (req, res) => {
   const body = req.body;
   try {
     const product = await productsManager.updateOne(idProduct, body);
-    // res.status(200).json({ message: "update Product", product });
+    res.status(200).json({ message: "update Product", product });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
