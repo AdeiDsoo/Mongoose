@@ -11,6 +11,9 @@ class CartsManager extends BasicManager {
          .populate("productsCart.idProduct");
       return cart;
    }
+   async findAllSimple() {
+      return this.model.find().populate("productsCart.idProduct").lean();
+    }
 }
 
 export const cartsManager = new CartsManager();

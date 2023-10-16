@@ -6,6 +6,9 @@ class ProductsManager extends BasicManager {
   constructor(){
     super(productsModel)
   }
+  async findAllSimpleProducts() {
+    return this.model.find().lean();
+  }
 };
 
 export const productsManager = new ProductsManager()

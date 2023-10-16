@@ -39,9 +39,7 @@ export default class BasicManager {
     };
     return info;
   }
-  async findAllSimple() {
-    return this.model.find().populate("productsCart.idProduct").lean();
-  }
+
   async findById(id) {
     return this.model.findById(id);
   }

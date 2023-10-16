@@ -1,0 +1,16 @@
+<section class="allProducts">
+    <h3>NUESTROS PRODUCTOS</h3>
+    {{#each products}}
+
+<a href=`http://localhost:8080/api/products/${_id}`> 
+    <div class="container-Logo">
+<img class="logo" alt="logoShop" src="/images/catProducts.png" >
+    </div>
+    <div class="info">
+ <p> {{title}}</p>
+    <p>$ {{price}} </p>
+    </div>
+   
+     </a>
+{{/each}}
+ </section>
