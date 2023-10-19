@@ -1,16 +1,13 @@
 import { Router } from "express";
 import { cartsManager } from "../managers/cartsManager.js";
-import { productsManager } from "../managers/productsManager.js";
 
 const router = Router();
 
 router.post("/", async (req, res) => {
   const { idProduct, qty } = req.body;
-  console.log(req.body);
   if (!idProduct || !qty) {
     return res.status(400).json({ message: "idProduct or qty are required" });
   }
-
   const obj = {
     productsCart: [
       {
@@ -45,6 +42,7 @@ router.get("/allCarts", async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
 router.delete("/:idCart", async (req, res) => {
   const { idCart } = req.params;
   try {
@@ -61,6 +59,7 @@ router.delete("/:idCart", async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
 router.delete("/:idCart/products/:idProduct", async (req, res) => {
   const { idCart, idProduct } = req.params;
 
@@ -83,7 +82,6 @@ router.get("/:idCart", async (req, res) => {
   const { idCart } = req.params;
   try {
     const cartInfo = await cartsManager.findInfoProducts(idCart);
-    // res.status(200).json({ message: "Cart", cart });
     res.render("thisCart", { cartInfo });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -101,22 +99,16 @@ router.put("/:idCart", async (req, res) => {
   }
 });
 
+
 router.put("/:idCart/products/:idProduct", async (req, res) => {
   const { idCart, idProduct } = req.params;
   const cleanedProductId = idProduct.trim();
-  const { qty } = req.body;
+  const { qty } = req.body || 1;
+  
   try {
     const cart = await cartsManager.findInfoProducts(idCart);
     if (!cart) {
       return res.status(404).json({ error: "Cart not found" });
-    }
-    const productFound = cart.productsCart.some((p) => {
-      const cleanedCartProductId = p.idProduct._id.toString().trim();
-      const isMatching = cleanedCartProductId === cleanedProductId;
-      return isMatching;
-    });
-    if (!productFound) {
-      return res.status(404).json({ error: "Product not found in the cart" });
     }
 
     const productIndex = cart.productsCart.findIndex((p) => {
@@ -125,30 +117,50 @@ router.put("/:idCart/products/:idProduct", async (req, res) => {
       return cleanedCartProductId === cleanedProductId;
     });
 
-    if (productIndex === -1) {
-      return res.status(404).json({ error: "Product not found in the cart" });
+    if (productIndex !== -1) {
+      // El producto existe en el carrito; actualiza la cantidad
+      const updateField = `productsCart.${productIndex}.qty`;
+      const updateResult = await cartsManager.updateOne(
+        { _id: idCart },
+        { $set: { [updateField]: qty } },
+        { new: true }
+      );
+
+      if (!updateResult) {
+        return res.status(500).json({ error: "Failed to update product quantity in cart" });
+      }
+
+      return res.status(200).json({
+        message: "Updated Product Quantity in Cart",
+        cart: updateResult,
+      });
+    } else {
+      // El producto no existe en el carrito; agrégalo
+      const newProduct = { idProduct: idProduct, qty: qty };
+
+      const updateResult = await cartsManager.updateOne(
+        { _id: idCart },
+        { $push: { productsCart: newProduct } },
+        { new: true }
+      );
+
+      if (!updateResult) {
+        return res.status(500).json({ error: "Failed to add a new product to the cart" });
+      }
+
+      return res.status(200).json({
+        message: "Added New Product to Cart",
+        cart: updateResult,
+      });
     }
-
-    const updateField = `productsCart.${productIndex}.qty`;
-    const updateResult = await cartsManager.updateOne(
-      { _id: idCart },
-      { $set: { [updateField]: qty } },
-      { new: true }
-    );
-
-    if (!updateResult) {
-      return res
-        .status(500)
-        .json({ error: "Failed to update product quantity in cart" });
-    }
-
-    res.status(200).json({
-      message: "Updated Product Quantity in Cart",
-      cart: updateResult,
-    });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
+
+
+
+
+
 
 export default router;

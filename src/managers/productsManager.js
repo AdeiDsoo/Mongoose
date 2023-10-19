@@ -10,9 +10,12 @@ class ProductsManager extends BasicManager {
   }
   async findAllProducts(obj) {
     const { limit, page, sort: sortPrice, ...queryFilter } = obj;
+    const effectiveLimit = limit || 10;
+
+    const effectivePage = page || 1;
     const response = await productsModel.paginate(queryFilter, {
-      limit,
-      page,
+      limit: effectiveLimit,
+      page: effectivePage,
       lean:true
     });
     

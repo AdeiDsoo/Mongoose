@@ -43,16 +43,6 @@ router.get("/", async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
-  // console.log(req.query);
-
-  // try {
-  //   const products = await productsManager.findAll(req.query);
-
-
-  //   res.status(200).json({ message: "products", products });
-  // } catch (err) {
-  //   res.status(500).json({ error: err.message });
-  // }
 });
 
 router.get("/:idProduct", async (req, res) => {
@@ -60,7 +50,6 @@ router.get("/:idProduct", async (req, res) => {
   try {
     const product = await productsManager.findById(idProduct);
     res.redirect(`/oneProduct/${product._id}`);
-    // res.status(200).json({ message: "Product", product });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
