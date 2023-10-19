@@ -1,11 +1,12 @@
 import { Router } from "express";
 import { cartsManager } from "../managers/cartsManager.js";
+import { productsManager } from "../managers/productsManager.js";
 
 const router = Router();
 
 router.post("/", async (req, res) => {
   const { idProduct, qty } = req.body;
-console.log(req.body);
+  console.log(req.body);
   if (!idProduct || !qty) {
     return res.status(400).json({ message: "idProduct or qty are required" });
   }
@@ -28,8 +29,9 @@ console.log(req.body);
 });
 
 router.get("/", async (req, res) => {
+
   try {
-    const carts = await cartsManager.findAll(req.query);
+    const carts = await cartsManager.findAllCarts(req.query);
     res.status(200).json({ message: "Carts", carts });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -82,7 +84,7 @@ router.get("/:idCart", async (req, res) => {
   try {
     const cartInfo = await cartsManager.findInfoProducts(idCart);
     // res.status(200).json({ message: "Cart", cart });
-    res.render("thisCart", {cartInfo});
+    res.render("thisCart", { cartInfo });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -99,23 +101,51 @@ router.put("/:idCart", async (req, res) => {
   }
 });
 
-//WIP
 router.put("/:idCart/products/:idProduct", async (req, res) => {
   const { idCart, idProduct } = req.params;
+  const cleanedProductId = idProduct.trim();
   const { qty } = req.body;
   try {
-    
-    const cart = await cartsManager.updateOne(
-      { _id: idCart, "productsCart.idProduct": idProduct },
-      { $set: { "productsCart.$.qty": qty } },//algo aca esta mal
+    const cart = await cartsManager.findInfoProducts(idCart);
+    if (!cart) {
+      return res.status(404).json({ error: "Cart not found" });
+    }
+    const productFound = cart.productsCart.some((p) => {
+      const cleanedCartProductId = p.idProduct._id.toString().trim();
+      const isMatching = cleanedCartProductId === cleanedProductId;
+      return isMatching;
+    });
+    if (!productFound) {
+      return res.status(404).json({ error: "Product not found in the cart" });
+    }
+
+    const productIndex = cart.productsCart.findIndex((p) => {
+      if (!p.idProduct) return false;
+      const cleanedCartProductId = p.idProduct._id.toString().trim();
+      return cleanedCartProductId === cleanedProductId;
+    });
+
+    if (productIndex === -1) {
+      return res.status(404).json({ error: "Product not found in the cart" });
+    }
+
+    const updateField = `productsCart.${productIndex}.qty`;
+    const updateResult = await cartsManager.updateOne(
+      { _id: idCart },
+      { $set: { [updateField]: qty } },
       { new: true }
     );
 
-    if (!cart) {
-      return res.status(404).json({ error: "Cart or Product not found" });
+    if (!updateResult) {
+      return res
+        .status(500)
+        .json({ error: "Failed to update product quantity in cart" });
     }
 
-    res.status(200).json({ message: "Updated Product Quantity in Cart", cart });
+    res.status(200).json({
+      message: "Updated Product Quantity in Cart",
+      cart: updateResult,
+    });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

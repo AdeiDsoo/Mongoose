@@ -4,13 +4,13 @@ export default class BasicManager {
   }
 
   async findAll(options) {
-    const filter = {};
-    if (options.category) {
-      filter.category = options.category;
-    }
+    // const filter = {};
+    // if (options.category) {
+    //   filter.category = options.category;
+    // }
 
-    const result = await this.model.paginate(filter, options);
-
+    // const result = await this.model.paginate(filter, options);
+    const result = await this.model.paginate( options);
     const sortedPayload = result.docs.sort((a, b) => {
       if (options.sort === "asc") {
         return a.price - b.price;
