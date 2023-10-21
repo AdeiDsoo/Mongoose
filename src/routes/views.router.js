@@ -15,9 +15,10 @@ router.get("/carts", (req, res) => {
   res.render("carts");
 });
 
-router.get("/all", (req, res) => {
-  res.render("products");
+router.get("/productsFetch", (req, res) => {
+  res.render("productsFetch");
 });
+
 router.get("/products", async (req, res) => {
   const products = await productsManager.findAllSimpleProducts();
   res.render("all", { products });
