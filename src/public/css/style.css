@@ -1,0 +1,62 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 62.5%;
+    font-family: "Poppins", sans-serif;
+}
+
+#form,
+#formUsers {
+    display: flex;
+    flex-direction: column;
+    font-family: Helvetica;
+    padding: 1vw 3vw;
+}
+
+.welcome{
+    width: 100vw;
+    height: 100vh;
+    background-image: url("/image/bgCat.jpg");
+background-size: contain;
+background-repeat: no-repeat;
+background-position: center right;
+background-color: #006476;
+padding: 5vw;
+display: flex;
+justify-content: flex-start;
+align-items: center;
+flex-direction: column;
+}
+.welcome h1{
+    color: orange;
+    font-size: 7rem;
+    text-align: center;
+    text-transform: uppercase;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+.welcome .containerBtn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 5vw;
+
+}
+.welcome .containerBtn a{
+    background-color: rgb(201, 184, 153);
+    padding: 2vw 3vw;
+    font-size: 2rem;
+    font-family: 'Arial Narrow Bold', sans-serif;
+    color:#006476;
+    border-radius: 10px;
+    text-decoration: none;
+    text-transform: uppercase;
+    margin: 1vw;
+}
+.welcome .containerBtn a:hover{
+    background-color: rgb(237, 207, 189);
+}
