@@ -168,11 +168,21 @@ a {
   margin-bottom: 2rem;
 }
 .login form .signup,
-.register form .btnSubmit {
+.register form .btnSubmit, .logout , .allProductsFetch #loadMoreBtn{
   padding: 1vw 2vw;
   border: none;
   background-color: rgb(219, 153, 68);
   border-radius: 10px;
   color: rgb(6, 32, 24);
   font-weight: 800;
+}
+.allProductsFetch #loadMoreBtn{
+  margin-bottom: 3vw;
+}
+.logout{
+  background-color: rgb(203, 74, 14);
+  margin: 1vw;
+}
+.logout:hover{
+  background-color: rgb(208, 4, 4);
 }
