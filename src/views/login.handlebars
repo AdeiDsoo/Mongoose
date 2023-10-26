@@ -1,11 +1,13 @@
 <section class="login">
-<h1>LOGIN</h1>
+  <h1>LOGIN</h1>
 
-    <form id="formFindUser" action="/api/users/login" method="post">
-    
-     Email: <input type="text" name="email" id="email">
-    Password: <input type="password" name="password" id="password">
-        <input type="submit" value="SINGUP">
-    </form>
+  <form id="formFindUser" action="/api/users/login" method="post">
+    <label for="email">Email: </label>
+
+    <input type="text" name="email" id="email" />
+    <label for="password"> Password: </label>
+    <input type="password" name="password" id="password" />
+    <input class="signup" type="submit" value="SINGUP" />
+  </form>
 
 </section>

@@ -6,6 +6,7 @@ import viewsRouter from "./routes/views.router.js";
 import usersRouter from "./routes/users.router.js";
 import mongoStore from "connect-mongo";
 import session from "express-session";
+import productsRouter from "./routes/products.router.js";
 
 const app = express();
 
@@ -13,22 +14,23 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + "/public"));
 
+app.use("/api/products", productsRouter);
+
 //session mongo
 const URI =
-    "mongodb+srv://dsoo:Jaysriradhe@cluster0.edmnjjr.mongodb.net/ecommerce47310?retryWrites=true&w=majority";
+  "mongodb+srv://dsoo:Jaysriradhe@cluster0.edmnjjr.mongodb.net/ecommerce47310?retryWrites=true&w=majority";
 
-app.use(session({
-    secret:"SESSIONSECRETKEY",
-    cookie:{
-        maxAge:60*60*1000,
+app.use(
+  session({
+    secret: "SESSIONSECRETKEY",
+    cookie: {
+      maxAge: 60 * 60 * 1000,
     },
-    store:new mongoStore({
-       mongoUrl:URI,
-    })
-}))
-
-
-
+    store: new mongoStore({
+      mongoUrl: URI,
+    }),
+  })
+);
 
 app.engine("handlebars", handlebars.engine());
 app.set("views", __dirname + "/views");
