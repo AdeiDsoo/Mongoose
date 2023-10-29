@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { userManager } from "../managers/usersManager.js";
 import { compareData, hashData } from "../utils.js";
+import passport from "passport";
 
 const router = Router();
 
@@ -13,49 +14,56 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.post("/login", async (req, res) => {
-  const { email, password } = req.body;
-  const userDB = await userManager.findByEmail(email);
+// router.get("/:idUser", async (req, res) => {
+//   const { idUser } = req.params;
+//   try {
+//     const user = await userManager.findById(idUser);
+//     res.status(200).json({ message: "User Found", user });
+//   } catch (error) {
+//     res.status(500).json({ error });
+//   }
+// });
 
-  if (!userDB) {
-    return res.json({ error: "invalid credentials" });
-  }
-  const comparePassword = await compareData(password, userDB.password);
-  if (!comparePassword) {
-    return res.json({ error: "invalid credentials" });
-  }
-  req.session["email"] = email;
-  req.session["first_name"] = userDB.first_name;
-  req.session["last_name"] = userDB.last_name;
-  req.session["isAdmin"] =
-    email === "adminCoder@coder.com" && password === "coder12345"
-      ? true
-      : false;
-
-  res.redirect("/home");
+router.get("/logout", (req, res) => {
+  req.session.destroy(() => {
+    res.redirect("/");
+  });
 });
 
-router.post("/signup", async (req, res) => {
-  const { first_name, last_name, email, password } = req.body;
-  if (!first_name || !last_name || !email || !password) {
-    return res.status(400).json({ message: "All data is required" });
-  }
-
-  try {
-    const hashedPassword = await hashData(password);
-    const createUser = await userManager.createOne({
-      ...req.body,
-      password: hashedPassword,
-    });
-    res.status(200).json({ message: "User Created", message: createUser });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+router.get("/cerrar-sesion", (req, res) => {
+  req.logout(); // Cerrar la sesión del usuario
+  res.redirect("/");
 });
 
-router.get('/logout', (req, res)=>{
-  req.session.destroy(()=>{
-    res.redirect("/")
+router.post(
+  "/login",
+  passport.authenticate("login", {
+    successRedirect: "/home",
+    failureRedirect: "/error",
   })
-})
+);
+
+router.post(
+  "/signup",
+  passport.authenticate("signup", {
+    successRedirect: "/home",
+    failureRedirect: "/error",
+  })
+);
+
+router.get(
+  "/auth/github",
+  passport.authenticate("github", { scope: ["user:email"] })
+);
+
+router.get(
+  "/github",
+  passport.authenticate("github", {
+    failureRedirect: "/error",
+  }),
+  (req, res)=> {
+    req.session.user=req.user;
+    res.redirect("/home");
+  }
+);
 export default router;

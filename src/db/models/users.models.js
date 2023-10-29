@@ -18,6 +18,10 @@ const usersSchema = new mongoose.Schema({
     type: String,
     require: true,
   },
+  from_github:{
+type:Boolean,
+default:false,
+  }
 });
 
 

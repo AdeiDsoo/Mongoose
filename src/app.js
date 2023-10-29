@@ -7,6 +7,10 @@ import usersRouter from "./routes/users.router.js";
 import mongoStore from "connect-mongo";
 import session from "express-session";
 import productsRouter from "./routes/products.router.js";
+import cookieParser from "cookie-parser"
+import passport from "passport"
+import "./passport.js"
+
 
 const app = express();
 
@@ -14,7 +18,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + "/public"));
 
-app.use("/api/products", productsRouter);
+
 
 //session mongo
 const URI =
@@ -22,7 +26,7 @@ const URI =
 
 app.use(
   session({
-    secret: "SESSIONSECRETKEY",
+    secret: "SESSION_KEY",
     cookie: {
       maxAge: 60 * 60 * 1000,
     },
@@ -32,10 +36,17 @@ app.use(
   })
 );
 
+//passport 
+app.use(passport.initialize());
+app.use(passport.session());
+
+
 app.engine("handlebars", handlebars.engine());
 app.set("views", __dirname + "/views");
 app.set("view engine", "handlebars");
 
+
+app.use("/api/products", productsRouter);
 app.use("/", viewsRouter);
 app.use("/api/users", usersRouter);
 
