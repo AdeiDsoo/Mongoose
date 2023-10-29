@@ -14,8 +14,6 @@ router.get("/", async (req, res) => {
   }
 });
 
-//HELP POR ACÁ!! <-----------------------------------------------------------
-
 // router.get("/logout", (req, res) => {
 //   req.session.destroy(() => {
 //     res.redirect("/");
@@ -24,10 +22,13 @@ router.get("/", async (req, res) => {
 
 //version para passport
 router.get("/logout", (req, res) => {
-  req.logout(); 
-  res.redirect("/");
+  req.logout((err) => {
+    if (err) {
+      return next(err);
+    }
+    res.redirect("/"); 
+  });
 });
-
 
 // <-----------------------------------------------------------
 
