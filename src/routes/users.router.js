@@ -14,26 +14,22 @@ router.get("/", async (req, res) => {
   }
 });
 
-// router.get("/:idUser", async (req, res) => {
-//   const { idUser } = req.params;
-//   try {
-//     const user = await userManager.findById(idUser);
-//     res.status(200).json({ message: "User Found", user });
-//   } catch (error) {
-//     res.status(500).json({ error });
-//   }
+//HELP POR ACÁ!! <-----------------------------------------------------------
+
+// router.get("/logout", (req, res) => {
+//   req.session.destroy(() => {
+//     res.redirect("/");
+//   });
 // });
 
+//version para passport
 router.get("/logout", (req, res) => {
-  req.session.destroy(() => {
-    res.redirect("/");
-  });
-});
-
-router.get("/cerrar-sesion", (req, res) => {
-  req.logout(); // Cerrar la sesión del usuario
+  req.logout(); 
   res.redirect("/");
 });
+
+
+// <-----------------------------------------------------------
 
 router.post(
   "/login",
