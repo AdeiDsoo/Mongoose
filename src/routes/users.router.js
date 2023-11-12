@@ -14,13 +14,16 @@ router.get("/", async (req, res) => {
   }
 });
 
-// router.get("/logout", (req, res) => {
-//   req.session.destroy(() => {
-//     res.redirect("/");
-//   });
-// });
+router.get(":idUser", async (req, res)=>{
+  const {idUser}= req.params
+  try {
+    const user = await userManager.findById(idUser)
+    res.status(200).json({message: "User", user})
+  } catch (error) {
+    res.status(500).json({error:err.message})
+  }
+})
 
-//version para passport
 router.get("/logout", (req, res) => {
   req.logout((err) => {
     if (err) {

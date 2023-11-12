@@ -18,12 +18,14 @@ const usersSchema = new mongoose.Schema({
     type: String,
     require: true,
   },
-  from_github:{
-type:Boolean,
-default:false,
+  from_github: {
+    type: Boolean,
+    default: false,
+  },
+  cart:{
+    type: mongoose.SchemaTypes.ObjectId,
+    ref: "Carts"
   }
 });
-
-
 
 export const usersModel = mongoose.model("Users", usersSchema);

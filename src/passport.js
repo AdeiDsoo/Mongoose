@@ -3,6 +3,7 @@ import { userManager } from "./managers/usersManager.js";
 import { Strategy as LocalStrategy } from "passport-local";
 import { Strategy as GithubStrategy } from "passport-github2";
 import { hashData, compareData } from "./utils.js";
+import { cartsManager } from "./managers/cartsManager.js";
 
 passport.use(
   "signup",
@@ -10,6 +11,7 @@ passport.use(
     { usernameField: "email", passReqToCallback: true },
     async (req, email, password, done) => {
       try {
+        const createdCart= await cartsManager.createOne({productsCart:[]})
         const userDB = await userManager.findByEmail(email);
         if (userDB) {
           return done(null, false);
@@ -18,6 +20,7 @@ passport.use(
         const createUser = await userManager.createOne({
           ...req.body,
           password: hashedPassword,
+          cart: createdCart._id
         });
         done(null, createUser);
       } catch (error) {

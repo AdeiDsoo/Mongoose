@@ -4,6 +4,7 @@ import handlebars from "express-handlebars";
 import "./db/config.js";
 import viewsRouter from "./routes/views.router.js";
 import usersRouter from "./routes/users.router.js";
+import cartsRouter from "./routes/carts.router.js" ;
 import mongoStore from "connect-mongo";
 import session from "express-session";
 import productsRouter from "./routes/products.router.js";
@@ -45,9 +46,9 @@ app.engine("handlebars", handlebars.engine());
 app.set("views", __dirname + "/views");
 app.set("view engine", "handlebars");
 
-
-app.use("/api/products", productsRouter);
 app.use("/", viewsRouter);
+app.use("/api/products", productsRouter);
+app.use("/api/carts", cartsRouter);
 app.use("/api/users", usersRouter);
 
 const PORT = 8080;

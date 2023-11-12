@@ -1,12 +1,13 @@
 export default class BasicManager {
-  constructor(model) {
+  constructor(model, populateOption) {
     this.model = model;
+    this.populateOption= populateOption
   }
   async findAll() {
-    return this.model.find().lean();
+    return this.model.find().populate(this.populateOption);
   }
   async findById(id) {
-    return this.model.findById(id);
+    return this.model.findById(id).populate(this.populateOption);
   }
   async createOne(obj) {
     return this.model.create(obj);

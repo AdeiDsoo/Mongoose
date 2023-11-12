@@ -3,7 +3,7 @@ import BasicManager from "./basicManager.js";
 
 class UsersManager extends BasicManager {
   constructor() {
-    super(usersModel);
+    super(usersModel, "cart");
   }
   async findByEmail(email) {
     const response = await usersModel.findOne({ email });
