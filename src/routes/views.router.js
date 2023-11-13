@@ -25,4 +25,8 @@ router.get("/home", (req, res) => {
 router.get("/error", (req, res)=>{
   res.render("error")
 })
+
+router.get("/google", (req, res)=>{
+  res.render("google")
+})
 export default router;

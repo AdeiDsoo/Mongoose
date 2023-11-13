@@ -5,12 +5,14 @@ import "./db/config.js";
 import viewsRouter from "./routes/views.router.js";
 import usersRouter from "./routes/users.router.js";
 import cartsRouter from "./routes/carts.router.js" ;
+import sessionsRouter from"./routes/sessions.router.js";
 import mongoStore from "connect-mongo";
 import session from "express-session";
 import productsRouter from "./routes/products.router.js";
 import cookieParser from "cookie-parser"
 import passport from "passport"
 import "./passport.js"
+import config from "./config.js";
 
 
 const app = express();
@@ -22,17 +24,15 @@ app.use(express.static(__dirname + "/public"));
 
 
 //session mongo
-const URI =
-  "mongodb+srv://dsoo:Jaysriradhe@cluster0.edmnjjr.mongodb.net/ecommerce47310?retryWrites=true&w=majority";
 
 app.use(
   session({
-    secret: "SESSION_KEY",
+    secret: config.session_secret,
     cookie: {
-      maxAge: 60 * 60 * 1000,
+      maxAge: 60000,
     },
     store: new mongoStore({
-      mongoUrl: URI,
+      mongoUrl: config.mongo_uri,
     }),
   })
 );
@@ -50,6 +50,7 @@ app.use("/", viewsRouter);
 app.use("/api/products", productsRouter);
 app.use("/api/carts", cartsRouter);
 app.use("/api/users", usersRouter);
+app.use("/api/sessions", sessionsRouter);
 
 const PORT = 8080;
 

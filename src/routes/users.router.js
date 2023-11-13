@@ -14,15 +14,15 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get(":idUser", async (req, res)=>{
-  const {idUser}= req.params
-  try {
-    const user = await userManager.findById(idUser)
-    res.status(200).json({message: "User", user})
-  } catch (error) {
-    res.status(500).json({error:err.message})
-  }
-})
+// router.get(":idUser", async (req, res)=>{
+//   const {idUser}= req.params
+//   try {
+//     const user = await userManager.findById(idUser)
+//     res.status(200).json({message: "User", user})
+//   } catch (err) {
+//     res.status(500).json({error:err.message})
+//   }
+// })
 
 router.get("/logout", (req, res) => {
   req.logout((err) => {
@@ -51,19 +51,17 @@ router.post(
   })
 );
 
-router.get(
-  "/auth/github",
-  passport.authenticate("github", { scope: ["user:email"] })
-);
 
-router.get(
-  "/github",
-  passport.authenticate("github", {
-    failureRedirect: "/error",
-  }),
-  (req, res)=> {
-    req.session.user=req.user;
-    res.redirect("/home");
+
+
+router.get("/:email", async (req, res)=>{
+  const {email}= req.params
+  try {
+    const user = await userManager.findByEmail(email)
+    res.status(200).json({message: "User", user})
+  } catch (err) {
+    res.status(500).json({error:err.message})
   }
-);
+})
+
 export default router;

@@ -22,6 +22,10 @@ const usersSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  from_google: {
+    type: Boolean,
+    default: false,
+  },
   cart:{
     type: mongoose.SchemaTypes.ObjectId,
     ref: "Carts"

@@ -6,8 +6,12 @@ class UsersManager extends BasicManager {
     super(usersModel, "cart");
   }
   async findByEmail(email) {
-    const response = await usersModel.findOne({ email });
-    return response;
+    return usersModel
+      .findOne({ email })
+      .populate({
+        path: "cart",
+        populate: { path: "productsCart.idProduct" },
+      });
   }
   async findByPassword(password) {
     return usersModel.findOne({ password });

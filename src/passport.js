@@ -2,8 +2,10 @@ import passport from "passport";
 import { userManager } from "./managers/usersManager.js";
 import { Strategy as LocalStrategy } from "passport-local";
 import { Strategy as GithubStrategy } from "passport-github2";
+import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import { hashData, compareData } from "./utils.js";
 import { cartsManager } from "./managers/cartsManager.js";
+import config from "./config.js";
 
 passport.use(
   "signup",
@@ -11,7 +13,7 @@ passport.use(
     { usernameField: "email", passReqToCallback: true },
     async (req, email, password, done) => {
       try {
-        const createdCart= await cartsManager.createOne({productsCart:[]})
+        const createdCart = await cartsManager.createOne({ productsCart: [] });
         const userDB = await userManager.findByEmail(email);
         if (userDB) {
           return done(null, false);
@@ -20,7 +22,7 @@ passport.use(
         const createUser = await userManager.createOne({
           ...req.body,
           password: hashedPassword,
-          cart: createdCart._id
+          cart: createdCart._id,
         });
         done(null, createUser);
       } catch (error) {
@@ -58,9 +60,9 @@ passport.use(
   "github",
   new GithubStrategy(
     {
-      clientID: "Iv1.47611ca7d5ec2a03",
-      clientSecret: "2b48daf0d82ed82228cc0e7fd6e383018ca227dd",
-      callbackURL: "http://localhost:8080/api/users/github",
+      clientID: config.github_client_id,
+      clientSecret: config.github_client_secret,
+      callbackURL: "http://localhost:8080/api/sessions/github",
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
@@ -87,6 +89,46 @@ passport.use(
       } catch (error) {
         done(error);
       }
+    }
+  )
+);
+
+passport.use(
+  "google",
+  new GoogleStrategy(
+    {
+      clientID: config.google_client_id,
+      clientSecret: config.google_client_secret,
+      callbackURL: config.google_callback_url,
+    },
+    async (accessToken, refreshToken, profile, done) => {
+      try {
+        const user = await userManager.findByEmail(profile._json.email);
+        if (user) {
+          if (user.fromGoogle) {
+            return done(null, user);
+          } else {
+            return done(null, false);
+          }
+        }
+        const createdCart = await cartsManager.createOne({ productsCart: [] });
+
+        const infoUser = {
+          first_name: profile._json.given_name,
+          last_name: profile._json.family_name,
+          email: profile._json.email,
+          passport: "algo",
+          fromGoogle: true,
+          cart: createdCart._id,
+        };
+
+        const createdUser = await userManager.createOne(infoUser);
+        done(null, createdUser);
+      } catch (error) {
+        done(error);
+      }
+
+      done(null, false);
     }
   )
 );
