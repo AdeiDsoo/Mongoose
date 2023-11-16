@@ -7,11 +7,10 @@ router.get('/auth/google',
   passport.authenticate('google', { scope: ['profile', 'email'] }));
 //a donde se va a volver aentrar despues de signup
 router.get('/auth/google/callback', 
-  passport.authenticate('google', { failureRedirect: '/' }),
+  passport.authenticate('google', { failureRedirect: '/error' }),
   function(req, res) {
-    res.redirect('/google');
+    res.redirect('/home');
   });
-
 
   router.get(
     "/auth/github",
@@ -29,4 +28,8 @@ router.get('/auth/google/callback',
     }
   );
   
+  
+
+ 
+
 export default router

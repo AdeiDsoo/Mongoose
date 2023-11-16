@@ -54,14 +54,16 @@ router.post(
 
 
 
-router.get("/:email", async (req, res)=>{
-  const {email}= req.params
-  try {
-    const user = await userManager.findByEmail(email)
-    res.status(200).json({message: "User", user})
-  } catch (err) {
-    res.status(500).json({error:err.message})
-  }
-})
+// router.get("/:email", async (req, res)=>{
+//   const {email}= req.params
+//   try {
+//     const user = await userManager.findByEmail(email)
+//     res.status(200).json({message: "User", user})
+//   } catch (err) {
+//     res.status(500).json({error:err.message})
+//   }
+// })
+
+
 
 export default router;

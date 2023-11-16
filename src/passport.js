@@ -56,42 +56,84 @@ passport.use(
   )
 );
 
+// passport.use(
+//   "github",
+//   new GithubStrategy(
+//     {
+//       clientID: config.github_client_id,
+//       clientSecret: config.github_client_secret,
+//       callbackURL: "http://localhost:8080/api/sessions/github",
+//     },
+//     async (accessToken, refreshToken, profile, done) => {
+//       try {
+//         const userDB = await userManager.findByEmail(profile.email);
+//         //login
+//         if (userDB) {
+//           if (userDB.from_github) {
+//             return null, userDB;
+//           } else {
+//             return done(null, false);
+//           }
+//         }
+//         //signup
+//         console.log(profile);
+//         const newUser = {
+//           first_name: profile.username,
+//           last_name: "Without Last_Name",
+//           email: profile.email,
+//           password: "constraseña",
+//           from_github: true,
+//         };
+//         const createUser = await userManager.createOne(newUser);
+//         done(null, createUser);
+//       } catch (error) {
+//         done(error);
+//       }
+//     }
+//   )
+// );
+
 passport.use(
   "github",
   new GithubStrategy(
     {
       clientID: config.github_client_id,
       clientSecret: config.github_client_secret,
-      callbackURL: "http://localhost:8080/api/sessions/github",
+      callbackURL: config.github_callback_url,
+      scope: ["user:email"], 
     },
     async (accessToken, refreshToken, profile, done) => {
+      console.log(profile, 'json');
       try {
-        const userDB = await userManager.findByEmail(profile.email);
-        //login
+        const userEmail = profile.emails && profile.emails.length > 0 ? profile.emails[0].value : null;
+
+        const userDB = await userManager.findByEmail(profile._json.email);
+        // login
         if (userDB) {
           if (userDB.from_github) {
-            return null, userDB;
+            return done(null, userDB);
           } else {
             return done(null, false);
           }
         }
-        //signup
-        console.log(profile);
+        // signup
         const newUser = {
-          first_name: profile.username,
-          last_name: "Without Last_Name",
-          email: profile.email,
-          password: "constraseña",
+          first_name: profile._json.login,
+          // last_name: profile._json.name.split(" ")[1] || "",
+          email: userEmail || profile._json.email || profile.emails[0].value,
+          password: " ",
           from_github: true,
         };
-        const createUser = await userManager.createOne(newUser);
-        done(null, createUser);
+        const createdUser = await userManager.createOne(newUser);
+        done(null, createdUser);
       } catch (error) {
         done(error);
       }
     }
   )
 );
+
+
 
 passport.use(
   "google",
@@ -100,10 +142,12 @@ passport.use(
       clientID: config.google_client_id,
       clientSecret: config.google_client_secret,
       callbackURL: config.google_callback_url,
+
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
         const user = await userManager.findByEmail(profile._json.email);
+        console.log(user, 'user');
         if (user) {
           if (user.fromGoogle) {
             return done(null, user);
@@ -117,12 +161,13 @@ passport.use(
           first_name: profile._json.given_name,
           last_name: profile._json.family_name,
           email: profile._json.email,
-          passport: "algo",
-          fromGoogle: true,
+          password: " ",
+          from_google: true,
           cart: createdCart._id,
         };
 
         const createdUser = await userManager.createOne(infoUser);
+        console.log(createdUser, 'createdUser');
         done(null, createdUser);
       } catch (error) {
         done(error);

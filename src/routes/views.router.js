@@ -16,6 +16,7 @@ router.get("/login", (req, res) => {
 
 router.get("/home", (req, res) => {
   res.render("home", {
+   
     first_name: req.user.first_name,
     last_name: req.user.last_name,
     email: req.user.email,
