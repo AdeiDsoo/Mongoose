@@ -147,7 +147,7 @@ passport.use(
     async (accessToken, refreshToken, profile, done) => {
       try {
         const user = await userManager.findByEmail(profile._json.email);
-        console.log(user, 'user');
+     
         if (user) {
           if (user.fromGoogle) {
             return done(null, user);
@@ -167,13 +167,12 @@ passport.use(
         };
 
         const createdUser = await userManager.createOne(infoUser);
-        console.log(createdUser, 'createdUser');
         done(null, createdUser);
       } catch (error) {
         done(error);
       }
 
-      done(null, false);
+      // done(null, false);
     }
   )
 );
