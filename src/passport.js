@@ -56,42 +56,6 @@ passport.use(
   )
 );
 
-// passport.use(
-//   "github",
-//   new GithubStrategy(
-//     {
-//       clientID: config.github_client_id,
-//       clientSecret: config.github_client_secret,
-//       callbackURL: "http://localhost:8080/api/sessions/github",
-//     },
-//     async (accessToken, refreshToken, profile, done) => {
-//       try {
-//         const userDB = await userManager.findByEmail(profile.email);
-//         //login
-//         if (userDB) {
-//           if (userDB.from_github) {
-//             return null, userDB;
-//           } else {
-//             return done(null, false);
-//           }
-//         }
-//         //signup
-//         console.log(profile);
-//         const newUser = {
-//           first_name: profile.username,
-//           last_name: "Without Last_Name",
-//           email: profile.email,
-//           password: "constraseña",
-//           from_github: true,
-//         };
-//         const createUser = await userManager.createOne(newUser);
-//         done(null, createUser);
-//       } catch (error) {
-//         done(error);
-//       }
-//     }
-//   )
-// );
 
 passport.use(
   "github",
