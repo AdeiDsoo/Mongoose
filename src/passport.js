@@ -113,7 +113,7 @@ passport.use(
         const user = await userManager.findByEmail(profile._json.email);
      
         if (user) {
-          if (user.fromGoogle) {
+          if (user.from_google) {
             return done(null, user);
           } else {
             return done(null, false);
