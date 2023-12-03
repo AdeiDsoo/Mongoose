@@ -1,11 +1,11 @@
 import { Router } from "express";
-import { productsManager } from "../managers/productsManager.js";
+import { productsMongo } from "../daos/products.mongo.js";
 
 const router = Router();
 
 router.get("/", async (req, res) => {
   try {
-    const products = await productsManager.findAllProducts(req.query);
+    const products = await productsMongo.findAllProducts(req.query);
     res.status(200).json({ message: "products", products });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -37,7 +37,7 @@ router.post("/", async (req, res) => {
   }
 
   try {
-    const createProduct = await productsManager.createOne(req.body);
+    const createProduct = await productsMongo.createOne(req.body);
     res
       .status(200)
       .json({ message: "Product Created", product: createProduct });
@@ -49,7 +49,7 @@ router.post("/", async (req, res) => {
 router.get("/:idProduct", async (req, res) => {
   const { idProduct } = req.params;
   try {
-    const product = await productsManager.findById(idProduct);
+    const product = await productsMongo.findById(idProduct);
     res.status(200).json({ message: "Product", product });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -59,7 +59,7 @@ router.get("/:idProduct", async (req, res) => {
 router.delete("/:idProduct", async (req, res) => {
   const { idProduct } = req.params;
   try {
-    const product = await productsManager.deleteOne(idProduct);
+    const product = await productsMongo.deleteOne(idProduct);
     res.status(200).json({ message: "deleted Product", product });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -70,7 +70,7 @@ router.put("/:idProduct", async (req, res) => {
   const { idProduct } = req.params;
   const body = req.body;
   try {
-    const product = await productsManager.updateOne(idProduct, body);
+    const product = await productsMongo.updateOne(idProduct, body);
     res.status(200).json({ message: "update Product", product });
   } catch (err) {
     res.status(500).json({ error: err.message });

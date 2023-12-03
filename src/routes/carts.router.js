@@ -1,13 +1,13 @@
-import { cartsManager } from "../managers/cartsManager.js";
+import { cartsMongo } from "../daos/carts.mongo.js";
 import { Router } from "express";
-import { productsManager } from "../managers/productsManager.js";
+import { productsMongo } from "../daos/products.mongo.js";
 
 const router = Router();
 
 router.get("/:idCart", async (req, res) => {
   const { idCart } = req.params;
   try {
-    const cart = await cartsManager.findById(idCart);
+    const cart = await cartsMongo.findById(idCart);
 
     res.status(200).json({ message: "Cart Found", cart });
   } catch (err) {
@@ -20,7 +20,7 @@ router.post("/", async (req, res) => {
   try {
     const newCart = { products: [] };
 
-    const createCart = await cartsManager.createOne(newCart);
+    const createCart = await cartsMongo.createOne(newCart);
     res.status(200).json({ message: "Cart created", cart: createCart });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -30,12 +30,12 @@ router.post("/", async (req, res) => {
 router.post("/:idCart/products/:idProduct", async (req, res) => {
   const { idProduct, idCart } = req.params;
   try {
-    const cart = await cartsManager.findById(idCart);
+    const cart = await cartsMongo.findById(idCart);
     if (!cart) {
       return res.status(404).json({ message: "cart not found" });
     }
 
-    const product = await productsManager.findById(idProduct);
+    const product = await productsMongo.findById(idProduct);
     if (!product) {
       return res.status(404).json({ message: "product not found" });
     }

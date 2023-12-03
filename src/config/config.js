@@ -10,5 +10,7 @@ export default {
     github_client_secret: process.env.GITHUB_CLIENT_SECRET,
     google_callback_url: process.env.GOOGLE_CALLBACK_URL,
     github_callback_url: process.env.GITHUB_CALLBACK_URL,
-    session_secret: process.env.SESSION_SECRET
+    session_secret: process.env.SESSION_SECRET,
+    port: process.env.PORT,
+    jwt_secret:process.env.JWT_SECRET
 };

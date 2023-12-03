@@ -1,7 +1,7 @@
 import express from "express";
 import { __dirname } from "./utils.js";
 import handlebars from "express-handlebars";
-import "./db/config.js";
+import "./config/dbConfig.js";
 import viewsRouter from "./routes/views.router.js";
 import usersRouter from "./routes/users.router.js";
 import cartsRouter from "./routes/carts.router.js" ;
@@ -12,7 +12,7 @@ import productsRouter from "./routes/products.router.js";
 import cookieParser from "cookie-parser"
 import passport from "passport"
 import "./passport.js"
-import config from "./config.js";
+import config from "./config/config.js";
 
 
 const app = express();
@@ -52,8 +52,8 @@ app.use("/api/carts", cartsRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/sessions", sessionsRouter);
 
-const PORT = 8080;
+const PORT = config.port;
 
 app.listen(PORT, () => {
-  console.log("server is running on port 8080");
+  console.log(`server is running on port ${PORT}`);
 });

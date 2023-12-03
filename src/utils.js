@@ -2,13 +2,13 @@ import { dirname } from "path";
 import { fileURLToPath } from "url";
 import bcrypt from "bcrypt"
 import  jwt  from "jsonwebtoken";
+import config from "./config/config.js"
 
-const JWT_SECRET="jwSECRET"
+const JWT_SECRET=config.jwt_secret
 
 export const __dirname = dirname(fileURLToPath(import.meta.url));
 
-//para hashear una cierta informacion
-//data, rounds
+
 export const hashData= async(data)=>{
     const hash= await bcrypt.hash(data, 10)
     return hash

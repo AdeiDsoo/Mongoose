@@ -1,7 +1,7 @@
-import { usersModel } from "../db/models/users.models.js";
-import BasicManager from "./basicManager.js";
+import { usersModel } from "../models/users.models.js";
+import BasicMongo from "./basic.mongo.js";
 
-class UsersManager extends BasicManager {
+class UsersMongo extends BasicMongo {
   constructor() {
     super(usersModel, "cart");
   }
@@ -18,4 +18,4 @@ class UsersManager extends BasicManager {
   }
 }
 
-export const userManager = new UsersManager();
+export const usersMongo = new UsersMongo();

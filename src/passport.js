@@ -1,11 +1,11 @@
 import passport from "passport";
-import { userManager } from "./managers/usersManager.js";
+import { usersMongo } from "./daos/users.mongo.js";
 import { Strategy as LocalStrategy } from "passport-local";
 import { Strategy as GithubStrategy } from "passport-github2";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import { hashData, compareData } from "./utils.js";
-import { cartsManager } from "./managers/cartsManager.js";
-import config from "./config.js";
+import { cartsMongo } from "./daos/carts.mongo.js";
+import config from "./config/config.js";
 
 passport.use(
   "signup",
@@ -13,13 +13,13 @@ passport.use(
     { usernameField: "email", passReqToCallback: true },
     async (req, email, password, done) => {
       try {
-        const createdCart = await cartsManager.createOne({ productsCart: [] });
-        const userDB = await userManager.findByEmail(email);
+        const createdCart = await cartsMongo.createOne({ productsCart: [] });
+        const userDB = await usersMongo.findByEmail(email);
         if (userDB) {
           return done(null, false);
         }
         const hashedPassword = await hashData(password);
-        const createUser = await userManager.createOne({
+        const createUser = await usersMongo.createOne({
           ...req.body,
           password: hashedPassword,
           cart: createdCart._id,
@@ -40,7 +40,7 @@ passport.use(
     },
     async (email, password, done) => {
       try {
-        const userDB = await userManager.findByEmail(email);
+        const userDB = await usersMongo.findByEmail(email);
         if (!userDB) {
           return done(null, false);
         }
@@ -71,7 +71,7 @@ passport.use(
       try {
         const userEmail = profile.emails && profile.emails.length > 0 ? profile.emails[0].value : null;
 
-        const userDB = await userManager.findByEmail(profile._json.email);
+        const userDB = await userMongo.findByEmail(profile._json.email);
         // login
         if (userDB) {
           if (userDB.from_github) {
@@ -88,7 +88,7 @@ passport.use(
           password: " ",
           from_github: true,
         };
-        const createdUser = await userManager.createOne(newUser);
+        const createdUser = await usersMongo.createOne(newUser);
         done(null, createdUser);
       } catch (error) {
         done(error);
@@ -110,7 +110,7 @@ passport.use(
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
-        const user = await userManager.findByEmail(profile._json.email);
+        const user = await usersMongo.findByEmail(profile._json.email);
      
         if (user) {
           if (user.from_google) {
@@ -119,7 +119,7 @@ passport.use(
             return done(null, false);
           }
         }
-        const createdCart = await cartsManager.createOne({ productsCart: [] });
+        const createdCart = await cartsMongo.createOne({ productsCart: [] });
 
         const infoUser = {
           first_name: profile._json.given_name,
@@ -130,7 +130,7 @@ passport.use(
           cart: createdCart._id,
         };
 
-        const createdUser = await userManager.createOne(infoUser);
+        const createdUser = await usersMongo.createOne(infoUser);
         done(null, createdUser);
       } catch (error) {
         done(error);
@@ -147,7 +147,7 @@ passport.serializeUser(function (user, done) {
 
 passport.deserializeUser(async function (id, done) {
   try {
-    const user = await userManager.findById(id);
+    const user = await usersMongo.findById(id);
     done(null, user);
   } catch (error) {
     done(error);

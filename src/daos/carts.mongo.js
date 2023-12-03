@@ -1,21 +1,10 @@
-import { cartsModel } from "../db/models/carts.model.js";
-import BasicManager from "./basicManager.js";
+import { cartsModel } from "../models/carts.model.js";
+import BasicMongo from "./basic.mongo.js";
 
-class CartsManager extends BasicManager {
+class CartsMongo extends BasicMongo {
     constructor() {
         super(cartsModel, "productsCart.idProduct");
     }
-
-    //    async findInfoProducts(idCart) {
-    //       const cart = await cartsModel
-    //          .findById(idCart)
-    //          .populate("productsCart.idProduct")
-    //          .lean();
-    //       return cart;
-    //    }
-    //    async findAllSimple() {
-    //       return this.model.find().populate("productsCart.idProduct").lean();
-    //    }
 
     async findAllCarts(obj) {
         const { limit, page, ...queryFilter } = obj;
@@ -50,4 +39,4 @@ class CartsManager extends BasicManager {
     }
 }
 
-export const cartsManager = new CartsManager();
+export const cartsMongo = new CartsMongo();
