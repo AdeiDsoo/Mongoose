@@ -1,4 +1,4 @@
-import { productsMongo } from "../daos/products.mongo.js";
+import { productsMongo } from "../DAO's/memDAO/products.mongo.js"; 
 
 class ProductsService {
     async findAll() {
@@ -10,8 +10,8 @@ class ProductsService {
         const response = await productsMongo.findById(id);
         return response;
     }
-async findAllProducts(){
-    const response= await productsMongo.findAllProducts()
+async findAllProducts(obj){
+    const response= await productsMongo.findAllProducts(obj)
     return response
 }
     async createOne(obj) {

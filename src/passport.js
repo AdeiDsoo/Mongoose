@@ -1,10 +1,10 @@
 import passport from "passport";
-import { usersMongo } from "./daos/users.mongo.js";
+import { usersMongo } from "./DAO's/memDAO/users.mongo.js";
 import { Strategy as LocalStrategy } from "passport-local";
 import { Strategy as GithubStrategy } from "passport-github2";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import { hashData, compareData } from "./utils.js";
-import { cartsMongo } from "./daos/carts.mongo.js";
+import { cartsMongo } from "./DAO's/memDAO/carts.mongo.js";
 import config from "./config/config.js";
 
 passport.use(
@@ -41,6 +41,7 @@ passport.use(
     async (email, password, done) => {
       try {
         const userDB = await usersMongo.findByEmail(email);
+        console.log('try');
         if (!userDB) {
           return done(null, false);
         }

@@ -1,5 +1,7 @@
-import { usersMongo } from "../daos/users.mongo.js";
+// import { usersManager } from "../DAO's/factory.js";
+import { usersMongo } from "../DAO's/memDAO/users.mongo.js";
 import { hashData } from "../utils.js";
+import UserDTO from "../DTO/user.dto.js";
 
 class UsersService {
   async findAll() {
@@ -25,12 +27,13 @@ class UsersService {
 
 
   async createOne(obj) {
+    console.log(obj, 'obj')
     const { password } = obj;
     const hashedPassword = await hashData(password);
-    const response = await usersMongo.createOne({
-      ...obj,
-      password: hashedPassword,
-    });
+    const userDTO= new UserDTO({...obj,  password: hashedPassword})
+    console.log(userDTO)
+    const response = await usersMongo.createOne(userDTO);
+    console.log(response, 'reponse in createOne');
     return response;
   }
   async updateOne(obj) {

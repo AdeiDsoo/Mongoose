@@ -1,5 +1,5 @@
-import { cartsMongo } from "../daos/carts.mongo.js";
-import { productsMongo } from "../daos/products.mongo.js";
+import { cartsMongo } from "../DAO's/memDAO/carts.mongo.js";
+import { productsMongo } from "../DAO's/memDAO/products.mongo.js";
 import { hashData } from "../utils.js";
 
 class CartsService {

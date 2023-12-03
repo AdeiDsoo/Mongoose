@@ -24,8 +24,8 @@ export const findUserById = async (req, res) => {
 };
 
 export const createUser = async (req, res) => {
-  const { first_name, last_name, email, password } = req.body;
-
+  const { first_name, last_name, email, password, full_name } = req.body;
+console.log(req.body, 'reqBody');
   try {
 
     if (!first_name || !last_name || !email || !password) {

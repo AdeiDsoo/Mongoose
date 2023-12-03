@@ -2,12 +2,12 @@ import passport from "passport";
 import { Router } from "express";
 
 const router = Router();
-//de mi app el signup con google
+
 router.get(
   "/auth/google",
   passport.authenticate("google", { scope: ["profile", "email"] })
 );
-//a donde se va a volver aentrar despues de signup
+
 router.get(
   "/auth/google/callback",
   passport.authenticate("google", { failureRedirect: "/error" }),
@@ -32,6 +32,31 @@ router.get(
     req.session.user = req.user;
     res.redirect("/home");
   }
+);
+
+router.get("/logout", (req, res) => {
+  req.logout((err) => {
+    if (err) {
+      return next(err);
+    }
+    res.redirect("/");
+  });
+});
+
+router.post(
+  "/login",
+  passport.authenticate("login", {
+    successRedirect: "/home",
+    failureRedirect: "/error",
+  })
+);
+
+router.post(
+  "/signup",
+  passport.authenticate("signup", {
+    successRedirect: "/home",
+    failureRedirect: "/error",
+  })
 );
 
 export default router;

@@ -1,6 +1,6 @@
 import { productsService } from "../services/products.service.js";
 
-export const findProducts = async (req, res) => {
+export const findAll = async (req, res) => {
   try {
     const result = await productsService.findAll();
     res.status(200).json({ products: result });
@@ -8,7 +8,15 @@ export const findProducts = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-
+export const findAllProducts = async (req, res) => {
+  const { limit, page, sort: sortPrice, ...queryFilter } = req.params;
+  try {
+    const result = await productsService.findAllProducts({ limit, page, sort: sortPrice, ...queryFilter });
+    res.status(200).json({ products: result });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 export const findProductById = async (req, res) => {
   const { idProduct } = req.params;
   try {
