@@ -75,7 +75,7 @@ passport.use(
             ? profile.emails[0].value
             : null;
 
-        const userDB = await userMongo.findByEmail(profile._json.email);
+        const userDB = await usersMongo.findByEmail(profile._json.email);
         // login
         if (userDB) {
           if (userDB.from_github) {

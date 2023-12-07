@@ -176,7 +176,7 @@ a {
   margin-bottom: 2rem;
 }
 .login form .signup,
-.register form .btnSubmit, .logout , .allProductsFetch #loadMoreBtn{
+.register form .btnSubmit, .logout , .allProductsFetch #loadMoreBtn, .btnChat, .btnCoupon{
   padding: 1vw 2vw;
   border: none;
   background-color: rgb(219, 153, 68);
@@ -191,6 +191,16 @@ a {
   background-color: rgb(203, 74, 14);
   margin: 1vw;
 }
+
+
 .logout:hover{
   background-color: rgb(208, 4, 4);
+}
+
+.menuBtn{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+  width: 100vw;
 }

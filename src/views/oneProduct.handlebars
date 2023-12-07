@@ -1,0 +1,14 @@
+<section class="oneProduct">
+<h2>{{title}}</h2>
+<p> {{description}} </p>
+<p>Precio: ${{price}} </p>
+<form id="formOneProduct" action="/api/carts" method="post">
+<div class="inputQty">
+    Cantidad: <input type="number" name="qty" id="qty">
+    <input type="hidden" name="idProduct" id="idProduct" value="{{_id}}">
+</div>
+<button type="submit" class="addCart">
+    <img class="logo" alt="addCart Button" src="/images/addCart.jpg" >
+</button>
+</form>
+</section>

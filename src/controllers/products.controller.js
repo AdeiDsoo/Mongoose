@@ -9,9 +9,10 @@ export const findAll = async (req, res) => {
   }
 };
 export const findAllProducts = async (req, res) => {
-  const { limit, page, sort: sortPrice, ...queryFilter } = req.params;
+  const { limit, page, sort: sortPrice, ...queryFilter } = req.query;
   try {
     const result = await productsService.findAllProducts({ limit, page, sort: sortPrice, ...queryFilter });
+
     res.status(200).json({ products: result });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -21,7 +22,8 @@ export const findProductById = async (req, res) => {
   const { idProduct } = req.params;
   try {
     const result = await productsService.findById(idProduct);
-    res.status(200).json({ message: "Product", result });
+    res.redirect(`/oneProduct/${idProduct}`);
+    // res.status(200).json({ message: "Product", result });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

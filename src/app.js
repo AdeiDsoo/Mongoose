@@ -5,6 +5,7 @@ import "./config/dbConfig.js";
 import viewsRouter from "./routes/views.router.js";
 import usersRouter from "./routes/users.router.js";
 import cartsRouter from "./routes/carts.router.js" ;
+import chatRouter from "./routes/chat.router.js"
 import sessionsRouter from"./routes/sessions.router.js";
 import mongoStore from "connect-mongo";
 import session from "express-session";
@@ -13,7 +14,8 @@ import productsRouter from "./routes/products.router.js";
 import passport from "passport"
 import "./passport.js"
 import config from "./config/config.js";
-
+import { Server } from "socket.io";
+import { messagesService } from "./services/messages.service.js";
 
 const app = express();
 
@@ -51,9 +53,26 @@ app.use("/api/products", productsRouter);
 app.use("/api/carts", cartsRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/sessions", sessionsRouter);
+app.use("/api/messages", chatRouter);
 
 const PORT = config.port;
 
-app.listen(PORT, () => {
+const httpServer =app.listen(PORT, () => {
   console.log(`server is running on port ${PORT}`);
+});
+
+const socketServer = new Server(httpServer);
+
+socketServer.on("connection", (socket) => {
+    // console.log(`Cliente Conectado ${socket.id}`);
+    // socket.on("disconnect", () => {
+    //     console.log(`Cliente desconectado ${socket.id}`);
+    // });
+
+    socket.on("bodyMessage", async (message) => {
+        const newMessage = await messagesService.createOne(message);
+        socketServer.emit("messageCreated", newMessage);
+    });
+
+
 });

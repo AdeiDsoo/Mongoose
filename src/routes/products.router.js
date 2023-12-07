@@ -12,8 +12,8 @@ const router = Router();
 
 router.get("/", findAllProducts);
 
-router.post("/", createProduct);
-// router.post('/', checkRole('admin'), createProduct);
+router.post("/", checkRole("admin"), createProduct);
+
 router.get("/:idProduct", findProductById);
 
 router.delete("/:idProduct", deleteProduct);

@@ -8,6 +8,7 @@ class ProductsMongo extends BasicMongo {
 
   async findAllProducts(obj) {
     const { limit, page, sort: sortPrice, ...queryFilter } = obj;
+   
     const effectiveLimit = limit || 10;
 
     const effectivePage = page || 1;
