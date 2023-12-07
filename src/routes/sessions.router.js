@@ -44,13 +44,6 @@ router.get("/logout", (req, res) => {
   });
 });
 
-// router.post(
-//   "/login",
-//   passport.authenticate("login", {
-//     successRedirect: "/home",
-//     failureRedirect: "/error",
-//   })
-// );
 router.post(
   "/login",
   passport.authenticate("login", {
@@ -75,12 +68,12 @@ router.post(
     failureRedirect: "/error",
   })
 );
-router.post(
-  "/current",
-  passport.authenticate("signup", {
-    successRedirect: "/home",
-    failureRedirect: "/error",
-  })
-);
+// router.post(
+//   "/current",
+//   passport.authenticate("signup", {
+//     successRedirect: "/home",
+//     failureRedirect: "/error",
+//   })
+// );
 
 export default router;

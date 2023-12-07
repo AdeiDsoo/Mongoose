@@ -11,7 +11,7 @@ const loadLinks = async () => {
     .map(
       (product) =>
         `
-        <a href="/api/products/${product._id}">
+        <a href="/oneProduct/${product._id}">
     
         <div class="container-Logo">
           <img class="logo" alt="logoShop" src="/image/catProducts.png" />

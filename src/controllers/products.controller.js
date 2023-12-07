@@ -19,11 +19,12 @@ export const findAllProducts = async (req, res) => {
   }
 };
 export const findProductById = async (req, res) => {
+  console.log(req.user, "userController.products")
   const { idProduct } = req.params;
   try {
     const result = await productsService.findById(idProduct);
-    res.redirect(`/oneProduct/${idProduct}`);
-    // res.status(200).json({ message: "Product", result });
+
+    res.status(200).json({ message: "Product", result });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

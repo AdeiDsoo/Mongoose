@@ -199,8 +199,52 @@ a {
 
 .menuBtn{
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
   align-items: center;
   flex-direction: row;
   width: 100vw;
+}
+
+.oneProduct {
+  margin: 5vw auto;
+  width: 50vw;
+  padding: 2vw;
+  border: 5px solid salmon;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-direction: column;
+}
+
+/* .oneProduct h2,  */
+.oneProduct p {
+  padding: 0;
+  margin: 0;
+  color: rgb(19, 52, 41);
+  line-height: 2rem;
+}
+
+.addCart {
+  width: 8vw;
+  height: 8vw;
+  background-color: white;
+  border: 3px solid rgb(29, 70, 70);
+  border-radius: 5px;
+  align-self: flex-end;
+}
+
+.addCart:hover {
+  border: 4px solid rgb(50, 184, 83);
+}
+#formOneProduct {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+#formOneProduct .inputQty {
+  display: flex;
+  flex-direction: column;
 }

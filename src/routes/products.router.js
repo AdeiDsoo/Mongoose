@@ -8,6 +8,8 @@ import {
   updateProduct,
 } from "../controllers/products.controller.js";
 import { checkRole } from "../middlewares/passport.middleware.js";
+
+
 const router = Router();
 
 router.get("/", findAllProducts);

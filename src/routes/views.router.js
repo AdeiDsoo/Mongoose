@@ -16,10 +16,13 @@ router.get("/login", (req, res) => {
 });
 
 router.get("/home", checkRole("user"), (req, res) => {
+  console.log(req.user)
+  console.log("cart", req.user.cart._id);
   res.render("home", {
     first_name: req.user.first_name,
     last_name: req.user.last_name,
     email: req.user.email,
+    cart: req.user.cart._id
   });
 });
 
@@ -44,14 +47,18 @@ router.get('/chat', checkRole("user"),(req, res) => {
 router.get("/oneProduct/:idProduct", async (req, res) => {
   const { idProduct } = req.params;
   const productInfo = await productsService.findById(idProduct);
+  // const userCartId = req.user.cart._id;
   const { price, title, description, category, _id } =
     productInfo;
+
   res.render("oneProduct", {
     price,
     title,
     description,
     category,
-    _id
+    _id,
+    cart_id:req.user.cart._id,
+    email: req.user.email
   });
 });
 export default router;

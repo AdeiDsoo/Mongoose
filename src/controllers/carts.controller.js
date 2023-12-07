@@ -31,17 +31,29 @@ export const createCart = async (req, res) => {
 };
 
 export const addProductToCart = async (req, res) => {
+ 
   const { idProduct, idCart } = req.params;
+
+  console.log(idCart, 'idCArt')
   try {
     const cart = await cartsService.findById(idCart);
     if (!cart) {
       return res.status(404).json({ message: "cart not found" });
     }
-
     const product = await cartsService.productFindById(idProduct);
     if (!product) {
       return res.status(404).json({ message: "product not found" });
     }
+
+
+
+    if(req.user.cart.id===idCart){
+
+   
+  
+ 
+
+    
 
     const productIndex = cart.productsCart.findIndex((p) =>
       p.idProduct.equals(idProduct)
@@ -54,6 +66,7 @@ export const addProductToCart = async (req, res) => {
     }
 
     await cart.save();
+  }
     res.status(200).json({ message: "product added" });
   } catch (error) {
     res.status(500).json({ message: error.message });

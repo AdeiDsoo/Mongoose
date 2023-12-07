@@ -2,13 +2,15 @@
 <h2>{{title}}</h2>
 <p> {{description}} </p>
 <p>Precio: ${{price}} </p>
-<form id="formOneProduct" action="/api/carts" method="post">
+<form id="formOneProduct" action="/api/carts/{{cart_id}}/products/{{_id}}" method="post">
 <div class="inputQty">
     Cantidad: <input type="number" name="qty" id="qty">
-    <input type="hidden" name="idProduct" id="idProduct" value="{{_id}}">
+    {{!-- <input type="hidden" name="idProduct" id="idProduct" value="{{_id}}">
+     <input type="hidden" name="idCart" id="idCart" value="{{cart_id}}"> --}}
+      <input type="hidden" name="email" id="email" value="{{email}}">
 </div>
 <button type="submit" class="addCart">
-    <img class="logo" alt="addCart Button" src="/images/addCart.jpg" >
+    <img class="logo" alt="addCart Button" src="/image/addCart.jpg" >
 </button>
 </form>
 </section>
