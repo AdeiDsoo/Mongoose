@@ -17,7 +17,7 @@ html {
   padding: 1vw 3vw;
 }
 
-.welcome {
+.welcome, .createProduct {
   width: 100vw;
   height: 100vh;
   background-image: url("/image/bgCat.jpg");
@@ -31,7 +31,15 @@ html {
   align-items: center;
   flex-direction: column;
 }
-.welcome h1 {
+.createProduct {
+  background-image: none;
+}
+#formProducts{
+  display: flex;
+  flex-direction: column;
+
+}
+.welcome h1{
   color: orange;
   font-size: 7rem;
   text-align: center;
@@ -60,7 +68,7 @@ html {
   background-color: rgb(237, 207, 189);
 }
 .allProductsFetch,
-.home {
+.home, .homeAdmin {
   background-color: rgb(182, 225, 211);
   display: flex;
   justify-content: center;

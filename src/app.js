@@ -9,7 +9,7 @@ import sessionsRouter from"./routes/sessions.router.js";
 import mongoStore from "connect-mongo";
 import session from "express-session";
 import productsRouter from "./routes/products.router.js";
-import cookieParser from "cookie-parser"
+// import cookieParser from "cookie-parser"
 import passport from "passport"
 import "./passport.js"
 import config from "./config/config.js";

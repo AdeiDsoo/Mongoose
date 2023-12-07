@@ -6,6 +6,7 @@ import {
   findUserById,
 } from "../controllers/users.crontroller.js";
 
+
 const router = Router();
 
 router.get("/", findAllUsers);

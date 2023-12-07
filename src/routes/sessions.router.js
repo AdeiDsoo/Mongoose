@@ -1,5 +1,6 @@
 import passport from "passport";
 import { Router } from "express";
+import { checkRole } from "../middlewares/passport.middleware.js";
 
 const router = Router();
 
@@ -43,16 +44,39 @@ router.get("/logout", (req, res) => {
   });
 });
 
+// router.post(
+//   "/login",
+//   passport.authenticate("login", {
+//     successRedirect: "/home",
+//     failureRedirect: "/error",
+//   })
+// );
 router.post(
   "/login",
   passport.authenticate("login", {
-    successRedirect: "/home",
     failureRedirect: "/error",
-  })
+  }),
+  (req, res) => {
+ 
+    if (req.user.role === "admin") {
+      res.redirect("/homeAdmin");
+    } else if (req.user.role === "user") {
+      res.redirect("/home");
+    } else {
+      res.redirect("/error");
+    }
+  }
 );
 
 router.post(
   "/signup",
+  passport.authenticate("signup", {
+    successRedirect: "/home",
+    failureRedirect: "/error",
+  })
+);
+router.post(
+  "/current",
   passport.authenticate("signup", {
     successRedirect: "/home",
     failureRedirect: "/error",

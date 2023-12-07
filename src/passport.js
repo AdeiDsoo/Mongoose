@@ -16,6 +16,7 @@ passport.use(
         const createdCart = await cartsMongo.createOne({ productsCart: [] });
         const userDB = await usersMongo.findByEmail(email);
         if (userDB) {
+          console.log(userDB);
           return done(null, false);
         }
         const hashedPassword = await hashData(password);
@@ -41,7 +42,7 @@ passport.use(
     async (email, password, done) => {
       try {
         const userDB = await usersMongo.findByEmail(email);
-        console.log('try');
+        console.log(userDB);
         if (!userDB) {
           return done(null, false);
         }
@@ -57,7 +58,6 @@ passport.use(
   )
 );
 
-
 passport.use(
   "github",
   new GithubStrategy(
@@ -65,12 +65,15 @@ passport.use(
       clientID: config.github_client_id,
       clientSecret: config.github_client_secret,
       callbackURL: config.github_callback_url,
-      scope: ["user:email"], 
+      scope: ["user:email"],
     },
     async (accessToken, refreshToken, profile, done) => {
-      console.log(profile, 'json');
+      console.log(profile, "json");
       try {
-        const userEmail = profile.emails && profile.emails.length > 0 ? profile.emails[0].value : null;
+        const userEmail =
+          profile.emails && profile.emails.length > 0
+            ? profile.emails[0].value
+            : null;
 
         const userDB = await userMongo.findByEmail(profile._json.email);
         // login
@@ -98,8 +101,6 @@ passport.use(
   )
 );
 
-
-
 passport.use(
   "google",
   new GoogleStrategy(
@@ -107,12 +108,11 @@ passport.use(
       clientID: config.google_client_id,
       clientSecret: config.google_client_secret,
       callbackURL: config.google_callback_url,
-
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
         const user = await usersMongo.findByEmail(profile._json.email);
-     
+
         if (user) {
           if (user.from_google) {
             return done(null, user);
