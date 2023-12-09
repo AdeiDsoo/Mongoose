@@ -16,6 +16,16 @@ const TicketsSchema = new mongoose.Schema({
     type: String,
     default: false,
   },
+  type: [
+    {
+        idProduct:{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Products"
+        },
+        qty: {
+          type: Number,
+      },
+}]   
 });
 
 export const ticketsModel = mongoose.model("Ticket", TicketsSchema);

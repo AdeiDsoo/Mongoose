@@ -3,6 +3,8 @@ import { checkRole } from "../middlewares/passport.middleware.js";
 import { productsService } from "../services/products.service.js";
 import { findCartById } from "../controllers/carts.controller.js";
 import { cartsService } from "../services/carts.service.js";
+import { ticketsService } from "../services/tickets.service.js";
+import { v4 as uuidv4 } from "uuid";
 
 const router = Router();
 
@@ -64,16 +66,20 @@ router.get("/oneProduct/:idProduct", async (req, res) => {
 });
 
 router.get("/ticket", async (req, res) => {
+  
   const idCart = req.user.cart._id;
   const cart = await cartsService.findById(idCart);
+
   let productsCart = cart.productsCart;
-  console.log(productsCart, "productsCart");
+console.log(productsCart)
+  let totalAmount = 0;
+  let ticketInfo; 
 
   for (const product of productsCart) {
     const stock = product.idProduct.stock;
-
     const qty = product.qty;
-
+    console.log(qty, 'qty del cartUser');
+console.log(stock, product.idProduct.title);
     if (qty > stock) {
       console.log(
         product.idProduct.title,
@@ -88,27 +94,42 @@ router.get("/ticket", async (req, res) => {
       );
       let id = product.idProduct._id;
       let qtyProductDB = product.idProduct.stock;
+      let price = product.idProduct.price;
 
-      console.log(qtyProductDB - product.qty, "resta stock");
       const productUpdate = await productsService.updateOne({
         id,
         stock: qtyProductDB - product.qty,
       });
-      console.log(productUpdate);
-    
-      // cart.productsCart = cart.productsCart.filter(
-      //   (p) => p.idProduct._id !== id
-      // );
+
+      const subtotal = qty * price;
+      totalAmount += subtotal;
+
+      const uniqueCode = uuidv4();
+      ticketInfo = { 
+        code: uniqueCode,
+        amount: totalAmount,
+        purchaser: req.user.email,
+        products: cart.productsCart, 
+      };
+
+      const createdTicket = await ticketsService.createOne(ticketInfo);
+
+      cart.productsCart = cart.productsCart.filter(
+        (p) => p.idProduct._id !== id
+      );
     }
-    console.log( cart.productsCart, "productsCart After");
-    // await cartsService.updateOne({
-    //   id: idCart,
-    //   productsCart: cart.productsCart,
-    // });
+
+    await cartsService.updateOne({
+      id: idCart,
+      productsCart: cart.productsCart,
+    });
   }
-  console.log(productsCart, "productsCart After");
+console.log(productsCart,'productsCartssss')
+  console.log(ticketInfo, "ticketInfo"); 
   res.render("ticket", {
     cart_id: req.user.cart._id,
+    ticket: ticketInfo,
+    productsCart
   });
 });
 

@@ -50,18 +50,19 @@ export const addProductToCart = async (req, res) => {
       p.idProduct.equals(idProduct)
     );
 
-console.log(productIndex);
+
     if (productIndex === -1) {
    
       cart.productsCart.push({ idProduct: idProduct, qty: qtyClientProduct });
     } else {
-      console.log(cart.productsCart,'else')
+    
       cart.productsCart[productIndex].qty += qtyClientProduct;
     }
 
     await cart.save();
   }
-    res.status(200).json({ message: "product added" });
+ res.redirect('/ticket');
+    // res.status(200).json({ message: "product added" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

@@ -251,8 +251,20 @@ a {
 
 .ticketZone{
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
   flex-direction: row;
   background-color: #346381;
+  height: 100vh;
+}
+
+.renderCart, .renderTicket{
+  width: 35%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.renderCart h2, .renderTicket h2{
+  margin-bottom: 3vw;
 }
