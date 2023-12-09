@@ -248,3 +248,11 @@ a {
   display: flex;
   flex-direction: column;
 }
+
+.ticketZone{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  background-color: #346381;
+}

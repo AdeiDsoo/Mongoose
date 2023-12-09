@@ -33,8 +33,7 @@ export const createCart = async (req, res) => {
 export const addProductToCart = async (req, res) => {
  
   const { idProduct, idCart } = req.params;
-
-  console.log(idCart, 'idCArt')
+  const qtyClientProduct = parseInt(req.body.qty, 10);
   try {
     const cart = await cartsService.findById(idCart);
     if (!cart) {
@@ -45,24 +44,19 @@ export const addProductToCart = async (req, res) => {
       return res.status(404).json({ message: "product not found" });
     }
 
-
-
     if(req.user.cart.id===idCart){
-
-   
-  
- 
-
-    
 
     const productIndex = cart.productsCart.findIndex((p) =>
       p.idProduct.equals(idProduct)
     );
 
+console.log(productIndex);
     if (productIndex === -1) {
-      cart.productsCart.push({ idProduct: idProduct, qty: 1 });
+   
+      cart.productsCart.push({ idProduct: idProduct, qty: qtyClientProduct });
     } else {
-      cart.productsCart[productIndex].qty++;
+      console.log(cart.productsCart,'else')
+      cart.productsCart[productIndex].qty += qtyClientProduct;
     }
 
     await cart.save();

@@ -8,6 +8,8 @@ router.get("/:idCart", findCartById);
 
 // router.post("/", createCart);
 
-router.post("/:idCart/products/:idProduct", checkRole('user'), addProductToCart);
+router.post("/:idCart/products/:idProduct", checkRole('user'),  addProductToCart
+    // res.redirect('/ticket');
+);
 
 export default router;

@@ -5,8 +5,7 @@
 <form id="formOneProduct" action="/api/carts/{{cart_id}}/products/{{_id}}" method="post">
 <div class="inputQty">
     Cantidad: <input type="number" name="qty" id="qty">
-    {{!-- <input type="hidden" name="idProduct" id="idProduct" value="{{_id}}">
-     <input type="hidden" name="idCart" id="idCart" value="{{cart_id}}"> --}}
+
       <input type="hidden" name="email" id="email" value="{{email}}">
 </div>
 <button type="submit" class="addCart">

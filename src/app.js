@@ -6,11 +6,11 @@ import viewsRouter from "./routes/views.router.js";
 import usersRouter from "./routes/users.router.js";
 import cartsRouter from "./routes/carts.router.js" ;
 import chatRouter from "./routes/chat.router.js"
+import ticketsRouter from "./routes/tickets.router.js"
 import sessionsRouter from"./routes/sessions.router.js";
 import mongoStore from "connect-mongo";
 import session from "express-session";
 import productsRouter from "./routes/products.router.js";
-// import cookieParser from "cookie-parser"
 import passport from "passport"
 import "./passport.js"
 import config from "./config/config.js";
@@ -54,6 +54,7 @@ app.use("/api/carts", cartsRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/sessions", sessionsRouter);
 app.use("/api/messages", chatRouter);
+app.use("/api/tickets", ticketsRouter);
 
 const PORT = config.port;
 
