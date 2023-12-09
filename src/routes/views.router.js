@@ -71,14 +71,14 @@ router.get("/ticket", async (req, res) => {
   const cart = await cartsService.findById(idCart);
 
   let productsCart = cart.productsCart;
-console.log(productsCart)
+
   let totalAmount = 0;
   let ticketInfo; 
 
   for (const product of productsCart) {
     const stock = product.idProduct.stock;
     const qty = product.qty;
-    console.log(qty, 'qty del cartUser');
+  
 console.log(stock, product.idProduct.title);
     if (qty > stock) {
       console.log(
@@ -105,11 +105,12 @@ console.log(stock, product.idProduct.title);
       totalAmount += subtotal;
 
       const uniqueCode = uuidv4();
+     
       ticketInfo = { 
         code: uniqueCode,
         amount: totalAmount,
         purchaser: req.user.email,
-        products: cart.productsCart, 
+        products: JSON.parse(JSON.stringify(cart.productsCart)),
       };
 
       const createdTicket = await ticketsService.createOne(ticketInfo);
@@ -124,8 +125,7 @@ console.log(stock, product.idProduct.title);
       productsCart: cart.productsCart,
     });
   }
-console.log(productsCart,'productsCartssss')
-  console.log(ticketInfo, "ticketInfo"); 
+
   res.render("ticket", {
     cart_id: req.user.cart._id,
     ticket: ticketInfo,

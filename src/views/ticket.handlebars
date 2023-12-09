@@ -1,10 +1,8 @@
 <section class="ticketZone">
-<article class="renderCart">
+    <article class="renderCart">
   <h2>Your Cart (Products Pending)</h2>
-  {{#each ticket.productsCart}}
-    {{#with this.idProduct}}
-      <p>{{title}} - Qty: {{../qty}}</p>
-    {{/with}}
+ {{#each ticket.productsCart}}
+    <p>{{idProduct.title}} - qty: {{qty}} </p>
   {{/each}}
 </article>
 <article class="renderTicket">
@@ -12,12 +10,13 @@
   <p>Code: {{ticket.code}}</p>
   <p>Products:</p>
 
-{{#each ticket.products}}
-    {{#with this.idProduct}}
-      <p>{{title}} - Qty: {{../qty}}</p>
-    {{/with}}
+  {{#each ticket.products}}
+    <p>{{idProduct.title}} - Qty: {{qty}}</p>
   {{/each}}
+
   <p>Total Amount: {{ticket.amount}}</p>
   <p>Purchaser: {{ticket.purchaser}}</p>
 </article>
+
+
 </section>

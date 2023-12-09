@@ -16,7 +16,7 @@ const TicketsSchema = new mongoose.Schema({
     type: String,
     default: false,
   },
-  type: [
+  products: [
     {
         idProduct:{
             type: mongoose.Schema.Types.ObjectId,
