@@ -16,7 +16,7 @@ export const findCartById = async (req, res) => {
     const infoThisCart = {
       idCart: req.user.cart._id,
       email: req.user.email,
-     ...cart  // Pasa directamente la propiedad _doc
+     ...cart  
   };
   
   console.log(infoThisCart, 'thisCart');
