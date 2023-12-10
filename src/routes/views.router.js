@@ -65,73 +65,58 @@ router.get("/oneProduct/:idProduct", async (req, res) => {
   });
 });
 
-
-
 router.get("/ticket", async (req, res) => {
-  
   const idCart = req.user.cart._id;
   const cart = await cartsService.findById(idCart);
 
-  let productsCart = cart.productsCart;
-
   let totalAmount = 0;
-  let ticketInfo; 
+  let ticketInfo = {
+    code: uuidv4(),
+    amount: 0,
+    purchaser: req.user.email,
+    productsSufficient: [],
+    productsInsufficient: [],
+  };
 
-  for (const product of productsCart) {
+  for (const product of cart.productsCart) {
     const stock = product.idProduct.stock;
     const qty = product.qty;
-  
-console.log(stock, product.idProduct.title);
-    if (qty > stock) {
-      console.log(
-        product.idProduct.title,
-        "este producto no tiene suficiente stock"
-      );
-    }
 
-    if (qty < stock) {
-      console.log(
-        product.idProduct.title,
-        "este producto sí tiene suficiente stock :D"
-      );
+    if (qty <= stock) {
       let id = product.idProduct._id;
       let qtyProductDB = product.idProduct.stock;
       let price = product.idProduct.price;
 
       const productUpdate = await productsService.updateOne({
         id,
-        stock: qtyProductDB - product.qty,
+        stock: qtyProductDB - qty,
       });
 
       const subtotal = qty * price;
       totalAmount += subtotal;
 
-      const uniqueCode = uuidv4();
-     
-      ticketInfo = { 
-        code: uniqueCode,
-        amount: totalAmount,
-        purchaser: req.user.email,
-        products: JSON.parse(JSON.stringify(cart.productsCart)),
-      };
-
-      const createdTicket = await ticketsService.createOne(ticketInfo);
-
-      cart.productsCart = cart.productsCart.filter(
-        (p) => p.idProduct._id !== id
-      );
+      ticketInfo.productsSufficient.push({
+        title: product.idProduct.title,
+        qty,
+      });
+    } else {
+      ticketInfo.productsInsufficient.push({
+        title: product.idProduct.title,
+        qty,
+      });
     }
-
-    await cartsService.updateOne({
-      id: idCart,
-      productsCart: cart.productsCart,
-    });
   }
+
+  ticketInfo.amount = totalAmount;
+
+ 
+  // await cartsService.updateThisCart(idCart, {
+  //   productsCart: cart.productsCart.filter((p) => p.idProduct.stock > 0),
+  // });
 
   res.render("ticket", {
     cart_id: req.user.cart._id,
     ticket: ticketInfo,
-    productsCart
   });
 });
 

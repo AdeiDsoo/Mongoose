@@ -23,8 +23,13 @@ class CartsService {
         return response;
     }
     async updateOne(obj) {
-        const { id, ...userInfo } = obj;
-        const response = await cartsMongo.updateOne(id, userInfo);
+        const { id, ...cartInfo } = obj;
+        const response = await cartsMongo.updateOne(id, cartInfo);
+        return response;
+    }
+    async updateThisCart(obj){
+        const { id, ...cartInfo } = obj;
+        const response = await cartsMongo.updateThisCart(id, cartInfo);
         return response;
     }
     async deleteOne(id) {

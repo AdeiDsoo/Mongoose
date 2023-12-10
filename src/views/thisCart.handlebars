@@ -1,10 +1,10 @@
 <section class="container-InfoProductsCart">
-<h2>Este es tu carrito </h2>
-<p class="idCart">ID: {{infoThisCart.idCart}}</p>
+<h2>Your Cart </h2>
+<p class="idCart"> {{infoThisCart.idCart}}</p>
 <p class="idCart">{{infoThisCart.email}}</p>
 <article class="infoProductsCart">
-    <p>Tus productos son:</p>
-    <table class="tableCart">
+    <p class="idCart">Tus productos son:</p>
+    <table class="tableCart" id="productsTableCart">
         <tr>
             <th>PRODUCT</th>
             <th>PRICE</th>
@@ -19,5 +19,6 @@
 {{/each}}
     </table>
 </article>
+<a href="/ticket" class="btnGoToTicket">CONFIRMAR COMPRA</a>
 </section>
          

@@ -22,15 +22,8 @@ export const findTicketById = async (req, res) => {
 };
 
 export const createTicket = async (req, res) => {
-  // const { code, amount, purchaser } = req.body;
-
+  
   try {
-
-    // if (!code || !amount || !purchaser) {
-     
-    //   return res.status(400).json({ message: "All fields are required" });
-    // }
-
 
     const createdTicket = await ticketsService.createOne(req.body);
  
@@ -42,7 +35,7 @@ export const createTicket = async (req, res) => {
  export const updateTicket=async (req, res)=>{
   const {idTicket}=req.body
   try {
-    const result= await ticketsService.updateTicket(id)
+    const result= await ticketsService.updateTicket(idTicket)
     res.status(200).json({ message: "Ticket update", result });
   } catch (error) {
     res.status(500).json({ message: error.message });

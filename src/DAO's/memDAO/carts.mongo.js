@@ -5,7 +5,18 @@ class CartsMongo extends BasicMongo {
     constructor() {
         super(cartsModel, "productsCart.idProduct");
     }
+ async updateThisCart(id, obj) {
+console.log(obj, 'obj cartsmongo')
+    const cart = await cartsModel.findOneAndUpdate(
+      { _id: id },
+      obj,
+      { new: true }
+    );
 
+    return cart;
+  }
+
+ 
     async findAllCarts(obj) {
         const { limit, page, ...queryFilter } = obj;
 

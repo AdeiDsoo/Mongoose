@@ -9,6 +9,15 @@ export const findCart = async (req, res) => {
   }
 };
 
+export const updateThisCart = async (req, res) => {
+  try {
+    const result = await cartsService.updateThisCart();
+    res.status(200).json({ cart: result });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 export const findCartById = async (req, res) => {
   const { idCart } = req.params;
   try {
@@ -16,7 +25,7 @@ export const findCartById = async (req, res) => {
     const infoThisCart = {
       idCart: req.user.cart._id,
       email: req.user.email,
-     ...cart  
+     products:  JSON.parse(JSON.stringify(cart.productsCart)),
   };
   
   console.log(infoThisCart, 'thisCart');
@@ -68,8 +77,8 @@ export const addProductToCart = async (req, res) => {
 
     await cart.save();
   }
- res.redirect('/ticket');
-    // res.status(200).json({ message: "product added" });
+//  res.redirect('/ticket');
+    res.status(200).json({ message: "product added" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

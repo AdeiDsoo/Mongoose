@@ -31,7 +31,7 @@ app.use(
   session({
     secret: config.session_secret,
     cookie: {
-      maxAge: 60000,
+      maxAge: 600000,
     },
     store: new mongoStore({
       mongoUrl: config.mongo_uri,

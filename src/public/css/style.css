@@ -176,7 +176,7 @@ a {
   margin-bottom: 2rem;
 }
 .login form .signup,
-.register form .btnSubmit, .logout , .allProductsFetch #loadMoreBtn, .btnChat, .btnCoupon{
+.register form .btnSubmit, .logout , .allProductsFetch #loadMoreBtn, .btnChat, .btnCoupon, .btnGoToTicket{
   padding: 1vw 2vw;
   border: none;
   background-color: rgb(219, 153, 68);
@@ -267,4 +267,48 @@ a {
 }
 .renderCart h2, .renderTicket h2{
   margin-bottom: 3vw;
+}
+
+.container-InfoProductsCart{
+  background-color: #648fa9;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.idCart{
+  font-size: 1.5rem;
+  line-height: 1.8rem;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #162833;
+  font-weight: bolder;
+}
+.infoProductsCart{
+  margin: 4vw auto;
+}
+
+#productsTableCart {
+  font-family: 'Arial Narrow Bold', sans-serif;
+  border-collapse: collapse;
+  width: 50vw;
+  margin-top: 2vw;
+}
+
+#productsTableCart td, #productsTableCart th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#productsTableCart tr:nth-child(even){background-color: #f2f2f2;}
+
+#productsTableCart tr:hover {background-color: #ddd;}
+
+#productsTableCart th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #90bac4;
+
 }
