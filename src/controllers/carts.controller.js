@@ -1,4 +1,5 @@
 import { cartsService } from "../services/carts.service.js";
+import { productsService } from "../services/products.service.js";
 
 export const findCart = async (req, res) => {
   try {
@@ -12,8 +13,29 @@ export const findCart = async (req, res) => {
 export const findCartById = async (req, res) => {
   const { idCart } = req.params;
   try {
-    const cart = await cartsService.findById(idCart);
-    res.status(200).json({ message: "Cart Found", cart });
+    // const idCart = req.user && req.user.cart ? req.user.cart._id : null;
+
+   
+      const cart = await cartsService.findById(idCart);
+    
+      const productsWithDetails = await Promise.all(cart.productsCart.map(async (item) => {
+        const product = await productsService.findById(item.idProduct);
+        return {
+          ...item,
+          idProduct: product
+        };
+      }));
+    
+      const infoThisCart = {
+        idCart: idCart,
+        email: req.user.email,
+        products: productsWithDetails
+      };
+    
+      console.log(infoThisCart, 'thisCart');
+      res.render("thisCart", { infoThisCart });
+    
+  // res.status(200).json({ message:"cart", cart});
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

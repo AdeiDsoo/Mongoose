@@ -65,6 +65,8 @@ router.get("/oneProduct/:idProduct", async (req, res) => {
   });
 });
 
+
+
 router.get("/ticket", async (req, res) => {
   
   const idCart = req.user.cart._id;

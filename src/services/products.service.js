@@ -11,7 +11,7 @@ class ProductsService {
         return response;
     }
 async findAllProducts(obj){
-    console.log('obj', obj)
+
     const response= await productsMongo.findAllProducts(obj)
     return response
 }

@@ -11,7 +11,7 @@ export const findAllTickets = async (req, res) => {
 
 export const findTicketById = async (req, res) => {
   const { idTicket } = req.params;
-  console.log(idTicket);
+
   try {
     const result = await ticketsService.findById(idTicket);
     res.status(200).json({ Ticket: result });
@@ -23,7 +23,7 @@ export const findTicketById = async (req, res) => {
 
 export const createTicket = async (req, res) => {
   // const { code, amount, purchaser } = req.body;
-console.log(req.body, 'reqBody');
+
   try {
 
     // if (!code || !amount || !purchaser) {

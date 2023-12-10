@@ -27,13 +27,13 @@ class UsersService {
 
 
   async createOne(obj) {
-    console.log(obj, 'obj')
+
     const { password } = obj;
     const hashedPassword = await hashData(password);
     const userDTO= new UserDTO({...obj,  password: hashedPassword})
-    console.log(userDTO)
+
     const response = await usersMongo.createOne(userDTO);
-    console.log(response, 'reponse in createOne');
+
     return response;
   }
   async updateOne(obj) {
