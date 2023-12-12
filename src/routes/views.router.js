@@ -82,7 +82,7 @@ router.get("/ticket", async (req, res) => {
     const stock = product.idProduct.stock;
     const qty = product.qty;
 
-    if (qty <= stock) {
+    if (qty < stock) {
       let id = product.idProduct._id;
       let qtyProductDB = product.idProduct.stock;
       let price = product.idProduct.price;
@@ -101,18 +101,23 @@ router.get("/ticket", async (req, res) => {
       });
     } else {
       ticketInfo.productsInsufficient.push({
+        id: product.idProduct._id, 
         title: product.idProduct.title,
         qty,
       });
     }
   }
-
+console.log(ticketInfo.productsInsufficient)
   ticketInfo.amount = totalAmount;
 
- 
-  // await cartsService.updateThisCart(idCart, {
-  //   productsCart: cart.productsCart.filter((p) => p.idProduct.stock > 0),
-  // });
+  const updateInfo = ticketInfo.productsInsufficient.map(product => ({
+    idProduct: product.id,
+    qty: product.qty,
+  }));
+
+  await cartsService.updateOne(idCart, {
+    productsCart: updateInfo
+  });
 
   res.render("ticket", {
     cart_id: req.user.cart._id,

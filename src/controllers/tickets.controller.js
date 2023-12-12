@@ -33,6 +33,7 @@ export const createTicket = async (req, res) => {
   }
 };
  export const updateTicket=async (req, res)=>{
+
   const {idTicket}=req.body
   try {
     const result= await ticketsService.updateTicket(idTicket)
