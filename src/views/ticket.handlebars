@@ -2,7 +2,7 @@
   <article class="renderCart">
     <h2>Your Cart (Products Insufficient)</h2>
     {{#each ticket.productsInsufficient}}
-      <p>{{title}} - Qty: {{qty}}</p>
+      <p>{{title}} - Qty: {{qty}}- price {{price}} </p>
     {{/each}}
   </article>
   <article class="renderTicket">
@@ -11,7 +11,7 @@
     <p>Products:</p>
 
     {{#each ticket.productsSufficient}}
-      <p>{{title}} - Qty: {{qty}}</p>
+      <p>{{title}} - Qty: {{qty}} - Price: {{price}}</p>
     {{/each}}
 
     <p>Total Amount: {{ticket.amount}}</p>

@@ -17,6 +17,15 @@ export const updateThisCart = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+ export const findById= async (req, res) => {
+  const { idCart } = req.params;
+  try {
+    const cart = await cartsService.findById(idCart);
+    res.status(200).json({ message: "this Cart", cart });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 
 export const findCartById = async (req, res) => {
   const { idCart } = req.params;
@@ -28,7 +37,6 @@ export const findCartById = async (req, res) => {
      products:  JSON.parse(JSON.stringify(cart.productsCart)),
   };
   
-  console.log(infoThisCart, 'thisCart');
   res.render("thisCart", { infoThisCart });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -38,7 +46,6 @@ export const findCartById = async (req, res) => {
 export const createCart = async (req, res) => {
   try {
     const newCart = { products: [] };
-
     const createCart = await cartsService.createOne(newCart);
     res.status(200).json({ message: "Cart created", cart: createCart });
   } catch (error) {
