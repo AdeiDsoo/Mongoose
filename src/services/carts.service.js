@@ -43,7 +43,7 @@ class CartsService {
     }
 
     async updateCartProducts(idCart, productsCart) {
-        console.log(idCart,'ID')
+  
         try {
           const cart = await cartsMongo.findById(idCart);
     
