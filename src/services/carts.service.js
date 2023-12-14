@@ -42,6 +42,25 @@ class CartsService {
         return response;
     }
 
+    async updateCartProducts(idCart, productsCart) {
+        console.log(idCart,'ID')
+        try {
+          const cart = await cartsMongo.findById(idCart);
+    
+          if (!cart) {
+            throw new Error("Cart not found");
+          }
+    
+          cart.productsCart = productsCart;
+    
+          await cart.save();
+    
+          return { success: true, message: "Cart products updated" };
+        } catch (error) {
+          console.error(error);
+          return { success: false, message: `An error occurred: ${error.message}` };
+        }
+      }
 }
 
 export const cartsService = new CartsService();
