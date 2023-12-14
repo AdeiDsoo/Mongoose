@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { checkRole } from "../middlewares/passport.middleware.js";
 import { productsService } from "../services/products.service.js";
-import { findCartById } from "../controllers/carts.controller.js";
+import { findCartById, updateCartProducts } from "../controllers/carts.controller.js";
 import { cartsService } from "../services/carts.service.js";
 import { ticketsService } from "../services/tickets.service.js";
 import { v4 as uuidv4 } from "uuid";
@@ -68,6 +68,7 @@ router.get("/oneProduct/:idProduct", async (req, res) => {
 
 
 router.get("/ticket", async (req, res) => {
+  
   try {
     if (!req.user || !req.user.cart) {
       return res
@@ -103,8 +104,6 @@ router.get("/ticket", async (req, res) => {
 
         let price = product.idProduct.price;
 
-    
-
         const productUpdate = await productsService.updateOne({
           id,
 
@@ -120,7 +119,6 @@ router.get("/ticket", async (req, res) => {
           title: product.idProduct.title,
           price:product.idProduct.price,
           qty,
-
           subtotal,
         });
       } else {
@@ -147,20 +145,16 @@ router.get("/ticket", async (req, res) => {
       idProduct: product.id,
       qty: product.qty,
     }));
-    console.log(ticketInfo,'ticketInfo');
-    console.log('updateInfo', productsInsufficientInfo,'updateInfo');
+   
     const idCartString = idCart.toString("hex");
-console.log(idCart, 'IDCART-------')
-    await cartsService.updateOne(idCartString, { productsCart: productsInsufficientInfo });
+
+    await updateCartProducts({ idCart: idCartString, productsCart: productsInsufficientInfo });
 
     res.render("ticket", {
       cart_id: req.user.cart._id,
-
       ticket: ticketInfo,
     });
   } catch (error) {
-    console.error(error);
-
     res.status(500).send("An error occurred");
   }
 });

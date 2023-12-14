@@ -9,14 +9,7 @@ export const findCart = async (req, res) => {
   }
 };
 
-export const updateThisCart = async (req, res) => {
-  try {
-    const result = await cartsService.updateThisCart();
-    res.status(200).json({ cart: result });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
+
  export const findById= async (req, res) => {
   const { idCart } = req.params;
   try {
@@ -84,8 +77,28 @@ export const addProductToCart = async (req, res) => {
 
     await cart.save();
   }
-//  res.redirect('/ticket');
+
     res.status(200).json({ message: "product added" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
+export const updateCartProducts = async ({ idCart, productsCart }, res) => {
+
+  try {
+    const cart = await cartsService.findById(idCart);
+
+    if (!cart) {
+      return res.status(404).json({ message: "cart not found" });
+    }
+
+    cart.productsCart = productsCart;
+    console.log(cart);
+
+    await cart.save();
+
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
