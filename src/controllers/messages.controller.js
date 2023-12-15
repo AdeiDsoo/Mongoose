@@ -23,7 +23,7 @@ export const findMessageById = async (req, res) => {
   }
 };
 
-export const createMessage = async (req, res) => {
+export const createMessage = async (req, res, next) => {
   const { fromUser, contentMessage, toUser } = req.body;
   try {
 
@@ -33,10 +33,14 @@ export const createMessage = async (req, res) => {
       }
    
     const createdMessage = await messagesService.createOne(req.body);
+    if (!createdMessage) {
+      throw CustomError.createError(ErrorMessages.UNABLE_MESSAGE)
+    }
  
-    // res.status(200).json({ message: "message created", message: createdMessage });
+    res.status(200).json({ message: "message created", message: createdMessage });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    next(error);
+    // res.status(500).json({ message: error.message });
   }
 };
 

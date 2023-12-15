@@ -1,3 +1,5 @@
+import { ErrorMessages } from "../error/error.enum.js";
+import CustomError from "../error/not-found.error.js";
 import { ticketsService } from "../services/tickets.service.js";
 
 export const findAllTickets = async (req, res) => {
@@ -9,15 +11,18 @@ export const findAllTickets = async (req, res) => {
   }
 };
 
-export const findTicketById = async (req, res) => {
+export const findTicketById = async (req, res, next) => {
   const { idTicket } = req.params;
 
   try {
     const result = await ticketsService.findById(idTicket);
+    if(!result){
+      throw CustomError.createError(ErrorMessages.TICKET_NOT_FOUND)
+    }
     res.status(200).json({ Ticket: result });
   } catch (error) {
-  
-    res.status(500).json({ message: error.message });
+  next(error)
+    // res.status(500).json({ message: error.message });
   }
 };
 
