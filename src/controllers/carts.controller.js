@@ -1,6 +1,9 @@
 import { cartsService } from "../services/carts.service.js";
 import { productsService } from "../services/products.service.js";
 import { v4 as uuidv4 } from "uuid";
+import CustomError from "../error/not-found.error.js";
+import { ErrorMessages } from "../error/error.enum.js";
+import mongoose from "mongoose";
 
 export const findCart = async (req, res) => {
   try {
@@ -30,10 +33,17 @@ export const findById = async (req, res) => {
   }
 };
 
-export const findCartById = async (req, res) => {
+export const findCartById = async (req, res, next) => {
   const { idCart } = req.params;
   try {
+    if (!mongoose.Types.ObjectId.isValid(idCart)) {
+      throw CustomError.createError(ErrorMessages.ID_INVALID);
+    }
     const cart = await cartsService.findById(idCart);
+    if (!cart) {
+      throw  CustomError.createError(ErrorMessages.CART_NOT_FOUND);
+    }
+
     const infoThisCart = {
       idCart: req.user.cart._id,
       email: req.user.email,
@@ -42,31 +52,38 @@ export const findCartById = async (req, res) => {
 
     res.render("thisCart", { infoThisCart });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    next(error);
   }
 };
 
-export const createCart = async (req, res) => {
+export const createCart = async (req, res, next) => {
   try {
     const newCart = { products: [] };
-    const createCart = await cartsService.createOne(newCart);
-    res.status(200).json({ message: "Cart created", cart: createCart });
+    const createdCart = await cartsService.createOne(newCart);
+    if (!createdCart) {
+      throw  CustomError.createError(ErrorMessages.UNABLE_CART);
+    }
+
+    res.status(200).json({ message: "Cart created", cart: createdCart });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    next(error);
+    
   }
 };
 
-export const addProductToCart = async (req, res) => {
+export const addProductToCart = async (req, res, next) => {
   const { idProduct, idCart } = req.params;
   const qtyClientProduct = parseInt(req.body.qty, 10);
   try {
     const cart = await cartsService.findById(idCart);
     if (!cart) {
-      return res.status(404).json({ message: "cart not found" });
+      throw CustomError.createError(ErrorMessages.CART_NOT_FOUND);
+      // return res.status(404).json({ message: "cart not found" });
     }
     const product = await cartsService.productFindById(idProduct);
     if (!product) {
-      return res.status(404).json({ message: "product not found" });
+      throw new CustomError.createError(ErrorMessages.PRODUCT_NOT_FOUND);
+      // return res.status(404).json({ message: "product not found" });
     }
 
     if (req.user.cart.id === idCart) {
@@ -85,12 +102,13 @@ export const addProductToCart = async (req, res) => {
 
     res.status(200).json({ message: "product added" });
   } catch (error) {
-    console.error(error);  
-    res.status(500).json({ message: error.message });
+    next(error);
+    // console.error(error);
+    // res.status(500).json({ message: error.message });
   }
 };
 
-export const updateCartAllProducts = async (req, res) => {
+export const updateCartAllProducts = async (req, res, next) => {
   try {
     if (!req.user || !req.user.cart) {
       return res
@@ -102,7 +120,8 @@ export const updateCartAllProducts = async (req, res) => {
     const cart = await cartsService.findById(idCart);
 
     if (!cart || !cart.productsCart) {
-      return res.status(404).send("Cart or cart products not found");
+      throw CustomError.createError(ErrorMessages.CART_NOT_FOUND)
+      // return res.status(404).send("Cart or cart products not found");
     }
 
     let totalAmount = 0;
@@ -172,17 +191,18 @@ export const updateCartAllProducts = async (req, res) => {
 
     const idCartString = idCart.toString("hex");
 
-    // await cartsService.updateCartProducts({
-    //   idCart: idCartString,
-    //   productsCart: productsInsufficientInfo,
-    // });
-    await cartsService.updateCartProducts(idCartString, productsInsufficientInfo);
+  
+    await cartsService.updateCartProducts(
+      idCartString,
+      productsInsufficientInfo
+    );
     res.render("ticket", {
       cart_id: req.user.cart._id,
       ticket: ticketInfo,
     });
   } catch (error) {
-    console.error(error); 
-    res.status(500).send("An error occurred");
+    next(error);
+    // console.error(error);
+    // res.status(500).send("An error occurred");
   }
 };

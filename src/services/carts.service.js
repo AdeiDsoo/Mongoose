@@ -1,6 +1,8 @@
 import { cartsMongo } from "../DAO's/memDAO/carts.mongo.js";
 import { productsMongo } from "../DAO's/memDAO/products.mongo.js";
 import { hashData } from "../utils.js";
+import CustomeError from "../error/not-found.error.js";
+import { ErrorMessages } from "../error/error.enum.js";
 
 class CartsService {
     async findAll() {
@@ -48,6 +50,7 @@ class CartsService {
           const cart = await cartsMongo.findById(idCart);
     
           if (!cart) {
+            // CustomeError.createError(ErrorMessages.CART_NOT_FOUND);
             throw new Error("Cart not found");
           }
     

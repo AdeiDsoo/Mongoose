@@ -18,6 +18,7 @@ import { Server } from "socket.io";
 import { messagesService } from "./services/messages.service.js";
 import compression from "express-compression";
 import { errorMiddleware } from "./error/error.middleware.js";
+import mockRouter from "./routes/moking.router.js"
 
 const app = express();
 
@@ -57,6 +58,7 @@ app.use("/api/users", usersRouter);
 app.use("/api/sessions", sessionsRouter);
 app.use("/api/messages", chatRouter);
 app.use("/api/tickets", ticketsRouter);
+app.use("/api/mocks", mockRouter);
 
 
 app.use(errorMiddleware);

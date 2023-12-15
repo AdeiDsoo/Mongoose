@@ -2,9 +2,6 @@ import { Router } from "express";
 import { checkRole } from "../middlewares/passport.middleware.js";
 import { productsService } from "../services/products.service.js";
 import {  updateCartAllProducts} from "../controllers/carts.controller.js";
-// import { cartsService } from "../services/carts.service.js";
-// import { ticketsService } from "../services/tickets.service.js";
-
 
 const router = Router();
 
@@ -65,7 +62,6 @@ router.get("/oneProduct/:idProduct", async (req, res) => {
   });
 });
 
-
-
 router.get("/ticket", updateCartAllProducts);
+
 export default router;

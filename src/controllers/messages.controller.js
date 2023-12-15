@@ -1,5 +1,7 @@
 
 import { messagesService } from "../services/messages.service.js";
+import CustomError from "../error/not-found.error.js";
+import { ErrorMessages } from "../error/error.enum.js";
 
 export const findAllMessages = async (req, res) => {
   try {
@@ -26,7 +28,8 @@ export const createMessage = async (req, res) => {
   try {
 
     if (!fromUser || !contentMessage || !toUser ) {
-        return res.status(400).json({ message: "All data is required" });
+      throw CustomError.createError(ErrorMessages.DATA_INSUFFICIENT)
+        // return res.status(400).json({ message: "All data is required" });
       }
    
     const createdMessage = await messagesService.createOne(req.body);

@@ -6,10 +6,7 @@ const router = Router();
 
 router.get("/:idCart", findById);
 router.get("/:idCart/view", findCartById);
-// router.post("/", createCart);
 
-router.post("/:idCart/products/:idProduct", checkRole('user'),  addProductToCart
-    // res.redirect('/ticket');
-);
+router.post("/:idCart/products/:idProduct", checkRole('user'),  addProductToCart);
 
 export default router;

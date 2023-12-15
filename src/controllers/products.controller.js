@@ -1,4 +1,6 @@
 import { productsService } from "../services/products.service.js";
+import CustomError from "../error/not-found.error.js";
+import { ErrorMessages } from "../error/error.enum.js";
 
 export const findAll = async (req, res) => {
   try {
@@ -19,7 +21,7 @@ export const findAllProducts = async (req, res) => {
   }
 };
 export const findProductById = async (req, res) => {
-  console.log(req.user, "userController.products")
+  
   const { idProduct } = req.params;
   try {
     const result = await productsService.findById(idProduct);
@@ -53,7 +55,8 @@ export const createProduct = async (req, res) => {
       !status ||
       !stock
     ) {
-      return res.status(400).json({ message: "All data is required" });
+      throw CustomError.createError(ErrorMessages.DATA_INSUFFICIENT)
+      // return res.status(400).json({ message: "All data is required" });
     }
     const createdProduct = await productsService.createOne(req.body);
     res
