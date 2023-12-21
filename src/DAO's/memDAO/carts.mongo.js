@@ -1,4 +1,5 @@
 import { cartsModel } from "../../models/carts.model.js";
+import { logger } from "../../winston.js";
 import BasicMongo from "./basic.mongo.js";
 
 class CartsMongo extends BasicMongo {
@@ -6,7 +7,7 @@ class CartsMongo extends BasicMongo {
         super(cartsModel, "productsCart.idProduct");
     }
  async updateThisCart(id, obj) {
-console.log(obj, 'obj cartsmongo')
+logger.info(obj, 'obj cartsmongo')
     const cart = await cartsModel.findOneAndUpdate(
       { _id: id },
       obj,

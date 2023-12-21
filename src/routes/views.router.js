@@ -2,6 +2,7 @@ import { Router } from "express";
 import { checkRole } from "../middlewares/passport.middleware.js";
 import { productsService } from "../services/products.service.js";
 import {  updateCartAllProducts} from "../controllers/carts.controller.js";
+import { logger } from "../winston.js";
 
 const router = Router();
 
@@ -18,8 +19,8 @@ router.get("/login", (req, res) => {
 });
 
 router.get("/home", checkRole("user"), (req, res) => {
-  console.log(req.user);
-  console.log("cart", req.user.cart._id);
+  logger.http(req.user);
+  logger.info("cart", req.user.cart._id);
   res.render("home", {
     first_name: req.user.first_name,
     last_name: req.user.last_name,

@@ -6,6 +6,7 @@ import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import { hashData, compareData } from "./utils.js";
 import { cartsMongo } from "./DAO's/memDAO/carts.mongo.js";
 import config from "./config/config.js";
+import { logger } from "./winston.js";
 
 passport.use(
   "signup",
@@ -16,7 +17,7 @@ passport.use(
         const createdCart = await cartsMongo.createOne({ productsCart: [] });
         const userDB = await usersMongo.findByEmail(email);
         if (userDB) {
-          console.log(userDB);
+          logger.info(userDB);
           return done(null, false);
         }
         const hashedPassword = await hashData(password);
@@ -42,7 +43,7 @@ passport.use(
     async (email, password, done) => {
       try {
         const userDB = await usersMongo.findByEmail(email);
-        console.log(userDB);
+       logger.info(userDB);
         if (!userDB) {
           return done(null, false);
         }
@@ -68,7 +69,7 @@ passport.use(
       scope: ["user:email"],
     },
     async (accessToken, refreshToken, profile, done) => {
-      console.log(profile, "json");
+      logger.info(profile, "json");
       try {
         const userEmail =
           profile.emails && profile.emails.length > 0

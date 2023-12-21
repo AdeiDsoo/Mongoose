@@ -12,5 +12,6 @@ export default {
     github_callback_url: process.env.GITHUB_CALLBACK_URL,
     session_secret: process.env.SESSION_SECRET,
     port: process.env.PORT,
-    jwt_secret:process.env.JWT_SECRET
+    jwt_secret:process.env.JWT_SECRET,
+    environment: process.env.ENVIRONMENT,
 };

@@ -3,6 +3,7 @@ import { productsMongo } from "../DAO's/memDAO/products.mongo.js";
 import { hashData } from "../utils.js";
 import CustomeError from "../error/not-found.error.js";
 import { ErrorMessages } from "../error/error.enum.js";
+import { logger } from "../winston.js";
 
 class CartsService {
     async findAll() {
@@ -60,7 +61,7 @@ class CartsService {
     
           return { success: true, message: "Cart products updated" };
         } catch (error) {
-          console.error(error);
+        logger.error(error);
           return { success: false, message: `An error occurred: ${error.message}` };
         }
       }

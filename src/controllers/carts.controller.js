@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 import CustomError from "../error/not-found.error.js";
 import { ErrorMessages } from "../error/error.enum.js";
 import mongoose from "mongoose";
+import { logger } from "../winston.js";
 
 export const findCart = async (req, res) => {
   try {
@@ -202,7 +203,7 @@ export const updateCartAllProducts = async (req, res, next) => {
     });
   } catch (error) {
     next(error);
-    // console.error(error);
+    // logger.error(error);
     // res.status(500).send("An error occurred");
   }
 };

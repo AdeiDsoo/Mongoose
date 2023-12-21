@@ -19,6 +19,7 @@ import { messagesService } from "./services/messages.service.js";
 import compression from "express-compression";
 import { errorMiddleware } from "./error/error.middleware.js";
 import mockRouter from "./routes/moking.router.js"
+import { logger } from "./winston.js";
 
 const app = express();
 
@@ -59,6 +60,17 @@ app.use("/api/sessions", sessionsRouter);
 app.use("/api/messages", chatRouter);
 app.use("/api/tickets", ticketsRouter);
 app.use("/api/mocks", mockRouter);
+app.use("/loggerTest", (req, res)=>{
+    
+    logger.fatal("Fatal");
+    logger.error("Error");
+    logger.warning("Warning");
+    logger.info("Probando Info");
+    logger.http("HTTP");
+    logger.debug("Debug");
+    logger.fatal('hola')
+  res.send("Probando winston");
+})
 
 
 app.use(errorMiddleware);
@@ -66,15 +78,15 @@ app.use(errorMiddleware);
 const PORT = config.port;
 
 const httpServer = app.listen(PORT, () => {
-  console.log(`server is running on port ${PORT}`);
+  logger.info(`server is running on port ${PORT}`);
 });
 
 const socketServer = new Server(httpServer);
 
 socketServer.on("connection", (socket) => {
-  // console.log(`Cliente Conectado ${socket.id}`);
+  // logger.info(`Cliente Conectado ${socket.id}`);
   // socket.on("disconnect", () => {
-  //     console.log(`Cliente desconectado ${socket.id}`);
+  //     logger.info(`Cliente desconectado ${socket.id}`);
   // });
 
   socket.on("bodyMessage", async (message) => {

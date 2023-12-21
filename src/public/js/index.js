@@ -1,4 +1,6 @@
-console.log('probando cliente');
+import { logger } from "../../winston";
+
+logger.info('probando cliente');
 const socketClient=io()
 const table = document.getElementById("table");
 const form= document.getElementById('formMessage')
