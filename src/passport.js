@@ -60,49 +60,6 @@ passport.use(
   )
 );
 
-// passport.use(
-//   "github",
-//   new GithubStrategy(
-//     {
-//       clientID: config.github_client_id,
-//       clientSecret: config.github_client_secret,
-//       callbackURL: config.github_callback_url,
-//       scope: ["user:email"],
-//     },
-//     async (accessToken, refreshToken, profile, done) => {
-//       logger.info(profile, "json");
-//       try {
-//         const userEmail =
-//           profile.emails && profile.emails.length > 0
-//             ? profile.emails[0].value
-//             : null;
-
-//         const userDB = await usersMongo.findByEmail(profile._json.email);
-//         console.log(userDB);
-//         if (userDB) {
-//           if (userDB.from_github) {
-
-//             return done(null, userDB);
-//           } else {
-//             return done(null, false);
-//           }
-//         }
-//         // signup
-//         const newUser = {
-//           first_name: profile._json.login,
-//           // last_name: profile._json.name.split(" ")[1] || "",
-//           email: userEmail || profile._json.email || profile.emails[0].value,
-//           password: " ",
-//           from_github: true,
-//         };
-//         const createdUser = await usersMongo.createOne(newUser);
-//         done(null, createdUser);
-//       } catch (error) {
-//         done(error);
-//       }
-//     }
-//   )
-// );
 passport.use(
   "github",
   new GithubStrategy(
@@ -127,19 +84,19 @@ passport.use(
           if (userDB.from_github) {
             return done(null, userDB);
           } else {
-            // El usuario existe pero no es de GitHub, puedes manejarlo según tus necesidades
+        
             return done(null, false, { message: "Usuario existente pero no de GitHub." });
           }
         }
 
-        // Si el usuario no existe, crear uno nuevo y asociar un carrito
+        
         const createdCart = await cartsMongo.createOne({ productsCart: [] });
         const newUser = {
           first_name: profile._json.login,
           email: userEmail || profile._json.email || profile.emails[0].value,
-          password: " ", // Puedes manejar esto según tus necesidades
+          password: " ", 
           from_github: true,
-          cart: createdCart._id, // Asociar el ID del carrito al usuario
+          cart: createdCart._id, 
         };
 
         const createdUser = await usersMongo.createOne(newUser);
@@ -186,8 +143,6 @@ console.log(user, 'google');
       } catch (error) {
         done(error);
       }
-
-      // done(null, false);
     }
   )
 );
