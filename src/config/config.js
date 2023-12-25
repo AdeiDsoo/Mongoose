@@ -14,4 +14,6 @@ export default {
     port: process.env.PORT,
     jwt_secret:process.env.JWT_SECRET,
     environment: process.env.ENVIRONMENT,
+    gmail_user:process.env.GMAIL_USER,
+    gmail_password:process.env.GMAIL_PASSWORD,
 };

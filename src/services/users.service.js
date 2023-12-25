@@ -1,7 +1,8 @@
 // import { usersManager } from "../DAO's/factory.js";
 import { usersMongo } from "../DAO's/memDAO/users.mongo.js";
-import { hashData } from "../utils.js";
+import { hashData, compareData } from "../utils.js";
 import UserDTO from "../DTO/user.dto.js";
+import { transporter } from "../nodemailer.js";
 
 class UsersService {
   async findAll() {
@@ -13,18 +14,6 @@ class UsersService {
     const response = await usersMongo.findById(id);
     return response;
   }
-
-//   async createOne(obj) {
-//     const { password } = obj;
-//     const hashedPassword = hashData(password);
-
-//     const response = await usersMongo.createOne({
-//       ...obj,
-//       password: hashedPassword,
-//     });
-//     return response;
-//   }
-
 
   async createOne(obj) {
 

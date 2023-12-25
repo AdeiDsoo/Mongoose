@@ -65,4 +65,10 @@ router.get("/oneProduct/:idProduct", async (req, res) => {
 
 router.get("/ticket", updateCartAllProducts);
 
+router.get("/handlePassword", (req, res) => {
+  res.render("handlePassword");
+});
+router.get("/resetPasswordForm", (req, res) => {
+  res.render("resetPasswordForm");
+});
 export default router;

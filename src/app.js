@@ -11,15 +11,17 @@ import sessionsRouter from "./routes/sessions.router.js";
 import mongoStore from "connect-mongo";
 import session from "express-session";
 import productsRouter from "./routes/products.router.js";
+import mockRouter from "./routes/moking.router.js"
 import passport from "passport";
+import compression from "express-compression";
 import "./passport.js";
 import config from "./config/config.js";
 import { Server } from "socket.io";
 import { messagesService } from "./services/messages.service.js";
-import compression from "express-compression";
 import { errorMiddleware } from "./error/error.middleware.js";
-import mockRouter from "./routes/moking.router.js"
 import { logger } from "./winston.js";
+import mailRouter from "./routes/mail.router.js"
+
 
 const app = express();
 
@@ -60,6 +62,8 @@ app.use("/api/sessions", sessionsRouter);
 app.use("/api/messages", chatRouter);
 app.use("/api/tickets", ticketsRouter);
 app.use("/api/mocks", mockRouter);
+app.use("/api/mail", mailRouter);
+
 app.use("/loggerTest", (req, res)=>{
     
     logger.fatal("Fatal");
