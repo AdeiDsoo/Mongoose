@@ -42,6 +42,7 @@ passport.use(
     },
     async (email, password, done) => {
       try {
+        
         const userDB = await usersMongo.findByEmail(email);
        logger.info(userDB);
         if (!userDB) {
@@ -59,6 +60,49 @@ passport.use(
   )
 );
 
+// passport.use(
+//   "github",
+//   new GithubStrategy(
+//     {
+//       clientID: config.github_client_id,
+//       clientSecret: config.github_client_secret,
+//       callbackURL: config.github_callback_url,
+//       scope: ["user:email"],
+//     },
+//     async (accessToken, refreshToken, profile, done) => {
+//       logger.info(profile, "json");
+//       try {
+//         const userEmail =
+//           profile.emails && profile.emails.length > 0
+//             ? profile.emails[0].value
+//             : null;
+
+//         const userDB = await usersMongo.findByEmail(profile._json.email);
+//         console.log(userDB);
+//         if (userDB) {
+//           if (userDB.from_github) {
+
+//             return done(null, userDB);
+//           } else {
+//             return done(null, false);
+//           }
+//         }
+//         // signup
+//         const newUser = {
+//           first_name: profile._json.login,
+//           // last_name: profile._json.name.split(" ")[1] || "",
+//           email: userEmail || profile._json.email || profile.emails[0].value,
+//           password: " ",
+//           from_github: true,
+//         };
+//         const createdUser = await usersMongo.createOne(newUser);
+//         done(null, createdUser);
+//       } catch (error) {
+//         done(error);
+//       }
+//     }
+//   )
+// );
 passport.use(
   "github",
   new GithubStrategy(
@@ -69,30 +113,35 @@ passport.use(
       scope: ["user:email"],
     },
     async (accessToken, refreshToken, profile, done) => {
-      logger.info(profile, "json");
       try {
         const userEmail =
           profile.emails && profile.emails.length > 0
             ? profile.emails[0].value
             : null;
 
-        const userDB = await usersMongo.findByEmail(profile._json.email);
-        // login
+        // Verificar si el usuario ya existe en la base de datos
+        const userDB = await usersMongo.findByEmail(userEmail);
+
         if (userDB) {
+          // Si el usuario existe, verificar si viene de GitHub
           if (userDB.from_github) {
             return done(null, userDB);
           } else {
-            return done(null, false);
+            // El usuario existe pero no es de GitHub, puedes manejarlo según tus necesidades
+            return done(null, false, { message: "Usuario existente pero no de GitHub." });
           }
         }
-        // signup
+
+        // Si el usuario no existe, crear uno nuevo y asociar un carrito
+        const createdCart = await cartsMongo.createOne({ productsCart: [] });
         const newUser = {
           first_name: profile._json.login,
-          // last_name: profile._json.name.split(" ")[1] || "",
           email: userEmail || profile._json.email || profile.emails[0].value,
-          password: " ",
+          password: " ", // Puedes manejar esto según tus necesidades
           from_github: true,
+          cart: createdCart._id, // Asociar el ID del carrito al usuario
         };
+
         const createdUser = await usersMongo.createOne(newUser);
         done(null, createdUser);
       } catch (error) {
@@ -113,7 +162,7 @@ passport.use(
     async (accessToken, refreshToken, profile, done) => {
       try {
         const user = await usersMongo.findByEmail(profile._json.email);
-
+console.log(user, 'google');
         if (user) {
           if (user.from_google) {
             return done(null, user);
@@ -127,7 +176,7 @@ passport.use(
           first_name: profile._json.given_name,
           last_name: profile._json.family_name,
           email: profile._json.email,
-          password: " ",
+          password: "",
           from_google: true,
           cart: createdCart._id,
         };
