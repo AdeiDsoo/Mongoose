@@ -14,7 +14,7 @@ const router = Router();
 
 router.get("/", findAllProducts);
 
-router.post("/", checkRole("admin"), createProduct);
+router.post("/", checkRole("admin" || "userPremium"), createProduct);
 
 router.get("/:idProduct", findProductById);
 

@@ -42,9 +42,8 @@ passport.use(
     },
     async (email, password, done) => {
       try {
-        
         const userDB = await usersMongo.findByEmail(email);
-       logger.info(userDB);
+        logger.info(userDB);
         if (!userDB) {
           return done(null, false);
         }
@@ -76,27 +75,27 @@ passport.use(
             ? profile.emails[0].value
             : null;
 
-        // Verificar si el usuario ya existe en la base de datos
+     
         const userDB = await usersMongo.findByEmail(userEmail);
 
         if (userDB) {
-          // Si el usuario existe, verificar si viene de GitHub
+
           if (userDB.from_github) {
             return done(null, userDB);
           } else {
-        
-            return done(null, false, { message: "Usuario existente pero no de GitHub." });
+            return done(null, false, {
+              message: "Usuario existente pero no de GitHub.",
+            });
           }
         }
 
-        
         const createdCart = await cartsMongo.createOne({ productsCart: [] });
         const newUser = {
           first_name: profile._json.login,
           email: userEmail || profile._json.email || profile.emails[0].value,
-          password: " ", 
+          password: " ",
           from_github: true,
-          cart: createdCart._id, 
+          cart: createdCart._id,
         };
 
         const createdUser = await usersMongo.createOne(newUser);
@@ -119,7 +118,7 @@ passport.use(
     async (accessToken, refreshToken, profile, done) => {
       try {
         const user = await usersMongo.findByEmail(profile._json.email);
-console.log(user, 'google');
+        logger.info(user, "google");
         if (user) {
           if (user.from_google) {
             return done(null, user);

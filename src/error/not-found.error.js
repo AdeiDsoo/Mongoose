@@ -1,12 +1,3 @@
-// export default class NotFoundError{
-//     static createError(entity){
-//         const error=new Error (`${entity} not found`)
-//         error.name="notFoundError"
-//         throw error
-//     }
-
-// }
-
 export default class CustomError extends Error {
     constructor(message) {
       super(message);

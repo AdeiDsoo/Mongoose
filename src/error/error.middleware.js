@@ -1,7 +1,3 @@
-// export const errorMiddleware= async (error, req, res, next)=>{
-// res.send({status:"error", message:error.message, error:error.name})
-// }
-
 import CustomError from './not-found.error.js';
 
 export const errorMiddleware = (error, req, res, next) => {

@@ -13,3 +13,6 @@
   level: 'fatal',
   timestamp: '2023-12-21T17:43:23.206Z'
 }
+{ level: 'error', timestamp: '2023-12-27T19:01:13.666Z' }
+{ level: 'error', timestamp: '2023-12-27T19:02:30.378Z' }
+{ level: 'error', timestamp: '2023-12-27T19:05:52.482Z' }
