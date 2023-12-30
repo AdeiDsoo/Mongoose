@@ -7,6 +7,10 @@ const router = Router();
 router.get("/:idCart", findById);
 router.get("/:idCart/view", findCartById);
 
-router.post("/:idCart/products/:idProduct", checkRole('user'),  addProductToCart);
+router.post(
+	"/:idCart/products/:idProduct",
+	checkRole(["user", "userPremium"]),
+	addProductToCart
+);
 
 export default router;

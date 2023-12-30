@@ -51,13 +51,17 @@ router.post(
   }),
   (req, res) => {
  
-    if (req.user.role === "admin") {
+    if (req.user.role === "Admin") {
       res.redirect("/homeAdmin");
-    } else if (req.user.role === "user") {
-      res.redirect("/home");
-    } else {
-      res.redirect("/error");
     }
+    if (req.user.role === "user") {
+      res.redirect("/home");
+    } 
+     if (req.user.role === "userPremium") {
+				res.redirect("/homeAdmin");
+			} else {
+				res.redirect("/error");
+			}
   }
 );
 

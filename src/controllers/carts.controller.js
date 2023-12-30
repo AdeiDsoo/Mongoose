@@ -76,6 +76,7 @@ export const addProductToCart = async (req, res, next) => {
   const { idProduct, idCart } = req.params;
   const qtyClientProduct = parseInt(req.body.qty, 10);
   try {
+ 
     const cart = await cartsService.findById(idCart);
     if (!cart) {
       throw CustomError.createError(ErrorMessages.CART_NOT_FOUND);
@@ -86,7 +87,11 @@ export const addProductToCart = async (req, res, next) => {
       throw new CustomError.createError(ErrorMessages.PRODUCT_NOT_FOUND);
       // return res.status(404).json({ message: "product not found" });
     }
-
+if(product.owner== req.user.email){
+   res
+			.status(200)
+			.json({ message: "You can't add this product because you created it" });
+}
     if (req.user.cart.id === idCart) {
       const productIndex = cart.productsCart.findIndex((p) =>
         p.idProduct.equals(idProduct)

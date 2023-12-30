@@ -14,12 +14,12 @@ const router = Router();
 
 router.get("/", findAllProducts);
 
-router.post("/", checkRole("admin" || "userPremium"), createProduct);
+router.post("/", checkRole(["userPremium", "Admin"]), createProduct);
 
 router.get("/:idProduct", findProductById);
 
-router.delete("/:idProduct", deleteProduct);
+router.delete("/:idProduct", checkRole(["userPremium", "Admin"]), deleteProduct);
 
-router.put("/:idProduct", updateProduct);
+router.put("/:idProduct",checkRole(["userPremium", "Admin"]), updateProduct);
 
 export default router;

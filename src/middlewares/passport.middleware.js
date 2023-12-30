@@ -1,11 +1,9 @@
 
-export const checkRole = (role) => {
-  return (req, res, next) => {
-
-    if (!req.user || req.user.role !== role) {
-      return res.status(403).json({ message: "Permiso denegado" });
-    }
-    next();
-  };
+export const checkRole = (roles) => {
+	return (req, res, next) => {
+		if (!req.user || !roles.includes(req.user.role)) {
+			return res.status(403).json({ message: "Permiso denegado" });
+		}
+		next();
+	};
 };
-

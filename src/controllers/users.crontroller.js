@@ -5,7 +5,6 @@ import { usersService } from "../services/users.service.js";
 import { logger } from "../winston.js";
 import { verifyResetToken } from "../jwtToken.js";
 
-
 export const findAllUsers = async (req, res) => {
 	try {
 		const result = await usersService.findAll();
@@ -102,17 +101,26 @@ export const updatePassword = async (req, res) => {
 	try {
 		const newPassword = req.body.password;
 		const resetToken = req.params.token;
-logger.info(resetToken, 'token')
+		logger.info(resetToken, "token");
 		if (!resetToken) {
 			return res.redirect("/");
 		}
-
 		const userToken = verifyResetToken(resetToken);
-
 		const result = await usersService.updatePassword(newPassword, resetToken);
 		res.send("Contraseña actualizada");
 	} catch (error) {
 		logger.error(error);
 		// res.redirect("/");
+	}
+};
+
+export const forgotPassword = (req, res) => {
+	const { token } = req.params;
+	const userToken = verifyResetToken(token);
+
+	if (userToken && userToken.email) {
+		res.render("resetPasswordForm", { token });
+	} else {
+		res.redirect("/forgot-password");
 	}
 };

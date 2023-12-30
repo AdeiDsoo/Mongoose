@@ -36,7 +36,6 @@ const productsSchema = new mongoose.Schema({
 	},
 	owner: {
 		type: String,
-		enum: ["user", "userPremium", "Admin"],
 		default: "Admin",
 	},
 });

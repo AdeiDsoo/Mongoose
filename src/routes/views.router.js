@@ -18,7 +18,7 @@ router.get("/login", (req, res) => {
 	res.render("login");
 });
 
-router.get("/home", checkRole("user"), (req, res) => {
+router.get("/home", checkRole(["user", "userPremium"]), (req, res) => {
 	logger.http(req.user);
 	logger.info("cart", req.user.cart._id);
 	res.render("home", {
@@ -36,14 +36,23 @@ router.get("/error", (req, res) => {
 router.get("/google", (req, res) => {
 	res.render("google");
 });
-router.get("/createProduct", checkRole("admin"), (req, res) => {
-	res.render("createProduct");
-});
-router.get("/homeAdmin", checkRole("admin"), (req, res) => {
-	res.render("homeAdmin");
+router.get(
+	"/createProduct",
+	checkRole(["userPremium", "Admin"]),
+	(req, res) => {
+		res.render("createProduct");
+	}
+);
+router.get("/homeAdmin", checkRole(["userPremium", "Admin"]), (req, res) => {
+	console.log(req.user.role, "role");
+	try {
+		res.render("homeAdmin");
+	} catch (error) {
+		console.log(error);
+	}
 });
 
-router.get("/chat", checkRole("user"), (req, res) => {
+router.get("/chat", checkRole(["user"]), (req, res) => {
 	res.render("chat");
 });
 
