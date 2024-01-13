@@ -44,7 +44,7 @@ router.get(
 	}
 );
 router.get("/homeAdmin", checkRole(["userPremium", "Admin"]), (req, res) => {
-	console.log(req.user.role, "role");
+	
 	try {
 		res.render("homeAdmin");
 	} catch (error) {

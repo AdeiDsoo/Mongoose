@@ -1,0 +1,167 @@
+paths:
+  /api/products:
+    get:
+      summary: Get all products
+      tags:
+        - Products
+      responses:
+        "200":
+          description: All products
+        "500":
+          description: Server error
+        "400":
+          description: Some data is missing
+    post:
+      summary: Create a new product
+      tags:
+        - Products
+      security:
+        - jwt: []
+      requestBody:
+        description: Product data
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Product"
+      responses:
+        "200":
+          description: Product created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+              example:
+                message: "Product Created"
+                product:
+                  id: kjsa89
+                  title: Title4
+                  description:  Description4
+                  code: ljds98
+                  category: Men
+                  price: 123.45
+                  thumbnail: URL8
+                  status: true
+                  stock: 100
+        "400":
+          description: Bad request - Data is insufficient
+        "500":
+          description: Server error
+  /api/products/{idProduct}:
+    get:
+      summary: Get product by ID
+      tags:
+        - Products
+      parameters:
+        - name: idProduct
+          in: path
+          description: ID of the product to be retrieved
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Product found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+              example:
+                message: "Product"
+                result:
+                  id: kj34a8
+                  title: Title5
+                  description:  Description5
+                  code: ljd4986
+                  category: Pets
+                  price: 123
+                  thumbnail: URL9
+                  status: true
+                  stock: 100
+        "404":
+          description: Product not found
+        "500":
+          description: Server error
+    delete:
+      summary: Delete product by ID
+      tags:
+        - Products
+      parameters:
+        - name: idProduct
+          in: path
+          description: ID of the product to be deleted
+          required: true
+          schema:
+            type: string
+      security:
+        - jwt: []
+      responses:
+        "200":
+          description: Product deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+              example:
+                message: "Deleted Product"
+                product:
+                  id: kj34a
+                  title: Title4
+                  description:  Description4
+                  code: ljd49
+                  category: Pets
+                  price: 12
+                  thumbnail: URL5
+                  status: false
+                  stock: 102
+        "403":
+          description: Forbidden - Permission denied
+        "404":
+          description: Product not found
+        "500":
+          description: Server error
+    put:
+      summary: Update product by ID
+      tags:
+        - Products
+      parameters:
+        - name: idProduct
+          in: path
+          description: ID of the product to be updated
+          required: true
+          schema:
+            type: string
+      security:
+        - jwt: []
+      requestBody:
+        description: Product data to be updated
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Product"
+      responses:
+        "200":
+          description: Product updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+              example:
+                message: "Updated Product"
+                product:
+                  id: kj34
+                  title: Title1
+                  description:  Description1
+                  code: ld4
+                  category: women
+                  price: 78
+                  thumbnail: URL1
+                  status: false
+                  stock: 10
+        "403":
+          description: Forbidden - Permission denied
+        "404":
+          description: Product not found
+        "500":
+          description: Server error
