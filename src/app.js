@@ -21,7 +21,8 @@ import { messagesService } from "./services/messages.service.js";
 import { errorMiddleware } from "./error/error.middleware.js";
 import { logger } from "./winston.js";
 import mailRouter from "./routes/mail.router.js"
-
+import swaggerUi from "swagger-ui-express";
+import { swaggerSetup } from "./swaggerSpecs.js";
 
 const app = express();
 
@@ -63,7 +64,7 @@ app.use("/api/messages", chatRouter);
 app.use("/api/tickets", ticketsRouter);
 app.use("/api/mocks", mockRouter);
 app.use("/api/mail", mailRouter);
-
+app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerSetup));
 app.use("/loggerTest", (req, res)=>{
     
     logger.fatal("Fatal");

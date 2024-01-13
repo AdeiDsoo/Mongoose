@@ -1,0 +1,144 @@
+# paths:
+#   /api/users:
+#     get:
+#       summary: Get all users
+#       tags:
+#         - Users
+#       responses:
+#         "200":
+#           description: All users
+#         "500":
+#           description: Server error
+#         "400":
+#           description: Some data is missing
+#     post:
+#       summary: Create user
+#       tags:
+#         - Users
+#       requestBody:
+#         description: User data
+#         required: true
+#         content:
+#           application/json:
+#             schema:
+#               type: object
+#               properties:
+#                 first_name:
+#                   type: string
+#                 last_name:
+#                   type: string
+#                 email:
+#                   type: string
+#                 password:
+#                   type: string
+#                 full_name:
+#                   type: string
+#       responses:
+#         "200":
+#           description: User created
+#           content:
+#             application/json:
+#               example:
+#                 message: User created
+#                 user:
+#                   $ref: "#/components/schemas/User"
+#         "400":
+#           description: Bad request - All fields are required
+#         "500":
+#           description: Internal Server Error
+          
+#   /premium/{id}:
+#     get:
+#       summary: Handle role for user-userPremium
+#       tags:
+#         - Users
+#       parameters:
+#         - name: id
+#           in: path
+#           description: User identifier
+#           schema:
+#             type: String
+#           responses:
+#            "400":
+#               description: handle role user-userPremium
+          
+#   /api/users/{id}:
+#     get:
+#       summary: Get user by id
+#       tags:
+#         - Users
+#       parameters:
+#         - name: id
+#           in: path
+#           description: User identifier
+#           schema:
+#             $type: String
+#       responses:
+#         "200":
+#           description: user found
+#           content:
+#             application/json:
+#               schemas:
+#                 $ref: "#components/schemas/User"
+#               example:
+#                 id: fhghfvghltglg
+#                 first_name: Juan
+#                 last_name: Hoyos
+#                 age: 38
+#                 email: jhoyos@mail.com
+#         "500":
+#           description: Server error
+#         "400":
+#           description: Some data is missing
+   
+# components:
+#   schemas:
+#     User:
+#       type: object
+#       properties:
+#         _id:
+#           type: string
+#         first_name:
+#           type: string
+#         last_name:
+#           type: string
+#         email:
+#           type: string
+#         password:
+#           type: string
+#         from_github:
+#           type: boolean
+#         from_google: 
+#           type: boolean
+#         cart:
+#           type: string
+#         role:
+#           type: string
+#       example:
+#         _id: fdjkgfjkgtrjgtjktjkgt
+#         first_name: Franco
+#         last_name: Salamanca
+#         email: fsalamanca@mail.com
+#         password: 30924809cm
+#         from_github: false
+#         from_google: false
+#         cart: siajd8320k
+#         role: user
+  # Cart:
+  #     type: object
+  #     properties:
+  #       _id:
+  #         type: string
+  #       productsCart:
+  #         type: array
+  #         items:
+  #           $ref: "#/components/schemas/Cart"
+  #     example:
+  #       _id: fdjkgfjkgtrjgtjktjkgt
+  #       productsCart:
+  #         - idProduct: "23KJ"
+  #           qty: 1
+  #         - idProduct: "8lKDJ3"
+  #           qty: 2
+
+

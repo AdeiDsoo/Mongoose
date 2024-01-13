@@ -1,0 +1,203 @@
+paths:
+  /api/carts/{id}:
+    get:
+      summary: Get cart by ID
+      tags:
+        - Carts
+      parameters:
+        - name: id
+          in: path
+          description: Cart identifier
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Cart found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cart"
+              example:
+                _id: dlksj89sk
+                productsCart:
+                  - product:
+                      id: "23KJ"
+                      code: "JKDHSF8"
+                      status: true
+                      title: "Product Title 1"
+                      description: "Product Description 1"
+                      price: 345
+                      thumbnail: "ww.hola.com"
+                      category: "Pets"
+                      owner: "Admin"
+                    qty: 1
+                  - product:
+                      id: "8lKDJ3"
+                      code: "JKD45F8"
+                      status: true
+                      title: "Product Title 2"
+                      description: "Product Description 2"
+                      price: 45
+                      thumbnail: "ww.hola.com"
+                      category: "Sports"
+                      owner: "fulanito@mail.com"
+                    qty: 2
+        "500":
+          description: Server error
+        "400":
+          description: Some data is missing
+
+  /api/carts/:idCart/view:
+    get:
+      summary: Get cart by ID
+      tags:
+        - Carts
+      parameters:
+        - name: idCart
+          in: path
+          description: ID of the cart to be retrieved
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Cart found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cart"
+              example:
+                _id: dlksj89sk
+                productsCart:
+                  - product:
+                      id: "23KJ"
+                      code: "JKDHSF8"
+                      status: true
+                      title: "Product Title 1"
+                      description: "Product Description 1"
+                      price: 345
+                      thumbnail: "ww.hola.com"
+                      category: "Pets"
+                      owner: "Admin"
+                    qty: 1
+                  - product:
+                      id: "8lKDJ3"
+                      code: "JKD45F8"
+                      status: true
+                      title: "Product Title 2"
+                      description: "Product Description 2"
+                      price: 45
+                      thumbnail: "ww.hola.com"
+                      category: "Sports"
+                      owner: "fulanito@mail.com"
+                    qty: 2
+        "500":
+          description: Server error
+        "400":
+          description: Some data is missing
+  /api/carts/{idCart}/products/{idProduct}:
+    post:
+      summary: Add product to cart
+      tags:
+        - Carts
+      parameters:
+        - name: idCart
+          in: path
+          description: ID of the cart where the product will be added
+          required: true
+          schema:
+            type: string
+        - name: idProduct
+          in: path
+          description: ID of the product to be added
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Product data
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                qty:
+                  type: integer
+                  description: Quantity of the product to be added
+      responses:
+        "200":
+          description: Product added to cart
+        "404":
+          description: Cart or product not found
+        "400":
+          description: Bad request - Product cannot be added
+        "500":
+          description: Server error
+      examples:
+        example-1:
+          value:
+            qty: 1
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        id:
+          type: string
+        code:
+          type: string
+        status:
+          type: boolean
+        title:
+          type: string
+        description: 
+          type: string
+        price: 
+          type: number
+        thumbnail:
+          type: string
+        category: 
+          type: string
+        owner: 
+          type: string
+
+    Cart:
+      type: object
+      properties:
+        _id:
+          type: string
+        productsCart:
+          type: array
+          items:
+            type: object
+            properties:
+              product:
+                $ref: "#/components/schemas/Product"
+              qty:
+                type: number
+      example:
+        _id: fdjkgfjkgtrjgtjktjkgt
+        productsCart:
+          - product:
+              id: "23KJ"
+              code: "JKDHSF8"
+              status: true
+              title: "Product Title 1"
+              description: "Product Description 1"
+              price: 345
+              thumbnail: "ww.hola.com"
+              category: "Pets"
+              owner: "Admin"
+            qty: 1
+          - product:
+              id: "8lKDJ3"
+              code: "JKD45F8"
+              status: true
+              title: "Product Title 2"
+              description: "Product Description 2"
+              price: 45
+              thumbnail: "ww.hola.com"
+              category: "Sports"
+              owner: "fulanito@mail.com"
+            qty: 2
