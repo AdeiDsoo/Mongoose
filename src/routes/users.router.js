@@ -6,7 +6,9 @@ import {
 	findUserById,
 	updatePassword,
 	updateRole,
-	forgotPassword
+	forgotPassword,
+	deleteUser,
+	deleteUserEmail
 } from "../controllers/users.crontroller.js";
 // import { hashData } from "../utils.js";
 // import { usersMongo } from "../DAO's/memDAO/users.mongo.js";
@@ -24,5 +26,7 @@ router.post("/reset-password/:token", updatePassword);
 router.post("/", createUser);
 
 router.get("/premium/:uid", updateRole);
+
+router.delete("/delete/:email", deleteUserEmail)
 
 export default router;

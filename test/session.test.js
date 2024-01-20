@@ -1,29 +1,63 @@
-import {
-	createUser,
-	deleteUser,
-} from "../src/controllers/users.crontroller.js";
-import { expect } from "chai";
 import supertest from "supertest";
+import { expect } from "chai";
+import { usersMongo } from "../src/DAO's/memDAO/users.mongo.js";
+const request = supertest("http://localhost:8080");
 
-describe("should create the user", function () {
-	let idResponse;
-	const user = {
-		first_name: "Lola",
-		last_name: "Sanchez",
-		full_name: "Lola Sanchez",
-
+describe("Session Routes", function () {
+	let user = {
+		first_name: "Diana",
+		last_name: "smith",
+		full_name: "diana Smith",
+		email: "dSmith@mail.com",
 		password: "12345",
+		role: "user",
 	};
-	it("should throw an error if data is missing", async function () {
-		const response = await createUser(user);
-		console.log(response);
-		idResponse = response._id;
+	let errorUser = {
+		first_name: "Diana",
+		last_name: "smith",
+		full_name: "diana Smith",
+		password: "12345",
+		role: "user",
+	};
+	let idUser;
+
+	describe("POST /api/sessions/signup", async () => {
+		it("should sign up a new user successfully", async () => {
+			const response = await request.post("/api/sessions/signup").send(user);
+
+			expect(response.status).to.equal(302);
+			expect(response.headers.location).to.equal("/home");
+		});
+
+		it("should handle sign up failure", async () => {
+			const response = await request
+				.post("/api/sessions/signup")
+				.send(errorUser);
+
+			expect(response.status).to.equal(302);
+			expect(response.headers.location).to.equal("/error");
+		});
 	});
 
-	after(async function () {
-		if (idResponse) {
-			const deleteResult = await deleteUser(idResponse);
-			console.log("Deleted product:", deleteResult);
-		}
+	describe("DELETE /api/sessions/delete/:email", async () => {
+		
+
+		it("should delete a user by email", async () => {
+			
+			const userEmailToDelete = user.email;
+
+			
+		console.log("User email to delete:", userEmailToDelete);
+		const deleteResponse = await request.delete(
+			`/api/users/delete/${userEmailToDelete}`
+		);
+
+
+		
+			expect(deleteResponse.status).to.equal(200);
+
+			
+			expect(deleteResponse.body.message).to.equal("User delete");
+		});
 	});
 });

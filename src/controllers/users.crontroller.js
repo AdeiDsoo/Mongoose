@@ -68,7 +68,22 @@ export const deleteUser = async (req, res) => {
 		res.status(500).json({ message: error.message });
 	}
 };
-
+export const deleteUserEmail= async (req, res)=>{
+	const { email } = req.params;
+	try {
+		
+		const user = await usersService.findByEmail(email);
+		console.log(user, 'userrr')
+		if (!user) {
+			return res.status(404).json({ message: "User not found" });
+		}
+		const deleteUser= await usersService.deleteOne(user._id)
+		console.log(deleteUser);
+		res.status(200).json({ message: "User delete", deleteUser });
+	} catch (error) {
+		res.status(500).json({ message: error.message });
+	}
+}
 export const updateRole = async (req, res) => {
 	try {
 		const { uid } = req.params;

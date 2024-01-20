@@ -28,6 +28,15 @@ describe("Created products", function () {
 		createdProductId = response._id; 
 		expect(response).to.have.property("_id");
 	});
+	it("should get user by ID", async function () {
+		
+		expect(createdProductId).to.be.not.undefined;
+
+		const response = await productsMongo.findById(createdProductId);
+
+		expect(response).to.have.property("_id");
+		expect(response._id.toString()).to.equal(createdProductId.toString()); 
+	});
 
 
 	after(async function () {
