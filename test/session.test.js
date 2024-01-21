@@ -1,6 +1,5 @@
 import supertest from "supertest";
 import { expect } from "chai";
-import { usersMongo } from "../src/DAO's/memDAO/users.mongo.js";
 const request = supertest("http://localhost:8080");
 
 describe("Session Routes", function () {
