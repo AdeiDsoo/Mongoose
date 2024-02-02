@@ -1,6 +1,6 @@
 import { ErrorMessages } from "../error/error.enum.js";
 import CustomError from "../error/not-found.error.js";
-import { UserNotFoundError } from "../services/user-not-found.error.js";
+// import { UserNotFoundError } from "../services/user-not-found.error.js";
 import { usersService } from "../services/users.service.js";
 import { logger } from "../winston.js";
 import { verifyResetToken } from "../jwtToken.js";
@@ -138,4 +138,18 @@ export const forgotPassword = (req, res) => {
 	} else {
 		res.redirect("/forgot-password");
 	}
+};
+
+
+export const lastConnection = async (req, res) => {
+try {
+	const logoutTime = new Date();
+	const handleLastConnection = await usersService.updateOne({
+		id: req.user._id,
+		last_connection: logoutTime,
+	});
+} catch (error) {
+	logger.error(error);
+
+}
 };

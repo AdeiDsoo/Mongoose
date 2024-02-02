@@ -42,24 +42,20 @@ class UsersService {
 		const response = await usersMongo.findByPassword(password);
 		return response;
 	}
-
-	async updatePassword(resetToken, newPassword){
-		
 	
+	async updatePassword(resetToken, newPassword) {
+		const userToken = verifyResetToken(resetToken);
 
-			const userToken = verifyResetToken(resetToken);
+		if (userToken && userToken.email) {
+			const email = userToken.email;
+			const hashedPassword = await hashData(newPassword);
+			const userDB = await usersMongo.findByEmail(email);
 
-			if (userToken && userToken.email) {
-				const email = userToken.email;
-				const hashedPassword = await hashData(newPassword);
-				const userDB = await usersMongo.findByEmail(email);
-
-				const updateUser = await usersMongo.updateOne(userDB._id, {
-					...userDB.toObject(),
-					password: hashedPassword,
-				});
-			}
-		
+			const updateUser = await usersMongo.updateOne(userDB._id, {
+				...userDB.toObject(),
+				password: hashedPassword,
+			});
+		}
 	}
 }
 
