@@ -8,6 +8,7 @@ import { cartsMongo } from "./DAO's/memDAO/carts.mongo.js";
 import config from "./config/config.js";
 import { logger } from "./winston.js";
 
+
 passport.use(
   "signup",
   new LocalStrategy(
@@ -26,6 +27,7 @@ passport.use(
           password: hashedPassword,
           cart: createdCart._id,
         });
+       
         done(null, createUser);
       } catch (error) {
         done(error);

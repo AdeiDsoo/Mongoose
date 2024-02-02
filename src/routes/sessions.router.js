@@ -61,16 +61,19 @@ router.post(
 	passport.authenticate("login", {
 		failureRedirect: "/error",
 	}),
-	(req, res) => {
-		if (req.user.role === "Admin") {
-			res.redirect("/homeAdmin");
-		}
-		if (req.user.role === "user") {
-			res.redirect("/home");
-		}
-		if (req.user.role === "userPremium") {
-			res.redirect("/homeAdmin");
-		} else {
+	async (req, res) => {
+		try {
+			await lastConnection(req, res);
+
+			if (req.user.role === "Admin") {
+				res.redirect("/homeAdmin");
+			} else if (req.user.role === "user" || req.user.role === "userPremium") {
+				res.redirect("/home");
+			} else {
+				res.redirect("/error");
+			}
+		} catch (error) {
+			console.log("Error:", error);
 			res.redirect("/error");
 		}
 	}
@@ -81,7 +84,10 @@ router.post(
 	passport.authenticate("signup", {
 		successRedirect: "/home",
 		failureRedirect: "/error",
-	})
+	}),
+	async (req, res) => {
+		await lastConnection(req, res);
+	}
 );
 
 
