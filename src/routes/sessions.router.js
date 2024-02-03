@@ -14,9 +14,10 @@ router.get(
 router.get(
 	"/auth/google/callback",
 	passport.authenticate("google", { failureRedirect: "/error" }),
-	function (req, res) {
+	async (req, res) => {
+		await lastConnection(req, res);
 		req.session.user = req.user;
-		console.log(req.session.user);
+
 		res.redirect("/home");
 	}
 );
@@ -31,20 +32,13 @@ router.get(
 	passport.authenticate("github", {
 		failureRedirect: "/error",
 	}),
-	(req, res) => {
+	async(req, res) => {
+		await lastConnection(req, res);
 		req.session.user = req.user;
 		res.redirect("/home");
 	}
 );
 
-// router.get("/logout", (req, res) => {
-//   req.logout((err) => {
-//     if (err) {
-//       return next(err);
-//     }
-//     res.redirect("/");
-//   });
-// });
 router.get("/logout", async (req, res) => {
  await lastConnection(req, res);
 	req.logout((err) => {
@@ -73,7 +67,7 @@ router.post(
 				res.redirect("/error");
 			}
 		} catch (error) {
-			console.log("Error:", error);
+			
 			res.redirect("/error");
 		}
 	}
@@ -89,6 +83,5 @@ router.post(
 		await lastConnection(req, res);
 	}
 );
-
 
 export default router;

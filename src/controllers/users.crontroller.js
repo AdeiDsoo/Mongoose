@@ -68,22 +68,21 @@ export const deleteUser = async (req, res) => {
 		res.status(500).json({ message: error.message });
 	}
 };
-export const deleteUserEmail= async (req, res)=>{
+export const deleteUserEmail = async (req, res) => {
 	const { email } = req.params;
 	try {
-		
 		const user = await usersService.findByEmail(email);
-		console.log(user, 'userrr')
+		console.log(user, "userrr");
 		if (!user) {
 			return res.status(404).json({ message: "User not found" });
 		}
-		const deleteUser= await usersService.deleteOne(user._id)
+		const deleteUser = await usersService.deleteOne(user._id);
 		console.log(deleteUser);
 		res.status(200).json({ message: "User delete", deleteUser });
 	} catch (error) {
 		res.status(500).json({ message: error.message });
 	}
-}
+};
 export const updateRole = async (req, res) => {
 	try {
 		const { uid } = req.params;
@@ -140,16 +139,15 @@ export const forgotPassword = (req, res) => {
 	}
 };
 
-
 export const lastConnection = async (req, res) => {
-try {
-	const logoutTime = new Date();
-	const handleLastConnection = await usersService.updateOne({
-		id: req.user._id,
-		last_connection: logoutTime,
-	});
-} catch (error) {
-	logger.error(error);
-
-}
+	try {
+		const logoutTime = new Date();
+		console.log(req.user);
+		const handleLastConnection = await usersService.updateOne({
+			id: req.user._id,
+			last_connection: logoutTime,
+		});
+	} catch (error) {
+		logger.error(error);
+	}
 };

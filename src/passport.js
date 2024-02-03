@@ -22,11 +22,13 @@ passport.use(
           return done(null, false);
         }
         const hashedPassword = await hashData(password);
+        const logoutTime = new Date();
         const createUser = await usersMongo.createOne({
-          ...req.body,
-          password: hashedPassword,
-          cart: createdCart._id,
-        });
+					...req.body,
+					password: hashedPassword,
+					cart: createdCart._id,
+					last_connection: logoutTime,
+				});
        
         done(null, createUser);
       } catch (error) {
