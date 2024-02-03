@@ -76,7 +76,7 @@ export const deleteUserEmail = async (req, res) => {
 			return res.status(404).json({ message: "User not found" });
 		}
 		const deleteUser = await usersService.deleteOne(user._id);
-		
+
 		res.status(200).json({ message: "User delete", deleteUser });
 	} catch (error) {
 		res.status(500).json({ message: error.message });
@@ -89,13 +89,24 @@ export const updateRole = async (req, res) => {
 		const user = await usersService.findById(uid);
 
 		if (user.role === "user") {
-			await usersService.updateOne({
-				id: uid,
-				role: "userPremium",
-			});
-			res.status(400).send("Usuario actualizado a userPremium");
-		}
-		if (user.role === "userPremium") {
+			const userDocuments = user.documents;
+
+			const requiredDocuments = userDocuments.every((document) =>
+				["identification", "proofAdress", "proofBank"].includes(document.name)
+			);
+
+			if (requiredDocuments) {
+				await usersService.updateOne({
+					id: uid,
+					role: "userPremium",
+				});
+				res.status(200).send("Usuario actualizado a userPremium");
+			} else {
+				res
+					.status(400)
+					.send("El usuario no tiene todos los documentos requeridos");
+			}
+		} else if (user.role === "userPremium") {
 			await usersService.updateOne({
 				id: uid,
 				role: "user",
@@ -138,8 +149,6 @@ export const forgotPassword = (req, res) => {
 	}
 };
 
-
-
 export const lastConnection = async (req, res) => {
 	try {
 		const logoutTime = new Date();
@@ -153,40 +162,44 @@ export const lastConnection = async (req, res) => {
 	}
 };
 
-
 export const uploadDocuments = async (req, res) => {
-  try {
-    const { idUser } = req.params;
-const fieldOrder = ["identification", "proofAdress", "proofBank"];
-    const missingFields = fieldOrder.filter((fieldName) => !req.files[fieldName]);
+	try {
+		const { idUser } = req.params;
+		const fieldOrder = ["identification", "proofAdress", "proofBank"];
+		const missingFields = fieldOrder.filter(
+			(fieldName) => !req.files[fieldName]
+		);
 
-    if (missingFields.length > 0) {
-      return res.status(400).json({
-        status: 'error',
-        message: `Missing required fields: ${missingFields.join(', ')}`,
-      });
-    }
+		if (missingFields.length > 0) {
+			return res.status(400).json({
+				status: "error",
+				message: `Missing required fields: ${missingFields.join(", ")}`,
+			});
+		}
 
-    const filesArray = fieldOrder.map((fieldName) => {
-      const file = req.files[fieldName][0];
-      const name = fieldName || 'Unknown';
+		const filesArray = fieldOrder.map((fieldName) => {
+			const file = req.files[fieldName][0];
+			const name = fieldName || "Unknown";
 
-      return {
-        name,
-        reference: file.path,
-      };
-    });
+			return {
+				name,
+				reference: file.path,
+			};
+		});
 
-    const documentsUser = await usersService.updateDocuments(idUser, filesArray);
+		const documentsUser = await usersService.updateDocuments(
+			idUser,
+			filesArray
+		);
 
-    res.send({
-      status: 'success',
-      message: 'Files uploaded successfully',
-      files: filesArray,
-      documentsUser,
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Internal Server Error' });
-  }
+		res.send({
+			status: "success",
+			message: "Files uploaded successfully",
+			files: filesArray,
+			documentsUser,
+		});
+	} catch (error) {
+		console.error(error);
+		res.status(500).json({ message: "Internal Server Error" });
+	}
 };

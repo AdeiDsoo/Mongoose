@@ -24,3 +24,8 @@
 { level: 'error', timestamp: '2024-02-03T22:27:25.256Z' }
 { level: 'error', timestamp: '2024-02-03T22:29:39.848Z' }
 { level: 'error', timestamp: '2024-02-03T22:32:19.654Z' }
+{
+  code: 'ERR_HTTP_HEADERS_SENT',
+  level: 'error',
+  timestamp: '2024-02-03T23:03:14.783Z'
+}
