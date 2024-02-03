@@ -49,10 +49,11 @@ const usersSchema = new mongoose.Schema({
 				},
 			},
 		],
+		_id: false,
 	},
-  last_connection:{
-    type:Date
-  }
+	last_connection: {
+		type: Date,
+	},
 });
 
 export const usersModel = mongoose.model("Users", usersSchema);

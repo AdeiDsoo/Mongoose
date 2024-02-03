@@ -1,6 +1,5 @@
 import { ErrorMessages } from "../error/error.enum.js";
 import CustomError from "../error/not-found.error.js";
-// import { UserNotFoundError } from "../services/user-not-found.error.js";
 import { usersService } from "../services/users.service.js";
 import { logger } from "../winston.js";
 import { verifyResetToken } from "../jwtToken.js";
@@ -72,12 +71,12 @@ export const deleteUserEmail = async (req, res) => {
 	const { email } = req.params;
 	try {
 		const user = await usersService.findByEmail(email);
-		console.log(user, "userrr");
+
 		if (!user) {
 			return res.status(404).json({ message: "User not found" });
 		}
 		const deleteUser = await usersService.deleteOne(user._id);
-		console.log(deleteUser);
+		
 		res.status(200).json({ message: "User delete", deleteUser });
 	} catch (error) {
 		res.status(500).json({ message: error.message });
@@ -139,6 +138,8 @@ export const forgotPassword = (req, res) => {
 	}
 };
 
+
+
 export const lastConnection = async (req, res) => {
 	try {
 		const logoutTime = new Date();
@@ -150,4 +151,42 @@ export const lastConnection = async (req, res) => {
 	} catch (error) {
 		logger.error(error);
 	}
+};
+
+
+export const uploadDocuments = async (req, res) => {
+  try {
+    const { idUser } = req.params;
+const fieldOrder = ["identification", "proofAdress", "proofBank"];
+    const missingFields = fieldOrder.filter((fieldName) => !req.files[fieldName]);
+
+    if (missingFields.length > 0) {
+      return res.status(400).json({
+        status: 'error',
+        message: `Missing required fields: ${missingFields.join(', ')}`,
+      });
+    }
+
+    const filesArray = fieldOrder.map((fieldName) => {
+      const file = req.files[fieldName][0];
+      const name = fieldName || 'Unknown';
+
+      return {
+        name,
+        reference: file.path,
+      };
+    });
+
+    const documentsUser = await usersService.updateDocuments(idUser, filesArray);
+
+    res.send({
+      status: 'success',
+      message: 'Files uploaded successfully',
+      files: filesArray,
+      documentsUser,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
 };

@@ -22,6 +22,7 @@ router.get("/home", checkRole(["user", "userPremium"]), (req, res) => {
 	logger.http(req.user);
 	logger.info("cart", req.user.cart._id);
 	res.render("home", {
+		id:req.user._id,
 		first_name: req.user.first_name,
 		last_name: req.user.last_name,
 		email: req.user.email,
@@ -80,4 +81,7 @@ router.get("/handlePassword", (req, res) => {
 router.get("/resetPasswordForm", (req, res) => {
 	res.render("resetPasswordForm");
 });
+
+
+
 export default router;

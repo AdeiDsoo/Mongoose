@@ -31,8 +31,8 @@ class TicketsService {
     return response;
   }
   async updateOne(obj) {
-    const { id, ...userInfo } = obj;
-    const response = await ticketsMongo.updateOne(id, userInfo);
+    const { id, ...ticketInfo } = obj;
+    const response = await ticketsMongo.updateOne(id, ticketInfo);
     return response;
   }
   async deleteOne(id) {

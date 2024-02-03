@@ -30,6 +30,12 @@ class UsersService {
 		const response = await usersMongo.updateOne(id, userInfo);
 		return response;
 	}
+	 async updateDocuments(id, documents) {
+    const response = await usersMongo.updateOne(id, { documents });
+    return response;
+ 
+};
+
 	async deleteOne(id) {
 		const response = await usersMongo.deleteOne(id);
 		return response;
@@ -42,7 +48,7 @@ class UsersService {
 		const response = await usersMongo.findByPassword(password);
 		return response;
 	}
-	
+
 	async updatePassword(resetToken, newPassword) {
 		const userToken = verifyResetToken(resetToken);
 

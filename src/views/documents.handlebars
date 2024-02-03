@@ -1,0 +1,16 @@
+<section class="documents">
+	<h2>Upload your documents</h2>
+	<form
+		action="/api/users/{{id}}/documents"
+		method="post"
+		enctype="multipart/form-data"
+	>
+		identification
+		<input type="file" name="identification" required  />
+		Proof of Adress
+		<input type="file" name="proofAdress" required  />
+		proof of Bank
+		<input type="file" name="proofBank"  required />
+		<input type="submit" value="Load Files" />
+	</form>
+</section>

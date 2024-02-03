@@ -1,19 +1,19 @@
 <section class="home">
-  <h2>Welcome {{first_name}} {{last_name}} </h2>
-  <h3> {{email}} </h3>
-<nav class="menuBtn">
-<a href="/chat" class="btnChat">Chat</a>
-<a href="/mailing" class="btnCoupon">coupon</a>
-<a href="/api/carts/{{cart}}/view" class="btnCoupon">Ver Carrito</a>
-<a href="/api/sessions/logout" class="logout">LogOut</a>
-</nav>
+	<h2>Welcome {{first_name}} {{last_name}} </h2>
+	<h3> {{email}} </h3>
+	<nav class="menuBtn">
+		<a href="/chat" class="btnChat">Chat</a>
+		<a href="/api/users/{{id}}/documents" class="btnCoupon">Documents</a>
+		<a href="/api/carts/{{cart}}/view" class="btnCoupon">Ver Carrito</a>
+		<a href="/api/sessions/logout" class="logout">LogOut</a>
+	</nav>
 </section>
 
 <section class="allProductsFetch">
-  <section id="renderData">
+	<section id="renderData">
 
-  </section>
-  <button id="loadMoreBtn">Load More</button>
+	</section>
+	<button id="loadMoreBtn">Load More</button>
 </section>
 
 <script src="/js/main.js"></script>

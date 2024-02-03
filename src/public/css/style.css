@@ -323,3 +323,31 @@ a {
 	text-align: left;
 	background-color: #90bac4;
 }
+.documents {
+	display: block;
+	justify-content: center;
+	align-items: center;
+	width: 100vw;
+	height: 100vh;
+	padding: 5vw;
+	background-color: #346381;
+}
+.documents h2 {
+	color: #ce6029;
+	font-weight: bolder;
+	text-align: center;
+	font-size: 3rem;
+}
+.documents form {
+	display: flex;
+	justify-content: center;
+	align-items: flex-start;
+	flex-direction: column;
+	color: #ddd;
+	font-size: 2rem;
+	text-align: start;
+	width: 80%;
+}
+.documents form input {
+	margin: 2rem 0;
+}
