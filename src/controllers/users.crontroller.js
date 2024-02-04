@@ -152,7 +152,6 @@ export const forgotPassword = (req, res) => {
 export const lastConnection = async (req, res) => {
 	try {
 		const logoutTime = new Date();
-		console.log(req.user);
 		const handleLastConnection = await usersService.updateOne({
 			id: req.user._id,
 			last_connection: logoutTime,
@@ -192,7 +191,7 @@ export const uploadDocuments = async (req, res) => {
 			filesArray
 		);
 
-		res.send({
+		res.send("upload-success", {
 			status: "success",
 			message: "Files uploaded successfully",
 			files: filesArray,

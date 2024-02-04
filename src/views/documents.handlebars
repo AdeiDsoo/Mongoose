@@ -1,10 +1,12 @@
 <section class="documents">
 	<h2>Upload your documents</h2>
 	<form
+  id="documentsForm"
 		action="/api/users/{{id}}/documents"
 		method="post"
 		enctype="multipart/form-data"
 	>
+  <input type="hidden" name="category" value="documents" />
 		identification
 		<input type="file" name="identification" required  />
 		Proof of Adress
@@ -14,3 +16,4 @@
 		<input type="submit" value="Load Files" />
 	</form>
 </section>
+<script src="/js/formDocuments.js"></script>
