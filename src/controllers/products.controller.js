@@ -1,7 +1,7 @@
 import { productsService } from "../services/products.service.js";
 import CustomError from "../error/not-found.error.js";
 import { ErrorMessages } from "../error/error.enum.js";
-import { logger } from "../winston.js";
+import { logger } from "../utils/winston.js";
 
 export const findAll = async (req, res) => {
 	try {

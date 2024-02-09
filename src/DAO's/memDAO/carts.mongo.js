@@ -1,5 +1,5 @@
 import { cartsModel } from "../../models/carts.model.js";
-import { logger } from "../../winston.js";
+import { logger } from "../../utils/winston.js";
 import BasicMongo from "./basic.mongo.js";
 
 class CartsMongo extends BasicMongo {

@@ -2,7 +2,7 @@ import { Router } from "express";
 import { checkRole } from "../middlewares/passport.middleware.js";
 import { productsService } from "../services/products.service.js";
 import { updateCartAllProducts } from "../controllers/carts.controller.js";
-import { logger } from "../winston.js";
+import { logger } from "../utils/winston.js";
 
 const router = Router();
 

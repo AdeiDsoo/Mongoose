@@ -1,8 +1,8 @@
 import { ErrorMessages } from "../error/error.enum.js";
 import CustomError from "../error/not-found.error.js";
 import { usersService } from "../services/users.service.js";
-import { logger } from "../winston.js";
-import { verifyResetToken } from "../jwtToken.js";
+import { logger } from "../utils/winston.js";
+import { verifyResetToken } from "../utils/jwtToken.js";
 
 export const findAllUsers = async (req, res) => {
 	try {

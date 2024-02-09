@@ -2,11 +2,20 @@ import { dirname } from "path";
 import { fileURLToPath } from "url";
 import bcrypt from "bcrypt"
 import  jwt  from "jsonwebtoken";
-import config from "./config/config.js"
+import config from "../config/config.js"
 
 const JWT_SECRET=config.jwt_secret
 
-export const __dirname = dirname(fileURLToPath(import.meta.url));
+
+const currentFilePath = fileURLToPath(import.meta.url);
+
+
+const currentDir = dirname(currentFilePath);
+
+const parentDir = dirname(currentDir);
+
+export const __dirname = parentDir;
+// export const __dirname = dirname(fileURLToPath(import.meta.url));
 
 
 export const hashData= async(data)=>{

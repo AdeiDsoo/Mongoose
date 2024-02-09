@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { productsMongo } from "../src/DAO's/memDAO/products.mongo.js";
 import "./db.js"
-import supertest from "supertest";
+import { logger } from "winston";
 
 describe("Created products", function () {
 	let createdProductId; 
@@ -42,7 +42,7 @@ describe("Created products", function () {
 	after(async function () {
 		if (createdProductId) {
 			const deleteResult = await productsMongo.deleteOne(createdProductId);
-			console.log("Deleted product:", deleteResult);
+			logger.info ("Deleted product:", deleteResult);
 		}
 	});
 });

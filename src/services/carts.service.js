@@ -1,9 +1,9 @@
 import { cartsMongo } from "../DAO's/memDAO/carts.mongo.js";
 import { productsMongo } from "../DAO's/memDAO/products.mongo.js";
-import { hashData } from "../utils.js";
+import { hashData } from "../utils/utils.js";
 import CustomeError from "../error/not-found.error.js";
 import { ErrorMessages } from "../error/error.enum.js";
-import { logger } from "../winston.js";
+import { logger } from "../utils/winston.js";
 
 class CartsService {
     async findAll() {

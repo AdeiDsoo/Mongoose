@@ -1,9 +1,7 @@
-// import { usersManager } from "../DAO's/factory.js";
 import { usersMongo } from "../DAO's/memDAO/users.mongo.js";
-import { hashData, compareData } from "../utils.js";
+import { hashData, compareData } from "../utils/utils.js";
 import UserDTO from "../DTO/user.dto.js";
-import { transporter } from "../nodemailer.js";
-import { verifyResetToken } from "../jwtToken.js";
+import { verifyResetToken } from "../utils/jwtToken.js";
 
 class UsersService {
 	async findAll() {

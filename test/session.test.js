@@ -1,5 +1,6 @@
 import supertest from "supertest";
 import { expect } from "chai";
+import { logger } from "winston";
 const request = supertest("http://localhost:8080");
 
 describe("Session Routes", function () {
@@ -46,7 +47,7 @@ describe("Session Routes", function () {
 			const userEmailToDelete = user.email;
 
 			
-		console.log("User email to delete:", userEmailToDelete);
+		logger.info("User email to delete:", userEmailToDelete);
 		const deleteResponse = await request.delete(
 			`/api/users/delete/${userEmailToDelete}`
 		);

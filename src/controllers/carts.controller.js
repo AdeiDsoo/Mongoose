@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 import CustomError from "../error/not-found.error.js";
 import { ErrorMessages } from "../error/error.enum.js";
 import mongoose from "mongoose";
-import { logger } from "../winston.js";
+import { logger } from "../utils/winston.js";
 
 export const findCart = async (req, res) => {
   try {

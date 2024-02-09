@@ -1,7 +1,7 @@
 import { Router } from "express";
-import { transporter } from "../nodemailer.js";
+import { transporter } from "../utils/nodemailer.js";
 import { usersService } from "../services/users.service.js";
-import { generateResetToken } from "../jwtToken.js";
+import { generateResetToken } from "../utils/jwtToken.js";
 
 const router = Router();
 
