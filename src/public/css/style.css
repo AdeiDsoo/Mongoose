@@ -77,6 +77,15 @@ html {
 	flex-direction: column;
 	padding-top: 3vw;
 }
+.homeAdmin {
+	min-height: 100vh;
+}
+.homeAdmin h2 {
+	font-size: 3rem;
+	color: #ce6029;
+	font-weight: bolder;
+	margin-bottom: 5rem;
+}
 .allProductsFetch {
 	padding-top: 0vw;
 }
@@ -350,4 +359,64 @@ a {
 }
 .documents form input {
 	margin: 2rem 0;
+}
+.usersAdmin,
+.deleteUsers {
+	background-color: #162833;
+	padding: 30px;
+	display: flex;
+	justify-content: center;
+	align-items: flex-start;
+	flex-direction: row;
+}
+.deleteUsers {
+	flex-direction: column;
+	color: white;
+	font-size: 1.8rem;
+	align-items: center;
+}
+
+.allUsers {
+	width: 20vw;
+
+	margin: 10px;
+}
+.allUsers h2 {
+	text-align: center;
+	color: #ce6029;
+	font-weight: bolder;
+	font-size: 2rem;
+	margin-bottom: 10px;
+}
+.twoDays h2 {
+	text-align: center;
+	color: #ce6029;
+	font-weight: bolder;
+	font-size: 2rem;
+	margin-bottom: 10px;
+}
+#renderAllUsers {
+	background-color: #006476;
+	padding: 30px;
+}
+#renderAllUsers li {
+	color: white;
+	font-size: 1.5rem;
+	font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+		"Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}
+.twoDays {
+	width: 20vw;
+	margin: 10px;
+}
+#renderTwoDaysUsers {
+	background-color: #648fa9;
+
+	padding: 30px;
+}
+#renderTwoDaysUsers li {
+	color: white;
+	font-size: 1.5rem;
+	font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+		"Lucida Sans Unicode", Geneva, Verdana, sans-serif;
 }

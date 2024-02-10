@@ -4,10 +4,46 @@ import { usersService } from "../services/users.service.js";
 import { logger } from "../utils/winston.js";
 import { verifyResetToken } from "../utils/jwtToken.js";
 
+export const twoDaysDeleteUsers = async (req, res, next) => {
+	try {
+	
+
+
+	} catch (error) {
+		next(error);
+	}
+};
+
+export const twoDaysUsers = async (req, res, next) => {
+  try {
+		const result = await usersService.findAll();
+
+		const twoDaysAgo = new Date();
+		twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);//le resta dos dias a la fecha actual
+
+		const filteredUsers = result.filter((user) => {
+			const lastConnection = new Date(user.last_connection);
+			return lastConnection < twoDaysAgo;
+		});
+
+		res.status(200).json({ users: filteredUsers });
+	} catch (error) {
+		next(error);
+	}
+};
 export const findAllUsers = async (req, res) => {
 	try {
 		const result = await usersService.findAll();
-		res.status(200).json({ users: result });
+
+		const simpleUsers = result.map((user) => ({
+			email: user.email,
+			role: user.role,
+			name: user.last_name
+				? `${user.first_name} ${user.last_name}`
+				: user.first_name,
+		}));
+
+		res.status(200).json({ users: simpleUsers });
 	} catch (error) {
 		res.status(500).json({ message: error.message });
 	}
@@ -23,7 +59,6 @@ export const findUserById = async (req, res, next) => {
 		res.status(200).json({ user: user });
 	} catch (error) {
 		next(error);
-		// res.status(500).json({ message: error.message });
 	}
 };
 
@@ -33,7 +68,6 @@ export const createUser = async (req, res, next) => {
 	try {
 		if (!first_name || !last_name || !email || !password) {
 			throw CustomError.createError(ErrorMessages.DATA_INSUFFICIENT);
-			// return res.status(400).json({ message: "All fields are required" });
 		}
 
 		const createdUser = await usersService.createOne(req.body);
@@ -54,7 +88,6 @@ export const findByEmail = async (req, res) => {
 		res.status(200).json({ message: "User", user });
 	} catch (error) {
 		next(error);
-		// res.status(500).json({ message: error.message });
 	}
 };
 
@@ -67,6 +100,7 @@ export const deleteUser = async (req, res) => {
 		res.status(500).json({ message: error.message });
 	}
 };
+
 export const deleteUserEmail = async (req, res) => {
 	const { email } = req.params;
 	try {
@@ -82,6 +116,7 @@ export const deleteUserEmail = async (req, res) => {
 		res.status(500).json({ message: error.message });
 	}
 };
+
 export const updateRole = async (req, res) => {
 	try {
 		const { uid } = req.params;
@@ -134,7 +169,6 @@ export const updatePassword = async (req, res) => {
 		res.send("Contraseña actualizada");
 	} catch (error) {
 		logger.error(error);
-		// res.redirect("/");
 	}
 };
 

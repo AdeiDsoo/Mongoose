@@ -82,6 +82,8 @@ router.get("/resetPasswordForm", (req, res) => {
 	res.render("resetPasswordForm");
 });
 
-
+router.get("/deleteUsers", (req, res) => {
+	res.render("usersAdmin");
+});
 
 export default router;
