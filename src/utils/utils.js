@@ -17,7 +17,6 @@ const parentDir = dirname(currentDir);
 export const __dirname = parentDir;
 // export const __dirname = dirname(fileURLToPath(import.meta.url));
 
-
 export const hashData= async(data)=>{
     const hash= await bcrypt.hash(data, 10)
     return hash
