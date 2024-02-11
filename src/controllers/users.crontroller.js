@@ -3,33 +3,57 @@ import CustomError from "../error/not-found.error.js";
 import { usersService } from "../services/users.service.js";
 import { logger } from "../utils/winston.js";
 import { verifyResetToken } from "../utils/jwtToken.js";
+import { transporter } from "../utils/nodemailer.js";
 
-export const twoDaysDeleteUsers = async (req, res, next) => {
+export const deleteInactiveUsers = async (req, res, next) => {
 	try {
-	
+		const inactiveUsers = await getInactiveUsers();
+		const options = {
+			from: "dsoocg@gmail.com",
+			subject: "Tu cuenta ha sido eliminada",
+			html: `<h1>TU CUENTA HA SIDO ELIMINADA</h1>
+         		   <p>Por inactividad mayor a dos días tu cuenta ha sido eliminada</p>`,
+		};
 
+		// for (const user of inactiveUsers) {
+		// 	// await usersService.deleteUser(user._id);
+		// 	const optionsWithRecipient = { ...options, to: [user.email] };
+		// 	await transporter.sendMail(optionsWithRecipient);
+		// }
+		  for (const user of inactiveUsers) {
+				const optionsWithRecipient = { ...options, to: [user.email] };
+				await transporter.sendMail(optionsWithRecipient);
+				await usersService.deleteOne(user._id)
+			}
+
+			console.log('usuarios eliminados');
+		res.send("Se han enviado los correos notificando su baja");
 
 	} catch (error) {
+		console.error("Error al enviar correos electrónicos:", error);
 		next(error);
 	}
 };
 
 export const twoDaysUsers = async (req, res, next) => {
-  try {
-		const result = await usersService.findAll();
+	try {
+		const result = await getInactiveUsers();
 
-		const twoDaysAgo = new Date();
-		twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);//le resta dos dias a la fecha actual
-
-		const filteredUsers = result.filter((user) => {
-			const lastConnection = new Date(user.last_connection);
-			return lastConnection < twoDaysAgo;
-		});
-
-		res.status(200).json({ users: filteredUsers });
+		res.status(200).json({ users: result });
 	} catch (error) {
 		next(error);
 	}
+};
+
+export const getInactiveUsers = async () => {
+	const result = await usersService.findAll();
+	const twoDaysAgo = new Date();
+	twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
+
+	return result.filter((user) => {
+		const lastConnection = new Date(user.last_connection);
+		return lastConnection < twoDaysAgo;
+	});
 };
 export const findAllUsers = async (req, res) => {
 	try {

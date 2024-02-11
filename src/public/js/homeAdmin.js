@@ -1,5 +1,6 @@
 const renderAllUsers = document.getElementById("renderAllUsers");
 const renderUserTwoDays = document.getElementById("renderTwoDaysUsers");
+const btnDelete = document.getElementById("btnDeletedUser");
 
 const URL = `http://localhost:8080/api/users`;
 const URLtwoDays = `http://localhost:8080/api/users/usersTwoDays`;
@@ -50,3 +51,16 @@ const twoDaysData = async () => {
 };
 fetchData();
 twoDaysData();
+
+
+btnDelete.addEventListener("click", async (event) => {
+	event.preventDefault();
+	try {
+		
+		const response = await fetch("http://localhost:8080/api/users/delete", {
+			method: "DELETE",
+		});
+	} catch (error) {
+		console.error("Error:", error.message);
+	}
+});
