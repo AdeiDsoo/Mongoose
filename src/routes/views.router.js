@@ -86,4 +86,8 @@ router.get("/deleteUsers", (req, res) => {
 	res.render("usersAdmin");
 });
 
+router.get("/admin_users", (req, res) => {
+	res.render("admin_users");
+});
+
 export default router;

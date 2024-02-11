@@ -15,12 +15,7 @@ export const deleteInactiveUsers = async (req, res, next) => {
          		   <p>Por inactividad mayor a dos días tu cuenta ha sido eliminada</p>`,
 		};
 
-		// for (const user of inactiveUsers) {
-		// 	// await usersService.deleteUser(user._id);
-		// 	const optionsWithRecipient = { ...options, to: [user.email] };
-		// 	await transporter.sendMail(optionsWithRecipient);
-		// }
-		  for (const user of inactiveUsers) {
+		for (const user of inactiveUsers) {
 				const optionsWithRecipient = { ...options, to: [user.email] };
 				await transporter.sendMail(optionsWithRecipient);
 				await usersService.deleteOne(user._id)

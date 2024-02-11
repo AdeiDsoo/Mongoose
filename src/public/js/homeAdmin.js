@@ -4,6 +4,7 @@ const btnDelete = document.getElementById("btnDeletedUser");
 
 const URL = `http://localhost:8080/api/users`;
 const URLtwoDays = `http://localhost:8080/api/users/usersTwoDays`;
+const URLdelete = `http://localhost:8080/api/users/delete`;
 
 const fetchData = async () => {
 	try {
@@ -52,12 +53,10 @@ const twoDaysData = async () => {
 fetchData();
 twoDaysData();
 
-
 btnDelete.addEventListener("click", async (event) => {
 	event.preventDefault();
 	try {
-		
-		const response = await fetch("http://localhost:8080/api/users/delete", {
+		const response = await fetch(URLdelete, {
 			method: "DELETE",
 		});
 	} catch (error) {

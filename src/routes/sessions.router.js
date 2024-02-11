@@ -17,8 +17,14 @@ router.get(
 	async (req, res) => {
 		await lastConnection(req, res);
 		req.session.user = req.user;
-
-		res.redirect("/home");
+if (req.user.role === "Admin") {
+	res.redirect("/homeAdmin");
+} else if (req.user.role === "user" || req.user.role === "userPremium") {
+	res.redirect("/home");
+} else {
+	res.redirect("/error");
+}
+		
 	}
 );
 
