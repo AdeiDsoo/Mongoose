@@ -1,6 +1,9 @@
 const areaRender = document.getElementById("renderAdminUsers");
 
-const URL = `http://localhost:8080/api/users`;
+const URL = `http://localhost:8080/api/users/allUsers`;
+const URLdeleteUser = `http://localhost:8080/api/users/delete/`;
+
+// router.delete("/delete/:email", deleteUserEmail);
 
 const renderData = async () => {
 	try {
@@ -10,13 +13,28 @@ const renderData = async () => {
 			.map(
 				(user) =>
 					`
-                    <tr>
-        <td>${user.name}</td>
-        <td>${user.email}</td>
-        <td>${user.role}</td>
-        <td><button>EDIT</button></td>
-         <td><button>DELETE</button></td>
-         </tr>
+                   <tr>
+                        <td>${user.first_name}</td>
+                        <td>${user.email}</td>
+                        <td>
+                            <select name="role" class="role-select" data-original-role="${
+															user.role
+														}">
+                                <option value="${user.role}">${
+						user.role
+					}</option>
+                                ${generateRoleOptions(user.role)}
+                            </select>
+                        </td>
+                        <td>
+                            <button class="btnEdit" data-user-id="${
+															user._id
+														}">SAVE</button>
+                        </td>
+                        <td><button class="btnDelete" data-user-email=${
+													user.email
+												} >DELETE</button></td>
+                    </tr>
        `
 			)
 			.join("");
@@ -28,4 +46,51 @@ const renderData = async () => {
 	}
 };
 
- renderData();
+const generateRoleOptions = (currentRole) => {
+	const allRoles = ["Admin", "user", "userPremium"];
+	const filteredRoles = allRoles.filter((role) => role !== currentRole);
+
+	return filteredRoles
+		.map((role) => `<option value="${role}">${role}</option>`)
+		.join("");
+};
+
+
+renderData();
+
+areaRender.addEventListener("click", async (e) => {
+	const target = e.target;
+
+	if (target.classList.contains("btnEdit")) {
+		handleEditButtonClick(target);
+	}
+
+	if (target.classList.contains("btnDelete")) {
+		await handleDeleteButtonClick(target);
+	}
+});
+
+const handleEditButtonClick = (button) => {
+	e.preventDefault();
+	const userId = button.dataset.userId;
+	console.log(userId);
+	// Puedes agregar aquí la lógica para manejar la edición del usuario
+};
+
+const handleDeleteButtonClick = async (button) => {
+	e.preventDefault();
+	const userEmail = button.dataset.userEmail;
+
+	try {
+		const response = await fetch(
+			`http://localhost:8080/api/users/delete/${userEmail}`,
+			{
+				method: "DELETE",
+			}
+		);
+
+		console.log(`Usuario con email ${userEmail} eliminado correctamente.`);
+	} catch (error) {
+		console.error("Error:", error.message);
+	}
+};

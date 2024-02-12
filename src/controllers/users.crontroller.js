@@ -68,6 +68,15 @@ export const findAllUsers = async (req, res) => {
 	}
 };
 
+export const findAll= async(req, res, next) => {
+	try {
+			const result = await usersService.findAll();
+			res.status(200).json({ users: result });
+	} catch (error) {
+		next(error);
+	}
+}
+
 export const findUserById = async (req, res, next) => {
 	const { idUser } = req.params;
 	try {

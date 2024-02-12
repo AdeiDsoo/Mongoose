@@ -9,6 +9,7 @@ import {
 	uploadDocuments,
 	twoDaysUsers,
 	deleteInactiveUsers,
+	findAll,
 } from "../controllers/users.crontroller.js";
 import { upload } from "../middlewares/multer.middleware.js";
 
@@ -16,6 +17,8 @@ import { upload } from "../middlewares/multer.middleware.js";
 const router = Router();
 
 router.get("/", findAllUsers);
+
+router.get("/allUsers", findAll );
 
 router.get("/reset-password/:token", forgotPassword);
 
