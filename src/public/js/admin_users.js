@@ -70,11 +70,30 @@ areaRender.addEventListener("click", async (e) => {
 	}
 });
 
-const handleEditButtonClick = (button) => {
-	e.preventDefault();
-	const userId = button.dataset.userId;
-	console.log(userId);
-	// Puedes agregar aquí la lógica para manejar la edición del usuario
+const handleEditButtonClick = async (button) => {
+	// e.preventDefault();
+	const idUser = button.dataset.userId;
+	
+	const selectElement = button.closest("tr").querySelector(".role-select");
+
+	const selectedRole = selectElement.value;
+  console.log(idUser, selectedRole);
+// router.post("/updateUsers/:idUser", updateUsers);
+  try {
+		const response = await fetch(
+			`http://localhost:8080/api/users/updateUsers/${idUser}`,
+			{
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json", 
+				},
+				body: JSON.stringify({ role: selectedRole }),
+			}
+		);
+
+	} catch (error) {
+		console.error("Error:", error.message);
+	}
 };
 
 const handleDeleteButtonClick = async (button) => {

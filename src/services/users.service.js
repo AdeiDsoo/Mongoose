@@ -23,25 +23,28 @@ class UsersService {
 
 		return response;
 	}
+
 	async updateOne(obj) {
 		const { id, ...userInfo } = obj;
 		const response = await usersMongo.updateOne(id, userInfo);
 		return response;
 	}
-	 async updateDocuments(id, documents) {
-    const response = await usersMongo.updateOne(id, { documents });
-    return response;
- 
-};
+
+	async updateDocuments(id, documents) {
+		const response = await usersMongo.updateOne(id, { documents });
+		return response;
+	}
 
 	async deleteOne(id) {
 		const response = await usersMongo.deleteOne(id);
 		return response;
 	}
+
 	async findByEmail(email) {
 		const response = await usersMongo.findByEmail(email);
 		return response;
 	}
+
 	async findByPassword(password) {
 		const response = await usersMongo.findByPassword(password);
 		return response;

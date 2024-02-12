@@ -10,6 +10,7 @@ import {
 	twoDaysUsers,
 	deleteInactiveUsers,
 	findAll,
+	updateUsers,
 } from "../controllers/users.crontroller.js";
 import { upload } from "../middlewares/multer.middleware.js";
 
@@ -48,6 +49,8 @@ router.post(
 	upload.fields(fieldOrder.map((field) => ({ name: field, maxCount: 1 }))),
 	uploadDocuments
 );
+
+router.post("/updateUsers/:idUser", updateUsers);
 
 
 export default router;

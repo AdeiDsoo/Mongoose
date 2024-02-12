@@ -16,14 +16,13 @@ export const deleteInactiveUsers = async (req, res, next) => {
 		};
 
 		for (const user of inactiveUsers) {
-				const optionsWithRecipient = { ...options, to: [user.email] };
-				await transporter.sendMail(optionsWithRecipient);
-				await usersService.deleteOne(user._id)
-			}
+			const optionsWithRecipient = { ...options, to: [user.email] };
+			await transporter.sendMail(optionsWithRecipient);
+			await usersService.deleteOne(user._id);
+		}
 
-			console.log('usuarios eliminados');
+		console.log("usuarios eliminados");
 		res.send("Se han enviado los correos notificando su baja");
-
 	} catch (error) {
 		console.error("Error al enviar correos electrónicos:", error);
 		next(error);
@@ -68,14 +67,14 @@ export const findAllUsers = async (req, res) => {
 	}
 };
 
-export const findAll= async(req, res, next) => {
+export const findAll = async (req, res, next) => {
 	try {
-			const result = await usersService.findAll();
-			res.status(200).json({ users: result });
+		const result = await usersService.findAll();
+		res.status(200).json({ users: result });
 	} catch (error) {
 		next(error);
 	}
-}
+};
 
 export const findUserById = async (req, res, next) => {
 	const { idUser } = req.params;
@@ -262,5 +261,19 @@ export const uploadDocuments = async (req, res) => {
 	} catch (error) {
 		console.error(error);
 		res.status(500).json({ message: "Internal Server Error" });
+	}
+};
+
+export const updateUsers = async (req, res, next) => {
+	try {
+	   
+			const { idUser } = req.params;
+	
+			const { role } = req.body; 
+	
+			const result = await usersService.updateOne({ id: idUser, role }); 
+			res.status(200).json({ message: "User updated", user: result });
+	} catch (error) {
+		next(error);
 	}
 };
