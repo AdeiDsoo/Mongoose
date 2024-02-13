@@ -2,6 +2,7 @@ import { productsService } from "../services/products.service.js";
 import CustomError from "../error/not-found.error.js";
 import { ErrorMessages } from "../error/error.enum.js";
 import { logger } from "../utils/winston.js";
+import { transporter } from "../utils/nodemailer.js";
 
 export const findAll = async (req, res) => {
 	try {
@@ -83,15 +84,28 @@ export const createProduct = async (req, res) => {
 
 export const deleteProduct = async (req, res) => {
 	const { idProduct } = req.params;
+
 	try {
 		const product = await productsService.findById(idProduct);
-		logger.info(product);
+
+		if (req.user.role === "Admin") {
+			const options = {
+				from: "dsoocg@gmail.com",
+				subject: "Tu producto ha sido eliminado",
+				html: `<h1>El producto ${product.title} ha sido eliminado</h1>
+               <p>Para más información, contactar al Admin</p>`,
+			};
+			const optionsWithRecipient = { ...options, to: [product.owner] };
+			await transporter.sendMail(optionsWithRecipient);
+		}
 
 		if (req.user.email === product.owner || req.user.role === "Admin") {
-			const product = await productsService.deleteOne(idProduct);
-			res.status(200).json({ message: "deleted Product", product });
+			const deletedProduct = await productsService.deleteOne(idProduct);
+			res
+				.status(200)
+				.json({ message: "Producto eliminado", product: deletedProduct });
 		} else {
-			res.status(200).json({ message: "Permiso Denegado" });
+			res.status(403).json({ message: "Permiso Denegado" });
 		}
 	} catch (err) {
 		res.status(500).json({ error: err.message });

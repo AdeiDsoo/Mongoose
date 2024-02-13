@@ -430,3 +430,19 @@ a {
 	align-items: center;
 	flex-direction: column;
 }
+
+.deleteProduct{
+	background-color: #217781;
+	padding: 2vw;
+margin: 2vw;
+	font-size: 1.5rem;
+}
+
+.deleteProduct h2{
+	font-size: 2rem;
+	font-weight: bolder;
+	text-align: center;
+	margin: 0 0 20px 0;
+		color: #ce6029;
+}
+}
